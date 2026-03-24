@@ -236,7 +236,7 @@ export async function registerRoutes(
 
   app.post('/api/speech/synthesize', async (req, res) => {
     try {
-      const { text } = req.body;
+      const { text, disc } = req.body;
       if (!text || typeof text !== 'string') {
         return res.status(400).json({ error: 'No text provided' });
       }
@@ -244,7 +244,7 @@ export async function registerRoutes(
         return res.status(400).json({ error: 'Text too long' });
       }
 
-      const audioBuffer = await synthesizeSpeech(text);
+      const audioBuffer = await synthesizeSpeech(text, disc);
       res.set({
         'Content-Type': 'audio/mpeg',
         'Content-Length': audioBuffer.length.toString(),

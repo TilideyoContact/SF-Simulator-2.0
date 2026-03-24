@@ -2,7 +2,7 @@ import { useParcoursStore } from '@/lib/store';
 import { ChatCardSingle } from '@/components/ChatCard';
 import { Button } from '@/components/ui/button';
 import { getScenarioLabel, getDiscLabel, getRelationLabel, getEtatEspritLabel, getDifficultyStars, getTheoryContent, getPersonaDescription, getTourMax, getTypeCollabShortLabel } from '@/lib/helpers';
-import { Play, BookOpen, Star } from 'lucide-react';
+import { Play, BookOpen, Star, ShieldCheck } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export function Step15PreSimulation() {
@@ -31,6 +31,14 @@ export function Step15PreSimulation() {
           Pour le scenario <strong>"{getScenarioLabel(scenarioChoisi)}"</strong> avec {desc ? desc : 'votre collaborateur'}, que preferez-vous ?
         </p>
       </div>
+      <div className="flex items-start gap-2.5 p-3 rounded-lg bg-[var(--dsfr-success-bg,#f6fef9)] border border-[var(--dsfr-success,#18753C)]20">
+        <ShieldCheck className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: 'var(--dsfr-success, #18753C)' }} />
+        <div className="text-xs text-[var(--dsfr-grey-425)]">
+          <p className="font-bold text-[var(--dsfr-success, #18753C)] mb-0.5">Cadre securise et anonyme</p>
+          <p>Cet exercice est strictement confidentiel. Vos resultats ne sont visibles que par vous et ne constituent en aucun cas une evaluation hierarchique. Installez-vous dans un endroit calme pour profiter pleinement de la simulation.</p>
+        </div>
+      </div>
+
       <ChatCardSingle
         selected={choixPreSimulation}
         onSelect={handleSelect}

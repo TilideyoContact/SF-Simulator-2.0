@@ -59,7 +59,7 @@ export function SimulationView() {
       const response = await fetch('/api/speech/synthesize', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: cleanText }),
+        body: JSON.stringify({ text: cleanText, disc: persona.disc }),
       });
 
       if (!response.ok) throw new Error('TTS failed');

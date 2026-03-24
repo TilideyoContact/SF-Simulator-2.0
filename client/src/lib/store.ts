@@ -153,7 +153,8 @@ export function calculateDifficulty(disc: DiscProfil, relation: Relation, etatEs
 
 function getStepsForMode(mode: Mode): number[] {
   if (mode === 'rapide') {
-    return [1, 2, 7, 5, 6, 8, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25];
+    // V2: show DISC/relation/etat d'esprit in rapid mode too (with pre-selected defaults)
+    return [1, 2, 7, 5, 6, 11, 12, 13, 8, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25];
   }
   return [1, 2, 7, 5, 6, 11, 12, 8, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25];
 }
