@@ -1,7 +1,10 @@
 import OpenAI from "openai";
 import fs from "fs";
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const openai = new OpenAI({
+  apiKey: process.env.AI_INTEGRATIONS_OPENAI_API_KEY,
+  baseURL: process.env.AI_INTEGRATIONS_OPENAI_BASE_URL,
+});
 
 interface PromptParams {
   scenario: string;
@@ -686,13 +689,34 @@ Retourne UNIQUEMENT le JSON, sans texte avant ou après.`,
 }
 
 export async function transcribeAudio(filePath: string): Promise<string> {
-  const file = fs.createReadStream(filePath);
-  const transcription = await openai.audio.transcriptions.create({
-    file,
-    model: "whisper-1",
-    language: "fr",
+  const apiKey = process.env.ELEVENLABS_API_KEY;
+  if (!apiKey) {
+    throw new Error("ELEVENLABS_API_KEY is not set");
+  }
+
+  const fileBuffer = fs.readFileSync(filePath);
+  const fileName = filePath.split("/").pop() || "audio.webm";
+
+  const formData = new FormData();
+  formData.append("file", new Blob([fileBuffer]), fileName);
+  formData.append("model_id", "scribe_v1");
+  formData.append("language_code", "fra");
+
+  const response = await fetch("https://api.elevenlabs.io/v1/speech-to-text", {
+    method: "POST",
+    headers: {
+      "xi-api-key": apiKey,
+    },
+    body: formData,
   });
-  return transcription.text;
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`ElevenLabs STT error: ${response.status} ${errorText}`);
+  }
+
+  const result = await response.json() as { text: string };
+  return result.text;
 }
 
 // ElevenLabs voice IDs mapped to DISC profiles for distinct persona voices
@@ -705,52 +729,37 @@ const ELEVENLABS_VOICES: Record<string, string> = {
 };
 
 export async function synthesizeSpeech(text: string, disc?: string): Promise<Buffer> {
-  const elevenLabsKey = process.env.ELEVENLABS_API_KEY;
-
-  if (elevenLabsKey) {
-    // Use ElevenLabs TTS
-    const voiceId = ELEVENLABS_VOICES[disc || ""] || ELEVENLABS_VOICES.default;
-
-    const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
-      method: "POST",
-      headers: {
-        "xi-api-key": elevenLabsKey,
-        "Content-Type": "application/json",
-        "Accept": "audio/mpeg",
-      },
-      body: JSON.stringify({
-        text,
-        model_id: "eleven_multilingual_v2",
-        voice_settings: {
-          stability: 0.5,
-          similarity_boost: 0.75,
-          style: 0.3,
-          use_speaker_boost: true,
-        },
-      }),
-    });
-
-    if (!response.ok) {
-      console.error(`ElevenLabs TTS error: ${response.status} ${response.statusText}`);
-      // Fallback to OpenAI TTS
-      return synthesizeSpeechOpenAI(text);
-    }
-
-    const arrayBuffer = await response.arrayBuffer();
-    return Buffer.from(arrayBuffer);
+  const apiKey = process.env.ELEVENLABS_API_KEY;
+  if (!apiKey) {
+    throw new Error("ELEVENLABS_API_KEY is not set");
   }
 
-  // Fallback: OpenAI TTS if no ElevenLabs key
-  return synthesizeSpeechOpenAI(text);
-}
+  const voiceId = ELEVENLABS_VOICES[disc || ""] || ELEVENLABS_VOICES.default;
 
-async function synthesizeSpeechOpenAI(text: string): Promise<Buffer> {
-  const mp3 = await openai.audio.speech.create({
-    model: "tts-1",
-    voice: "nova",
-    input: text,
-    response_format: "mp3",
+  const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
+    method: "POST",
+    headers: {
+      "xi-api-key": apiKey,
+      "Content-Type": "application/json",
+      "Accept": "audio/mpeg",
+    },
+    body: JSON.stringify({
+      text,
+      model_id: "eleven_multilingual_v2",
+      voice_settings: {
+        stability: 0.5,
+        similarity_boost: 0.75,
+        style: 0.3,
+        use_speaker_boost: true,
+      },
+    }),
   });
-  const arrayBuffer = await mp3.arrayBuffer();
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`ElevenLabs TTS error: ${response.status} ${errorText}`);
+  }
+
+  const arrayBuffer = await response.arrayBuffer();
   return Buffer.from(arrayBuffer);
 }

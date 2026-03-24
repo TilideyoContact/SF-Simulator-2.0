@@ -65,8 +65,8 @@ export async function registerRoutes(
   app: Express
 ): Promise<Server> {
 
-  if (!process.env.OPENAI_API_KEY) {
-    console.warn('WARNING: OPENAI_API_KEY is not set. AI features (ChatGPT, Whisper, TTS) will use fallback responses.');
+  if (!process.env.ELEVENLABS_API_KEY) {
+    console.warn('WARNING: ELEVENLABS_API_KEY is not set. Voice features (TTS, STT) will use fallback responses.');
   }
 
   app.post('/api/simulation/start', async (req, res) => {
