@@ -1,0 +1,101 @@
+import { useLocation } from 'wouter';
+import { MessageSquare, TrendingUp, AlertTriangle, ChevronRight } from 'lucide-react';
+
+const SCENARIOS = [
+  {
+    slug: 'feedback-recadrage',
+    id: 'feedback_recadrage',
+    label: 'Feedback / Recadrage',
+    desc: 'Recadrer sans degrader la relation',
+    icon: MessageSquare,
+    accent: '#000091',
+    bg: 'rgba(0, 0, 145, 0.06)',
+  },
+  {
+    slug: 'feedback-positif',
+    id: 'feedback_positif',
+    label: 'Feedback positif',
+    desc: 'Reconnaitre et valoriser',
+    icon: TrendingUp,
+    accent: '#18753c',
+    bg: 'rgba(24, 117, 60, 0.06)',
+  },
+  {
+    slug: 'decision-difficile',
+    id: 'decision_difficile',
+    label: 'Decision difficile',
+    desc: 'Annoncer une decision non negociable',
+    icon: AlertTriangle,
+    accent: '#E1000F',
+    bg: 'rgba(225, 0, 15, 0.06)',
+  },
+];
+
+interface SideMenuProps {
+  activeSlug?: string;
+}
+
+export function SideMenu({ activeSlug }: SideMenuProps) {
+  const [, navigate] = useLocation();
+
+  return (
+    <nav
+      data-testid="side-menu"
+      className="hidden md:flex flex-col w-56 shrink-0 border-r border-[var(--dsfr-grey-925)] bg-white dark:bg-[var(--dsfr-grey-975)] overflow-y-auto"
+    >
+      <div className="p-4 border-b border-[var(--dsfr-grey-925)]">
+        <p className="text-[11px] font-bold uppercase tracking-widest text-[var(--dsfr-grey-425)]">
+          Choisir un scenario
+        </p>
+      </div>
+
+      <div className="flex flex-col gap-1 p-2">
+        {SCENARIOS.map((s) => {
+          const isActive = activeSlug === s.slug;
+          const Icon = s.icon;
+          return (
+            <button
+              key={s.slug}
+              data-testid={`sidemenu-${s.slug}`}
+              onClick={() => navigate(`/scenario/${s.slug}`)}
+              className="w-full text-left rounded-lg px-3 py-3 transition-all group"
+              style={{
+                backgroundColor: isActive ? s.bg : 'transparent',
+                border: isActive ? `1.5px solid ${s.accent}` : '1.5px solid transparent',
+              }}
+            >
+              <div className="flex items-start gap-2">
+                <Icon
+                  className="w-4 h-4 mt-0.5 shrink-0 transition-colors"
+                  style={{ color: isActive ? s.accent : 'var(--dsfr-grey-425)' }}
+                />
+                <div className="flex-1 min-w-0">
+                  <p
+                    className="text-xs font-bold leading-tight"
+                    style={{ color: isActive ? s.accent : 'var(--foreground)' }}
+                  >
+                    {s.label}
+                  </p>
+                  <p className="text-[10px] text-[var(--dsfr-grey-425)] mt-0.5 leading-tight">
+                    {s.desc}
+                  </p>
+                </div>
+                {isActive && (
+                  <ChevronRight className="w-3 h-3 mt-0.5 shrink-0" style={{ color: s.accent }} />
+                )}
+              </div>
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="mt-auto p-4 border-t border-[var(--dsfr-grey-925)]">
+        <p className="text-[10px] text-[var(--dsfr-grey-425)] leading-relaxed">
+          Chaque scenario lance une nouvelle conversation independante.
+        </p>
+      </div>
+    </nav>
+  );
+}
+
+export { SCENARIOS };

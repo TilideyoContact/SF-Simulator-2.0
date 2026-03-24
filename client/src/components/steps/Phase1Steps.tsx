@@ -1,0 +1,444 @@
+import { useState, useRef } from 'react';
+import { useParcoursStore } from '@/lib/store';
+
+import { ChatCardSingle, ChatCardMulti } from '@/components/ChatCard';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { Microscope, Zap, User, Users, Building2, CheckCircle, AlertTriangle, AlertCircle, Sprout, TreePine, Award, Target, Shield, Search, TrendingUp, FileEdit, MessageSquare, MessageCircle, ClipboardList, RefreshCw, Sparkles, Upload } from 'lucide-react';
+
+const SCENARIO_CONTEXT: Record<string, { title: string; desc: string }> = {
+  feedback_recadrage: {
+    title: 'Feedback / Recadrage',
+    desc: 'Vous allez vous entrainer a recadrer un collaborateur tout en preservant la qualite de votre relation professionnelle.',
+  },
+  feedback_positif: {
+    title: 'Feedback positif',
+    desc: 'Vous allez vous entrainer a donner un feedback valorisant, precis et structurant pour motiver votre collaborateur.',
+  },
+  decision_difficile: {
+    title: 'Decision difficile',
+    desc: 'Vous allez vous entrainer a annoncer une decision difficile ou non negociable avec clarte et empathie.',
+  },
+};
+
+export function Step1Welcome() {
+  const { setMode, nextStep, mode, setPendingMessage, scenarioChoisi } = useParcoursStore();
+
+  const handleSelect = (id: string, label: string) => {
+    setPendingMessage(label);
+    setMode(id as 'avance' | 'rapide');
+    setTimeout(() => nextStep(), 400);
+  };
+
+  const ctx = scenarioChoisi ? SCENARIO_CONTEXT[scenarioChoisi] : null;
+
+  return (
+    <div className="space-y-8">
+      <div className="text-center space-y-4 pt-4">
+        <div className="flex items-center justify-center gap-3">
+          <Sparkles className="w-8 h-8" style={{ color: 'var(--dsfr-blue-france)' }} />
+          <h2 className="text-2xl sm:text-3xl font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>
+            {ctx ? ctx.title : 'Entretiens manageriaux'}
+          </h2>
+        </div>
+        <p className="text-sm sm:text-base text-[var(--dsfr-grey-425)] max-w-2xl mx-auto leading-relaxed">
+          {ctx
+            ? ctx.desc
+            : "Cet outil a pour vocation de vous accompagner dans la preparation de vos entretiens manageriaux, qu'il s'agisse d'entretiens visant a soutenir, reconnaitre, projeter ou a aborder des situations plus sensibles."}
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="space-y-3">
+          <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>
+            Mode avance
+          </h3>
+          <button
+            data-testid="card-option-avance"
+            disabled={mode !== null && mode !== 'avance'}
+            onClick={() => handleSelect('avance', 'Mode avance')}
+            className="w-full text-left px-5 py-4 border border-[var(--dsfr-grey-850)] rounded-xl bg-white dark:bg-[var(--dsfr-grey-950)] hover:border-[var(--dsfr-blue-france)] hover:shadow-sm transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            <div className="flex items-center gap-3">
+              <Microscope className="w-5 h-5 flex-shrink-0" style={{ color: 'var(--dsfr-blue-france)' }} />
+              <div>
+                <p className="font-medium text-sm text-foreground">Questions detaillees pour un accompagnement sur-mesure</p>
+              </div>
+            </div>
+          </button>
+        </div>
+
+        <div className="space-y-3">
+          <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-red-marianne)' }}>
+            Mode rapide
+          </h3>
+          <button
+            data-testid="card-option-rapide"
+            disabled={mode !== null && mode !== 'rapide'}
+            onClick={() => handleSelect('rapide', 'Mode rapide')}
+            className="w-full text-left px-5 py-4 border border-[var(--dsfr-grey-850)] rounded-xl bg-white dark:bg-[var(--dsfr-grey-950)] hover:border-[var(--dsfr-red-marianne)] hover:shadow-sm transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            <div className="flex items-center gap-3">
+              <Zap className="w-5 h-5 flex-shrink-0" style={{ color: 'var(--dsfr-red-marianne)' }} />
+              <div>
+                <p className="font-medium text-sm text-foreground">3 questions essentielles puis simulation</p>
+              </div>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function Step2Profil() {
+  const { setProfil, nextStep, profil } = useParcoursStore();
+
+  const handleSelect = (id: string) => {
+    setProfil(id as any);
+    setTimeout(() => nextStep(), 400);
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="text-center">
+        <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>
+          Votre niveau de responsabilite
+        </h3>
+        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Pour mieux adapter mes conseils, quel est votre niveau de responsabilite manageriale ?</p>
+      </div>
+      <ChatCardSingle
+        selected={profil}
+        onSelect={handleSelect}
+        options={[
+          { id: 'mp', label: 'Manager de proximite', subtitle: "J'anime une equipe operationnelle au quotidien", icon: <User className="w-5 h-5" /> },
+          { id: 'mi', label: 'Manager intermediaire', subtitle: 'Je pilote plusieurs equipes ou projets transverses', icon: <Users className="w-5 h-5" /> },
+          { id: 'ms', label: 'Manager superieur', subtitle: 'Je dirige une direction ou un service', icon: <Building2 className="w-5 h-5" /> },
+        ]}
+      />
+    </div>
+  );
+}
+
+export function Step3Barometre() {
+  const { setBarometre, nextStep, barometre } = useParcoursStore();
+  const [qvt, setQvt] = useState(barometre?.qvt || null);
+  const [engagement, setEngagement] = useState(barometre?.engagement || null);
+
+  const handleQvt = (id: string) => {
+    setQvt(id as any);
+    if (engagement) {
+      setBarometre({ qvt: id as any, engagement });
+      setTimeout(() => nextStep(), 400);
+    }
+  };
+
+  const handleEngagement = (id: string) => {
+    setEngagement(id as any);
+    if (qvt) {
+      setBarometre({ qvt, engagement: id as any });
+      setTimeout(() => nextStep(), 400);
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="text-center">
+        <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>
+          Barometre de contexte
+        </h3>
+        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Deux questions rapides sur votre contexte actuel pour mieux calibrer la simulation.</p>
+      </div>
+
+      <div className="space-y-4">
+        <p className="text-sm font-medium text-foreground">Comment evaluez-vous la qualite de vie au travail de votre equipe actuellement ?</p>
+        <ChatCardSingle
+          selected={qvt}
+          onSelect={handleQvt}
+          options={[
+            { id: 'bonne', label: 'Bonne', subtitle: 'Ambiance positive, equipe engagee', icon: <CheckCircle className="w-5 h-5" style={{ color: 'var(--dsfr-success)' }} /> },
+            { id: 'moyenne', label: 'Moyenne', subtitle: 'Quelques tensions mais rien de critique', icon: <AlertTriangle className="w-5 h-5" style={{ color: 'var(--dsfr-warning)' }} /> },
+            { id: 'difficile', label: 'Difficile', subtitle: 'Tensions fortes, climat degrade', icon: <AlertCircle className="w-5 h-5" style={{ color: 'var(--dsfr-red-marianne)' }} /> },
+          ]}
+        />
+      </div>
+
+      {qvt && (
+        <div className="space-y-4">
+          <p className="text-sm font-medium text-foreground">Et l'engagement de vos collaborateurs au quotidien ?</p>
+          <ChatCardSingle
+            selected={engagement}
+            onSelect={handleEngagement}
+            options={[
+              { id: 'bon', label: 'Bon', subtitle: 'Equipe motivee et impliquee', icon: <CheckCircle className="w-5 h-5" style={{ color: 'var(--dsfr-success)' }} /> },
+              { id: 'moyen', label: 'Moyen', subtitle: 'Implication variable selon les individus', icon: <AlertTriangle className="w-5 h-5" style={{ color: 'var(--dsfr-warning)' }} /> },
+              { id: 'faible', label: 'Faible', subtitle: 'Demotivation, absenteisme, retrait', icon: <AlertCircle className="w-5 h-5" style={{ color: 'var(--dsfr-red-marianne)' }} /> },
+            ]}
+          />
+        </div>
+      )}
+    </div>
+  );
+}
+
+export function Step4Experience() {
+  const { setExperience, nextStep, experience } = useParcoursStore();
+
+  const handleSelect = (id: string) => {
+    setExperience(id as any);
+    setTimeout(() => nextStep(), 400);
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="text-center">
+        <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>
+          Votre experience
+        </h3>
+        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Depuis combien de temps exercez-vous des fonctions manageriales ?</p>
+      </div>
+      <ChatCardSingle
+        selected={experience}
+        onSelect={handleSelect}
+        options={[
+          { id: 'debutant', label: "Moins d'1 an", subtitle: 'Je debute dans la fonction', icon: <Sprout className="w-5 h-5" style={{ color: 'var(--dsfr-success)' }} /> },
+          { id: 'intermediaire', label: '1 a 3 ans', subtitle: "J'ai un peu d'experience", icon: <TreePine className="w-5 h-5" style={{ color: 'var(--dsfr-success)' }} /> },
+          { id: 'experimente', label: 'Plus de 3 ans', subtitle: 'Je suis experimente(e)', icon: <Award className="w-5 h-5" style={{ color: 'var(--dsfr-success)' }} /> },
+        ]}
+      />
+    </div>
+  );
+}
+
+export function Step5Objectifs() {
+  const { setObjectifs, nextStep, objectifs } = useParcoursStore();
+  const [selected, setSelected] = useState<string[]>(objectifs || []);
+
+  const handleToggle = (id: string) => {
+    setSelected((prev) => prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]);
+  };
+
+  const handleValidate = () => {
+    setObjectifs(selected);
+    nextStep();
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="text-center">
+        <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>
+          Vos objectifs
+        </h3>
+        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Qu'est-ce qui vous amene a utiliser cet outil aujourd'hui ? Vous pouvez selectionner plusieurs reponses.</p>
+      </div>
+      <div className="space-y-3">
+        <ChatCardMulti
+          selected={selected}
+          onToggle={handleToggle}
+          options={[
+            { id: 'entrainer', label: "M'entrainer", subtitle: 'Pratiquer avant un entretien reel', icon: <Target className="w-5 h-5" /> },
+            { id: 'confiant', label: 'Etre plus confiant(e)', subtitle: 'Me rassurer sur mes pratiques', icon: <Shield className="w-5 h-5" /> },
+            { id: 'decouvrir', label: 'Decouvrir', subtitle: 'Explorer de nouvelles pratiques', icon: <Search className="w-5 h-5" /> },
+            { id: 'ameliorer', label: "M'ameliorer", subtitle: 'Identifier mes axes de progression', icon: <TrendingUp className="w-5 h-5" /> },
+          ]}
+        />
+        {selected.length > 0 && (
+          <Button data-testid="button-validate-objectives" onClick={handleValidate} className="w-full">
+            Valider mes choix
+          </Button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export function Step6Difficultes() {
+  const { setDifficulte, nextStep, difficulte } = useParcoursStore();
+  const [selected, setSelected] = useState<string[]>(difficulte || []);
+
+  const handleToggle = (id: string) => {
+    setSelected((prev) => prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]);
+  };
+
+  const handleValidate = () => {
+    setDifficulte(selected);
+    nextStep();
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="text-center">
+        <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>
+          Etape la plus delicate
+        </h3>
+        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Quelle etape de l'entretien vous semble la plus delicate ?</p>
+      </div>
+      <div className="space-y-3">
+        <ChatCardMulti
+          selected={selected}
+          onToggle={handleToggle}
+          options={[
+            { id: 'preparation', label: 'La preparation', subtitle: 'Structurer mon entretien en amont', icon: <FileEdit className="w-5 h-5" /> },
+            { id: 'conduite', label: 'La conduite', subtitle: "Mener l'echange en face-a-face", icon: <MessageSquare className="w-5 h-5" /> },
+            { id: 'feedback', label: 'Le feedback', subtitle: 'Formuler un retour clair et constructif', icon: <MessageCircle className="w-5 h-5" /> },
+            { id: 'formalisation', label: 'La formalisation', subtitle: 'Rediger le compte-rendu et les engagements', icon: <ClipboardList className="w-5 h-5" /> },
+            { id: 'suivi', label: 'Le suivi', subtitle: "Assurer la continuite apres l'entretien", icon: <RefreshCw className="w-5 h-5" /> },
+          ]}
+        />
+        {selected.length > 0 && (
+          <Button data-testid="button-validate-difficultes" onClick={handleValidate} className="w-full">
+            Valider mes choix
+          </Button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export function Step7TypeCollab() {
+  const { setTypeCollab, nextStep, typeCollab } = useParcoursStore();
+
+  const handleSelect = (id: string) => {
+    setTypeCollab(id as any);
+    setTimeout(() => nextStep(), 400);
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="text-center">
+        <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>
+          Type de collaborateur
+        </h3>
+        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Avec quel type de collaborateur aurez-vous votre entretien ?</p>
+      </div>
+      <ChatCardSingle
+        selected={typeCollab}
+        onSelect={handleSelect}
+        options={[
+          { id: 'agent', label: 'Un agent / collaborateur direct', subtitle: 'Conseiller, gestionnaire, agent d\'accueil...', icon: <User className="w-5 h-5" /> },
+          { id: 'manager', label: 'Un manager', subtitle: 'Manager de proximite, intermediaire, responsable adjoint...', icon: <Users className="w-5 h-5" /> },
+          { id: 'pairs', label: 'Un pair', subtitle: 'Collegue de meme niveau hierarchique, homologue...', icon: <Building2 className="w-5 h-5" /> },
+        ]}
+      />
+    </div>
+  );
+}
+
+export function Step8Complement() {
+  const { setComplement, nextStep, complement } = useParcoursStore();
+  const [text, setText] = useState(complement || '');
+  const [files, setFiles] = useState<File[]>([]);
+  const [isDragOver, setIsDragOver] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleContinue = () => {
+    setComplement(text);
+    nextStep();
+  };
+
+  const handleSkip = () => {
+    nextStep();
+  };
+
+  const handleFiles = (newFiles: FileList | File[]) => {
+    const arr = Array.from(newFiles);
+    setFiles((prev) => [...prev, ...arr]);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
+    if (e.dataTransfer.files.length > 0) {
+      handleFiles(e.dataTransfer.files);
+    }
+  };
+
+  const removeFile = (index: number) => {
+    setFiles((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="text-center">
+        <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>
+          Informations complementaires
+        </h3>
+        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Avez-vous d'autres elements a preciser ? Vous pouvez joindre une fiche de poste, un descriptif d'activite, ou tout autre document.</p>
+      </div>
+      <div className="space-y-3">
+        <Textarea
+          data-testid="input-complement"
+          placeholder="Decrivez le contexte, la situation specifique..."
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          className="min-h-[100px] resize-none"
+        />
+
+        <div
+          data-testid="file-dropzone"
+          onDragOver={(e) => { e.preventDefault(); setIsDragOver(true); }}
+          onDragLeave={() => setIsDragOver(false)}
+          onDrop={handleDrop}
+          onClick={() => fileInputRef.current?.click()}
+          className={`border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors ${
+            isDragOver
+              ? 'border-[var(--dsfr-blue-france)] bg-[var(--dsfr-blue-france-light)]'
+              : 'border-[var(--dsfr-grey-850)] hover:border-[var(--dsfr-blue-france)] hover:bg-[var(--dsfr-blue-france-light)]'
+          }`}
+        >
+          <input
+            ref={fileInputRef}
+            type="file"
+            className="hidden"
+            multiple
+            accept=".pdf,.doc,.docx,.txt,.odt,.rtf,.xls,.xlsx,.csv,.png,.jpg,.jpeg"
+            onChange={(e) => { if (e.target.files) handleFiles(e.target.files); e.target.value = ''; }}
+          />
+          <Upload className="w-8 h-8 mx-auto mb-2" style={{ color: 'var(--dsfr-blue-france)' }} />
+          <p className="text-sm font-medium" style={{ color: 'var(--dsfr-blue-france)' }}>
+            Glissez vos fichiers ici ou cliquez pour parcourir
+          </p>
+          <p className="text-xs text-[var(--dsfr-grey-425)] mt-1">
+            PDF, Word, Excel, images (max 10 Mo)
+          </p>
+        </div>
+
+        {files.length > 0 && (
+          <div className="space-y-2">
+            {files.map((file, i) => (
+              <div
+                key={i}
+                data-testid={`file-item-${i}`}
+                className="flex items-center justify-between px-3 py-2 bg-[var(--dsfr-blue-france-light)] border border-[var(--dsfr-grey-925)] rounded"
+              >
+                <div className="flex items-center gap-2 min-w-0">
+                  <Upload className="w-4 h-4 flex-shrink-0" style={{ color: 'var(--dsfr-blue-france)' }} />
+                  <span className="text-sm truncate" style={{ color: 'var(--dsfr-blue-france)' }}>{file.name}</span>
+                  <span className="text-xs text-[var(--dsfr-grey-425)] flex-shrink-0">
+                    ({(file.size / 1024).toFixed(0)} Ko)
+                  </span>
+                </div>
+                <button
+                  data-testid={`remove-file-${i}`}
+                  onClick={(e) => { e.stopPropagation(); removeFile(i); }}
+                  className="text-[var(--dsfr-grey-425)] hover:text-[var(--dsfr-red-marianne)] text-lg leading-none px-1"
+                >
+                  x
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <div className="flex gap-2">
+          <Button data-testid="button-continue" onClick={handleContinue} className="flex-1">
+            Continuer
+          </Button>
+          <Button data-testid="button-skip-step8" variant="outline" onClick={handleSkip}>
+            Passer cette etape
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}

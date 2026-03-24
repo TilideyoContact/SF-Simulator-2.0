@@ -1,0 +1,892 @@
+# ChatFT SimuManager — Parcours Conversationnel Complet (v2)
+## Intégration Persona DISC × Double parcours Agent / Manager
+
+---
+
+## 🗺️ VUE D'ENSEMBLE DU FLUX
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  PHASE 1 — ACCUEIL & PROFILAGE                                  │
+│  Étape 1   Message de bienvenue + Choix du mode                  │
+│  Étape 2   Q1 — Profil managérial ⭐ (Avancé + Rapide)          │
+│  Étape 3   Q2 — Baromètre social (Avancé uniquement)            │
+│  Étape 4   Q3 — Expérience (Avancé uniquement)                  │
+│  Étape 5   Q4 — Objectifs ⭐ (Avancé + Rapide)                  │
+│  Étape 6   Q5 — Difficultés spécifiques (Avancé uniquement)     │
+│  Étape 7   Q6 — Profil du collaborateur ⭐ (Avancé + Rapide)    │
+│  Étape 8   Q7 — Complément / Upload (Avancé uniquement)         │
+├─────────────────────────────────────────────────────────────────┤
+│  PHASE 2 — SYNTHÈSE & CHOIX SCÉNARIO                            │
+│  Étape 9   Synthèse + Recommandation                             │
+│  Étape 10  Choix du scénario (3 cards)                           │
+├─────────────────────────────────────────────────────────────────┤
+│  PHASE 3 — PERSONA DISC (Configuration du collaborateur IA)      │
+│  Étape 11  Profil DISC (4 profils comportementaux)               │
+│  Étape 12  Qualité de la relation préexistante (3 niveaux)       │
+│  Étape 13  État d'esprit initial du collaborateur (4 états)      │
+│  Étape 14  Récap persona + Niveau de difficulté calculé          │
+├─────────────────────────────────────────────────────────────────┤
+│  PHASE 4 — PRÉ-SIMULATION                                       │
+│  Étape 15  Choix : Simulation directe / Conseils théoriques      │
+│  Étape 15b (si théorie) : Fiche méthode contextuelle             │
+│  Étape 15c Confirmation lancement simulation                     │
+├─────────────────────────────────────────────────────────────────┤
+│  PHASE 5 — SIMULATION (7-10 tours)                               │
+│  Étape 16  Mise en contexte + 1er message du collaborateur IA    │
+│  Étape 17  Tours de jeu de rôle (7-10 selon scénario/profil)    │
+│  Étape 18  Marqueur --- FIN DE LA SIMULATION ---                 │
+├─────────────────────────────────────────────────────────────────┤
+│  PHASE 6 — ANALYSE & FEEDBACK                                   │
+│  Étape 19  Analyse IA (3 axes : Clarté / Écoute / Assertivité)  │
+│  Étape 20  Feedback structuré (positif → progression → conseil)  │
+│  Étape 21  Ressources contextualisées (cards conditionnelles)    │
+├─────────────────────────────────────────────────────────────────┤
+│  PHASE 7 — FEEDBACK UTILISATEUR & RELANCE                       │
+│  Étape 22  NPS (0-10)                                            │
+│  Étape 23  Évaluations (facilité + pertinence, 1-5)             │
+│  Étape 24  Améliorations (multi-sélection)                       │
+│  Étape 25  Commentaire libre + Clôture / Relance                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 📋 ROUTING CONDITIONNEL PAR MODE
+
+| Étape | Question | Mode AVANCÉ | Mode RAPIDE |
+|-------|----------|:-----------:|:-----------:|
+| 1     | Accueil + choix mode | ✅ | ✅ |
+| 2     | Q1 — Profil managérial | ✅ | ✅ |
+| 3     | Q2 — Baromètre social | ✅ | ⏭️ skip |
+| 4     | Q3 — Expérience | ✅ | ⏭️ skip |
+| 5     | Q4 — Objectifs | ✅ | ✅ |
+| 6     | Q5 — Difficultés | ✅ | ⏭️ skip |
+| 7     | Q6 — Profil collaborateur | ✅ | ✅ |
+| 8     | Q7 — Complément / Upload | ✅ | ⏭️ skip |
+| 9     | Synthèse + Recommandation | ✅ | ✅ |
+| 10    | Choix scénario | ✅ | ✅ |
+| 11    | Persona DISC — Profil | ✅ | ⏭️ défaut : Stable |
+| 12    | Persona DISC — Relation | ✅ | ⏭️ défaut : Neutre |
+| 13    | Persona DISC — État d'esprit | ✅ | ⏭️ défaut : Neutre |
+| 14    | Récap persona | ✅ | ✅ (résumé court) |
+| 15    | Pré-simulation | ✅ | ✅ |
+| 16-18 | Simulation | ✅ | ✅ |
+| 19-21 | Analyse & Feedback | ✅ | ✅ |
+| 22-25 | Feedback utilisateur | ✅ | ✅ |
+
+**Mode rapide : 7 étapes profilage** (1, 2, 5, 7, 9, 10, 14→15) au lieu de 8.
+**Persona DISC mode rapide : pré-configuré** Stable + Neutre + Neutre = difficulté modérée, affiché en 1 message récap avec option "Personnaliser".
+
+---
+
+## ══════════════════════════════════════════════════════════════
+## PHASE 1 — ACCUEIL & PROFILAGE
+## ══════════════════════════════════════════════════════════════
+
+---
+
+### ÉTAPE 1 — Message de bienvenue et choix du mode
+
+**🤖 Message bot :**
+> « 👋 Bienvenue sur ChatFT **SimuManager** !
+>
+> Cet outil vous accompagne dans la préparation de vos moments clés dont vos entretiens managériaux. Il vous permet de vous entraîner en situation réelle et d'améliorer votre relation managériale avec vos équipes.
+>
+> ⚠️ *Cet outil est un entraînement, pas une évaluation. Vos résultats ne sont visibles que par vous.*
+>
+> Avant de commencer, souhaitez-vous que je personnalise votre parcours ou préférez-vous accéder directement aux scénarios ? »
+
+**Cards cliquables :** `ChatCardDSFR variant="single" orientation="horizontal"`
+
+| Card | Label | Sous-titre | Icône DSFR |
+|------|-------|-----------|------------|
+| 🔬 | **Mode avancé** — Personnaliser mon parcours | Questions détaillées pour un accompagnement sur-mesure | `fr-icon-microscope-line` |
+| ⚡ | **Mode rapide** — Accéder directement aux scénarii | 3 questions essentielles puis simulation | `fr-icon-flashlight-line` |
+
+**Action store :** `setMode('avance' | 'rapide')` → `nextStep()`
+
+---
+
+### ÉTAPE 2 — Q1 : Profil managérial ⭐ AVANCÉ + RAPIDE
+
+**🤖 Message bot :**
+> « Pour mieux adapter mes conseils, quel est votre niveau de responsabilité managériale ? »
+
+**Cards cliquables :** `ChatCardDSFR variant="single"`
+
+| Card | Label | Sous-titre | Icône DSFR |
+|------|-------|-----------|------------|
+| 👤 | **Manager de proximité** | J'anime une équipe opérationnelle au quotidien | `fr-icon-user-line` |
+| 👥 | **Manager intermédiaire** | Je pilote plusieurs équipes ou projets transverses | `fr-icon-team-line` |
+| 🏢 | **Manager supérieur** | Je dirige une direction ou un service | `fr-icon-building-line` |
+
+**Action store :** `setProfil(value)` → `nextStep()`
+
+---
+
+### ÉTAPE 3 — Q2 : Baromètre social (AVANCÉ uniquement)
+
+**🤖 Message bot :**
+> « Deux questions rapides sur votre contexte actuel pour mieux calibrer la simulation. »
+
+#### Q2a — Qualité de vie au travail
+
+> « Comment évaluez-vous la qualité de vie au travail de votre équipe actuellement ? »
+
+**Cards cliquables :** `ChatCardDSFR variant="single"`
+
+| Card | Label | Icône DSFR |
+|------|-------|------------|
+| 🟢 | **Bonne** — Ambiance positive, équipe engagée | `fr-icon-checkbox-circle-line` |
+| 🟡 | **Moyenne** — Quelques tensions mais rien de critique | `fr-icon-error-warning-line` |
+| 🔴 | **Difficile** — Tensions fortes, climat dégradé | `fr-icon-alert-line` |
+
+#### Q2b — Indice d'engagement
+
+> « Et l'engagement de vos collaborateurs au quotidien ? »
+
+**Cards cliquables :** `ChatCardDSFR variant="single"`
+
+| Card | Label | Icône DSFR |
+|------|-------|------------|
+| 🟢 | **Bon** — Équipe motivée et impliquée | `fr-icon-checkbox-circle-line` |
+| 🟡 | **Moyen** — Implication variable selon les individus | `fr-icon-error-warning-line` |
+| 🔴 | **Faible** — Démotivation, absentéisme, retrait | `fr-icon-alert-line` |
+
+**Action store :** `setBarometre({ qvt, engagement })` → `nextStep()`
+
+---
+
+### ÉTAPE 4 — Q3 : Expérience (AVANCÉ uniquement)
+
+**🤖 Message bot :**
+> « Depuis combien de temps exercez-vous des fonctions managériales ? »
+
+**Cards cliquables :** `ChatCardDSFR variant="single"`
+
+| Card | Label | Sous-titre | Icône DSFR |
+|------|-------|-----------|------------|
+| 🌱 | **Moins d'1 an** | Je débute dans la fonction | `fr-icon-seedling-line` |
+| 🌿 | **1 à 3 ans** | J'ai un peu d'expérience | `fr-icon-plant-line` |
+| 🌳 | **Plus de 3 ans** | Je suis expérimenté(e) | `fr-icon-award-line` |
+
+**Action store :** `setExperience(value)` → `nextStep()`
+
+---
+
+### ÉTAPE 5 — Q4 : Objectifs (multi-sélection) ⭐ AVANCÉ + RAPIDE
+
+**🤖 Message bot :**
+> « Qu'est-ce qui vous amène à utiliser cet outil aujourd'hui ? Vous pouvez sélectionner plusieurs réponses. »
+
+**Cards cliquables :** `ChatCardDSFR variant="multi"`
+
+| Card | Label | Sous-titre | Icône DSFR |
+|------|-------|-----------|------------|
+| 🎯 | **M'entraîner** | Pratiquer avant un entretien réel | `fr-icon-focus-3-line` |
+| 💪 | **Être plus confiant(e)** | Me rassurer sur mes pratiques | `fr-icon-shield-check-line` |
+| 🔍 | **Découvrir** | Explorer de nouvelles pratiques | `fr-icon-search-line` |
+| 📈 | **M'améliorer** | Identifier mes axes de progression | `fr-icon-line-chart-line` |
+
+**Action store :** `setObjectifs(selectedArray)` → `nextStep()`
+**Bouton de validation :** `Button DSFR priority="primary"` "Valider mes choix"
+
+---
+
+### ÉTAPE 6 — Q5 : Difficultés spécifiques (AVANCÉ uniquement)
+
+**🤖 Message bot :**
+> « Quelle étape de l'entretien vous semble la plus délicate ? »
+
+**Cards cliquables :** `ChatCardDSFR variant="single"`
+
+| Card | Label | Sous-titre | Icône DSFR |
+|------|-------|-----------|------------|
+| 📝 | **La préparation** | Structurer mon entretien en amont | `fr-icon-edit-line` |
+| 🗣️ | **La conduite** | Mener l'échange en face-à-face | `fr-icon-chat-3-line` |
+| 💬 | **Le feedback** | Formuler un retour clair et constructif | `fr-icon-feedback-line` |
+| 📋 | **La formalisation** | Rédiger le compte-rendu et les engagements | `fr-icon-clipboard-line` |
+| 🔄 | **Le suivi** | Assurer la continuité après l'entretien | `fr-icon-refresh-line` |
+
+**Action store :** `setDifficulte(value)` → `nextStep()`
+
+---
+
+### ÉTAPE 7 — Q6 : Profil du collaborateur ⭐ AVANCÉ + RAPIDE
+
+**🤖 Message bot :**
+> « Avec quel type de collaborateur aurez-vous votre entretien ? »
+
+**Cards cliquables :** `ChatCardDSFR variant="single"`
+
+| Card | Label | Sous-titre | Icône DSFR |
+|------|-------|-----------|------------|
+| 👤 | **Un agent / collaborateur direct** | Conseiller, gestionnaire, agent d'accueil... | `fr-icon-user-line` |
+| 👥 | **Un manager** | Manager de proximité, intermédiaire, responsable adjoint... | `fr-icon-team-line` |
+
+**Action store :** `setTypeCollab('agent' | 'manager')` → `nextStep()`
+
+> **⚡ Impact clé :** Ce choix détermine le **parcours de simulation** (vocabulaire, résistance, argumentaire, longueur du jeu de rôle). Voir la grille d'analyse double parcours.
+
+---
+
+### ÉTAPE 8 — Q7 : Complément / Upload (AVANCÉ uniquement)
+
+**🤖 Message bot :**
+> « Avez-vous d'autres éléments à préciser afin de vous apporter une réponse la plus précise possible ? Vous pouvez joindre une fiche de poste, un descriptif d'activité, un compte-rendu de suivi d'activité ou tout autre document complémentaire. »
+
+**Composants DSFR :**
+- `Input textArea` — zone de texte libre (optionnel)
+- `Upload` — joindre un document (optionnel)
+- `Button priority="primary"` — "Continuer" (avec ou sans contenu)
+- `Button priority="tertiary"` — "Passer cette étape"
+
+**Action store :** `setComplement({ texte, fichier })` → `nextStep()`
+
+---
+
+## ══════════════════════════════════════════════════════════════
+## PHASE 2 — SYNTHÈSE & CHOIX SCÉNARIO
+## ══════════════════════════════════════════════════════════════
+
+---
+
+### ÉTAPE 9 — Synthèse et recommandation
+
+**🤖 Message bot :** (contenu dynamique construit à partir du store)
+
+> « Merci pour ces précisions ! Voici ce que j'ai compris :
+>
+> 📋 **Votre profil :**
+> - Vous êtes **[Manager de proximité / intermédiaire / supérieur]** avec **[X années]** d'expérience
+> - La qualité de vie de votre équipe est **[bonne/moyenne/difficile]** avec un engagement **[bon/moyen/faible]**
+> - Vous souhaitez particulièrement **[objectifs sélectionnés]**
+> - L'étape qui vous semble la plus délicate est **[étape sélectionnée]**
+>
+> 👤 **Votre entretien :**
+> - Vous allez vous entraîner avec **[un agent / un manager]**
+>
+> Sur cette base, je vous recommande de commencer par le scénario suivant : »
+
+**Composant DSFR :** `Callout` avec résumé structuré
+
+**Logique de recommandation :** `getRecommandation(store)` → retourne le scénario le plus pertinent
+
+```typescript
+function getRecommandation(state: ParcoursState): string {
+  // Priorité 1 : difficulté "feedback" ou "conduite" → feedback_recadrage
+  if (state.difficulte === 'feedback' || state.difficulte === 'conduite')
+    return 'feedback_recadrage';
+  // Priorité 2 : QVT difficile ou engagement faible → decision_difficile
+  if (state.barometre?.qvt === 'difficile' || state.barometre?.engagement === 'faible')
+    return 'decision_difficile';
+  // Priorité 3 : objectif "confiant" ou expérience débutant → feedback_positif
+  if (state.objectifs?.includes('confiant') || state.experience === 'debutant')
+    return 'feedback_positif';
+  // Défaut
+  return 'feedback_recadrage';
+}
+```
+
+---
+
+### ÉTAPE 10 — Choix du scénario
+
+**Cards cliquables :** `ChatCardDSFR variant="scenario"`
+
+| Card | Titre | Description | Badge | Icône DSFR |
+|------|-------|-------------|-------|------------|
+| 🗣️ | **Faire un feedback ou un recadrage** | Gérer une situation difficile tout en préservant la relation professionnelle | ★ RECOMMANDÉ (dynamique) | `fr-icon-chat-3-line` |
+| 👏 | **Donner un feedback positif et structurant** | Valoriser efficacement pour encourager et développer les compétences | | `fr-icon-award-line` |
+| ⚡ | **Annoncer une décision difficile** | Communiquer une décision contrainte et gérer les réactions | | `fr-icon-flashlight-line` |
+
+**Le badge ★ RECOMMANDÉ** s'affiche dynamiquement sur le scénario retourné par `getRecommandation()`.
+**Composant :** `Badge DSFR severity="new"` + bordure gauche bleue 4px.
+
+**Action store :** `setScenario(value)` → `nextStep()`
+
+---
+
+## ══════════════════════════════════════════════════════════════
+## PHASE 3 — PERSONA DISC (Configuration du collaborateur IA)
+## ══════════════════════════════════════════════════════════════
+
+> Source : Volet Miro « Persona DISC » — 3 dimensions qui façonnent le comportement de l'IA pendant la simulation.
+
+---
+
+### ÉTAPE 11 — Profil DISC du collaborateur
+
+**🤖 Message bot :**
+> « Très bien ! Pour le scénario **"[titre scénario]"**, configurons maintenant le profil de votre collaborateur.
+>
+> Chaque personnalité réagira différemment à votre approche. Quel type de profil souhaitez-vous ? »
+
+**Cards cliquables :** `ChatCardDSFR variant="single"`
+
+| Card | Label | Sous-titre (comportement en entretien) | Icône DSFR | Couleur indicative |
+|------|-------|----------------------------------------|------------|-------------------|
+| 🔴 | **Dominant** | Direct, orienté résultats, impatient. Challenge, veut des solutions rapides. | `fr-icon-arrow-up-circle-line` | Rouge |
+| 🟡 | **Influent** | Expressif, enthousiaste, dispersé. Parle beaucoup, réagit émotionnellement. | `fr-icon-sun-line` | Jaune |
+| 🟢 | **Stable** | Patient, loyal, résistant au changement. Écoute mais intériorise, passif. | `fr-icon-shield-line` | Vert |
+| 🔵 | **Consciencieux** | Méthodique, précis, exigeant. Demande des preuves, analyse tout. | `fr-icon-file-search-line` | Bleu |
+
+**Action store :** `setPersonaDisc(value)` → `nextStep()`
+
+> **Mode rapide :** Skip avec défaut `stable`, affiché dans le récap étape 14.
+
+---
+
+### ÉTAPE 12 — Qualité de la relation préexistante
+
+**🤖 Message bot :**
+> « Quelle est votre relation actuelle avec ce collaborateur ? Cela influencera sa réceptivité dès le début de l'entretien. »
+
+**Cards cliquables :** `ChatCardDSFR variant="single"`
+
+| Card | Label | Sous-titre (impact sur l'IA) | Icône DSFR |
+|------|-------|-------------------------------|------------|
+| 🟢 | **Bonne relation** | Confiance mutuelle installée — collaborateur plus ouvert dès le départ | `fr-icon-heart-line` |
+| 🟡 | **Relation neutre** | Professionnelle, sans historique fort — réactivité standard | `fr-icon-subtract-line` |
+| 🟠 | **Relation tendue** | Conflits passés ou méfiance — collaborateur sur la défensive | `fr-icon-alert-line` |
+
+**Action store :** `setPersonaRelation(value)` → `nextStep()`
+
+> **Mode rapide :** Skip avec défaut `neutre`.
+
+---
+
+### ÉTAPE 13 — État d'esprit initial du collaborateur
+
+**🤖 Message bot :**
+> « Enfin, dans quel état d'esprit souhaitez-vous que votre collaborateur se trouve au début de l'entretien ? »
+
+**Cards cliquables :** `ChatCardDSFR variant="single"`
+
+| Card | Label | Sous-titre (impact sur l'IA) | Icône DSFR |
+|------|-------|-------------------------------|------------|
+| 😊 | **Positif / Ouvert** | Bonne journée, disponible — écoute active dès le départ | `fr-icon-emotion-happy-line` |
+| 😐 | **Neutre / Concentré** | État normal, professionnel — comportement calibré DISC | `fr-icon-emotion-normal-line` |
+| 😟 | **Stressé / Préoccupé** | Charge de travail, problèmes — distrait, seuil de tolérance bas | `fr-icon-emotion-unhappy-line` |
+| 😤 | **Agacé / Sur la défensive** | Mauvaise journée, tensions — résistance immédiate | `fr-icon-emotion-sad-line` |
+
+**Action store :** `setPersonaEtatEsprit(value)` → `nextStep()`
+
+> **Mode rapide :** Skip avec défaut `neutre`.
+
+---
+
+### ÉTAPE 14 — Récap persona + Niveau de difficulté
+
+**🤖 Message bot :**
+> « Parfait ! Voici le profil de votre collaborateur pour cette simulation :
+>
+> 🎭 **Persona configuré :**
+> - **Profil DISC :** [Dominant / Influent / Stable / Consciencieux]
+> - **Relation préexistante :** [Bonne / Neutre / Tendue]
+> - **État d'esprit initial :** [Positif / Neutre / Stressé / Agacé]
+> - **Type :** [Agent / Manager]
+>
+> 📊 **Niveau de difficulté estimé : [⭐ / ⭐⭐ / ⭐⭐⭐ / ⭐⭐⭐⭐]**
+> *[Facile / Modéré / Difficile / Expert]*
+>
+> Ce collaborateur sera [description comportementale 1-2 phrases]. »
+
+**Composant DSFR :** `Callout` avec résumé + `Badge` difficulté
+
+**Logique de calcul du niveau de difficulté :**
+
+```typescript
+function calculateDifficulty(persona: PersonaState): DifficultyLevel {
+  let score = 0;
+
+  // Profil DISC
+  const discScores = { stable: 0, influent: 1, consciencieux: 2, dominant: 3 };
+  score += discScores[persona.disc];
+
+  // Relation
+  const relationScores = { bonne: 0, neutre: 1, tendue: 3 };
+  score += relationScores[persona.relation];
+
+  // État d'esprit
+  const etatScores = { positif: 0, neutre: 1, stresse: 2, agace: 3 };
+  score += etatScores[persona.etatEsprit];
+
+  // Type collaborateur (manager = +1 difficulté)
+  if (persona.typeCollab === 'manager') score += 1;
+
+  // Mapping score → niveau
+  if (score <= 2) return 'facile';      // ⭐
+  if (score <= 5) return 'modere';      // ⭐⭐
+  if (score <= 8) return 'difficile';   // ⭐⭐⭐
+  return 'expert';                       // ⭐⭐⭐⭐
+}
+```
+
+**Matrice de référence (exemples) :**
+
+| Combinaison | Score | Difficulté |
+|-------------|-------|-----------|
+| Stable + Bonne + Positif + Agent | 0 | ⭐ Facile |
+| Influent + Neutre + Neutre + Agent | 3 | ⭐⭐ Modéré |
+| Consciencieux + Tendue + Stressé + Agent | 7 | ⭐⭐⭐ Difficile |
+| Dominant + Tendue + Agacé + Manager | 10 | ⭐⭐⭐⭐ Expert |
+
+**Descriptions comportementales automatiques (exemples) :**
+
+| DISC | Relation | État | Description |
+|------|----------|------|-------------|
+| Stable | Bonne | Positif | « un collaborateur coopératif et à l'écoute, qui cherchera des solutions avec vous » |
+| Dominant | Tendue | Agacé | « un collaborateur direct et impatient, qui challengera vos arguments et demandera des actions concrètes rapidement » |
+| Consciencieux | Neutre | Stressé | « un collaborateur méthodique mais sous pression, qui demandera des preuves factuelles avant d'adhérer » |
+| Influent | Tendue | Neutre | « un collaborateur expressif mais méfiant, qui pourra digresser ou réagir émotionnellement » |
+
+---
+
+## ══════════════════════════════════════════════════════════════
+## PHASE 4 — PRÉ-SIMULATION
+## ══════════════════════════════════════════════════════════════
+
+---
+
+### ÉTAPE 15 — Choix pré-simulation
+
+**🤖 Message bot :**
+> « Vous êtes presque prêt(e) ! Pour le scénario **"[titre scénario]"** avec un collaborateur **[description courte persona]**, que préférez-vous ? »
+
+**Cards cliquables :** `ChatCardDSFR variant="single"`
+
+| Card | Label | Sous-titre | Icône DSFR |
+|------|-------|-----------|------------|
+| 🎭 | **Passer à la simulation** | Je veux m'entraîner directement | `fr-icon-play-circle-line` |
+| 📖 | **D'abord des conseils théoriques** | Revoir les méthodes avant de pratiquer | `fr-icon-book-open-line` |
+
+**Action store :** `setChoixPreSimulation(value)` → branchement conditionnel
+
+---
+
+### ÉTAPE 15b — Conseils théoriques (si choix "📖 théorie")
+
+**🤖 Message bot :** (contenu contextuel selon scénario)
+
+> **Si scénario = feedback_recadrage :**
+> « Voici les méthodes clés pour ce type d'entretien :
+>
+> 📘 **Méthode DESC** (traiter les erreurs) :
+> **D**écrire les faits → **E**xprimer ses sentiments (dire JE) → **S**olution (faire suggérer) → **C**onclure positivement
+>
+> 📘 **Méthode DEPAR** (recadrer un comportement) :
+> **D**écrire → **E**xprimer → **P**ositionner la règle → **A**ffirmer son exigence → **R**enouveler l'engagement
+>
+> 💡 **Points clés :**
+> - Toujours s'appuyer sur des faits datés et précis
+> - Utiliser le JE (« Je constate… ») et non le TU accusateur
+> - Vérifier l'adhésion (« Sommes-nous d'accord ? »)
+> - Conclure sur une projection positive »
+
+> **Si scénario = feedback_positif :**
+> Structure MERCI + Feedback constructif
+
+> **Si scénario = decision_difficile :**
+> Assertivité + OK+/OK+ + Écouter puis JE
+
+**Composant DSFR :** `Accordion` avec sections pliables pour chaque méthode
+
+**Après lecture :**
+
+**🤖 Message bot :**
+> « Vous sentez-vous prêt(e) à passer à la simulation ? »
+
+**Cards :** `ChatCardDSFR variant="single"`
+- 🎭 **Lancer la simulation**
+- 🔄 **Relire les conseils**
+
+---
+
+### ÉTAPE 15c — Confirmation de lancement
+
+**🤖 Message bot :**
+> « 🎬 La simulation va commencer !
+>
+> **Rappel du contexte :**
+> - Scénario : **[titre]**
+> - Collaborateur : **[Prénom fictif]**, [type agent/manager], profil **[DISC]**
+> - Relation : **[bonne/neutre/tendue]** — État d'esprit : **[positif/neutre/stressé/agacé]**
+> - Difficulté : **[⭐⭐⭐]**
+>
+> **Vous jouez le rôle du manager. L'IA joue le rôle du collaborateur.**
+>
+> Écrivez votre première intervention comme si vous commenciez l'entretien. L'échange durera environ **[7-10]** tours.
+>
+> *À tout moment, tapez « /fin » pour terminer la simulation.* »
+
+---
+
+## ══════════════════════════════════════════════════════════════
+## PHASE 5 — SIMULATION (7-10 tours)
+## ══════════════════════════════════════════════════════════════
+
+---
+
+### ÉTAPE 16 — Mise en contexte + 1er message collaborateur IA
+
+**Injection dans le prompt système :**
+
+```
+CONTEXTE SIMULATION :
+- Scénario : [feedback_recadrage | feedback_positif | decision_difficile]
+- Type collaborateur : [agent | manager]
+- Profil DISC : [dominant | influent | stable | consciencieux]
+- Relation préexistante : [bonne | neutre | tendue]
+- État d'esprit initial : [positif | neutre | stresse | agace]
+- Niveau de difficulté : [facile | modere | difficile | expert]
+- Profil du manager (user) : [MP | MI | MS], expérience [X]
+- Baromètre social : QVT [bonne|moyenne|difficile], engagement [bon|moyen|faible]
+
+COMPORTEMENT IA SELON DISC :
+[Dominant] → Réponses courtes et directes. Challenge. "Venez-en au fait."
+[Influent] → Réponses longues, digressives. Réactions émotionnelles visibles.
+[Stable] → Réponses mesurées, acceptation lente. Intériorise. Résistance passive.
+[Consciencieux] → Demande des détails, des dates, des preuves. Analyse tout.
+
+MODULATION PAR RELATION :
+[Bonne] → Ouverture +2 tours, seuil de tolérance élevé.
+[Neutre] → Comportement standard.
+[Tendue] → Méfiance initiale, interprétation négative, résistance +2 tours.
+
+MODULATION PAR ÉTAT D'ESPRIT :
+[Positif] → Écoute active immédiate.
+[Neutre] → Standard.
+[Stressé] → Distrait, impatient, seuil bas.
+[Agacé] → Résistance d'entrée, ton sec, fermeture rapide.
+
+MODULATION PAR TYPE COLLABORATEUR :
+[Agent] → Vocabulaire terrain, réactions émotionnelles directes, résistance émotionnelle.
+[Manager] → Vocabulaire stratégique, contre-argumentation structurée, résistance intellectuelle.
+```
+
+**🤖 1er message du collaborateur IA (contextuel) :**
+
+Exemple scénario feedback_recadrage + Agent + Stable + Neutre + Neutre :
+> « *[L'agent entre dans le bureau et s'assoit calmement.]*
+>
+> Bonjour. Vous m'avez demandé de passer vous voir, j'espère que ce ne sera pas trop long, j'ai beaucoup de dossiers en attente. Je vous écoute. »
+
+Exemple feedback_recadrage + Manager + Dominant + Tendue + Agacé :
+> « *[Le manager entre, pose ses documents sur la table sans s'asseoir.]*
+>
+> Bon, vous vouliez me voir. Je vous préviens, j'ai un comité dans 30 minutes. De quoi s'agit-il ? »
+
+---
+
+### ÉTAPE 17 — Tours de jeu de rôle
+
+**Nombre de tours selon scénario × type collaborateur :**
+
+| Scénario | Agent | Manager |
+|----------|:-----:|:-------:|
+| Feedback / Recadrage | 7 tours | 8-9 tours |
+| Feedback positif | 5-6 tours | 6-7 tours |
+| Décision difficile | 7-8 tours | 9-10 tours |
+
+**Chaque tour :**
+1. Le manager (user) écrit son message
+2. L'IA analyse (DISC + relation + état + scénario) et répond en personnage
+3. L'IA ajuste son état interne : ouverture ↑ si bonne posture manager, fermeture ↑ si mauvaise posture
+
+**Indicateurs internes IA (non visibles user) :**
+- `ouverture` : 0-10 (évolue tour par tour)
+- `positionDeVie` : OK+/OK+ → OK-/OK+ → OK-/OK- (évolution dynamique)
+- `tournantDetecte` : boolean (moment clé où l'entretien bascule)
+
+---
+
+### ÉTAPE 18 — Fin de simulation
+
+**🤖 Message bot :**
+> « --- FIN DE LA SIMULATION ---
+>
+> 👏 Bravo d'avoir mené cet entretien jusqu'au bout !
+>
+> Je vais maintenant analyser notre échange. Un instant... »
+
+**Animation :** indicateur de chargement (typing dots) pendant 2-3 secondes
+
+---
+
+## ══════════════════════════════════════════════════════════════
+## PHASE 6 — ANALYSE & FEEDBACK
+## ══════════════════════════════════════════════════════════════
+
+---
+
+### ÉTAPE 19 — Scores et analyse
+
+**🤖 Message bot :**
+> « 📊 **Résultats de votre simulation :**
+>
+> | Axe | Score | Appréciation |
+> |-----|-------|-------------|
+> | 🔵 Clarté du discours | **[X]/5** | [Étiquette] |
+> | 🟢 Qualité d'écoute | **[X]/5** | [Étiquette] |
+> | 🟣 Assertivité | **[X]/5** | [Étiquette] |
+> | ⚪ **Score global** | **[X.X]/5** | [Étiquette] |
+>
+> *Rappel : cet outil est un entraînement, pas une évaluation. Ce score est un repère personnel pour votre progression.* »
+
+**Étiquettes :** 1=Confus | 2=Insuffisant | 3=En progression | 4=Efficace | 5=Exemplaire
+
+---
+
+### ÉTAPE 20 — Feedback structuré
+
+**🤖 Message bot :**
+> « **✅ Ce que vous avez bien fait :**
+> [2-3 points forts avec exemples extraits du texte du manager]
+>
+> **📈 Axes de progression :**
+> [1-2 suggestions actionnables maximum]
+>
+> **💡 Conseil clé :**
+> [1 phrase mémorisable, contextualisée au scénario] »
+
+**Structure : MERCI inversé (on pratique ce qu'on enseigne)**
+- Toujours commencer par le positif
+- 1-2 axes de progression maximum
+- Suggestion concrète actionnable
+
+---
+
+### ÉTAPE 21 — Ressources contextualisées
+
+**🤖 Message bot :**
+> « Voici des ressources pour aller plus loin : »
+
+**Cards cliquables :** `ChatCardDSFR variant="scenario"` (logique conditionnelle)
+
+**Logique de recommandation :**
+
+| Condition | Ressource proposée |
+|-----------|-------------------|
+| Clarté ≤ 3 | 📘 Fiche DESC + DEPAR (Smartpocket Cegos) |
+| Écoute ≤ 3 | 📘 Tuto écoute active + reformulation |
+| Assertivité ≤ 3 | 📘 Fiche OK+/OK+ (positions de vie) + règle du JE |
+| Global ≥ 4 | 🏆 Scénario plus complexe + Co-développement |
+| Toujours | 🔄 Rejouer ce scénario (comparaison progression) |
+
+**Card "Rejouer" :**
+> 🔄 **Rejouer ce scénario** — Comparer votre progression
+> *« Voulez-vous réessayer avec le même persona ou en changer ? »*
+
+---
+
+## ══════════════════════════════════════════════════════════════
+## PHASE 7 — FEEDBACK UTILISATEUR & RELANCE
+## ══════════════════════════════════════════════════════════════
+
+---
+
+### ÉTAPE 22 — NPS (0-10)
+
+**🤖 Message bot :**
+> « 🙏 Avant de terminer, vos retours sont précieux pour améliorer l'outil !
+>
+> Sur une échelle de 0 à 10, quelle est la probabilité que vous recommandiez ChatFT SimuManager à un collègue manager ? »
+
+**Composant :** `ChatCardDSFR variant="nps"`
+- 11 boutons (0-10)
+- Couleurs : 🔴 0-6 détracteurs | 🟡 7-8 passifs | 🟢 9-10 promoteurs
+- Labels : "Pas du tout probable" ← → "Très probable"
+
+---
+
+### ÉTAPE 23 — Évaluations (1-5)
+
+**🤖 Message bot :**
+> « Comment évaluez-vous... »
+
+#### 23a — Facilité d'utilisation
+> « ... la facilité d'utilisation de l'outil ? »
+
+**Composant :** `ChatCardDSFR variant="rating"` labels: 1="Très difficile" → 5="Très facile"
+
+#### 23b — Pertinence des questions
+> « ... la pertinence du parcours de profilage ? »
+
+**Composant :** `ChatCardDSFR variant="rating"` labels: 1="Pas pertinent" → 5="Très pertinent"
+
+#### 23c — Réalisme de la simulation
+> « ... le réalisme de la simulation ? »
+
+**Composant :** `ChatCardDSFR variant="rating"` labels: 1="Pas réaliste" → 5="Très réaliste"
+
+---
+
+### ÉTAPE 24 — Améliorations (multi-sélection)
+
+**🤖 Message bot :**
+> « Qu'est-ce qui pourrait être amélioré ? »
+
+**Composant :** `ChatCardDSFR variant="multi" exclusiveOptionId="rien"`
+
+| Option | Label |
+|--------|-------|
+| 🎨 | Le design et l'ergonomie |
+| 📝 | La clarté des questions de profilage |
+| 🔢 | Le nombre d'étapes avant la simulation |
+| 🎭 | Le réalisme du collaborateur simulé |
+| 📊 | La qualité du feedback post-simulation |
+| 📱 | L'adaptation mobile |
+| ✅ | **Rien, c'est très bien comme ça !** (exclusif) |
+
+---
+
+### ÉTAPE 25 — Commentaire libre + Clôture
+
+**🤖 Message bot :**
+> « Un dernier mot ? Commentaire, suggestion, remarque libre... »
+
+**Composant DSFR :** `Input textArea` + `Button priority="primary"` "Envoyer" + `Button priority="tertiary"` "Passer"
+
+**🤖 Message de clôture :**
+> « Merci beaucoup pour votre participation et vos retours ! 🎉
+>
+> **Récapitulatif de votre session :**
+> - Scénario joué : [titre]
+> - Collaborateur : [type] profil [DISC], difficulté [⭐⭐⭐]
+> - Score global : [X.X]/5
+>
+> À bientôt sur ChatFT SimuManager ! »
+
+**Cards de relance :**
+| Card | Action |
+|------|--------|
+| 🔄 **Rejouer ce scénario** | Reprendre avec comparaison de progression |
+| 🎭 **Essayer un autre scénario** | Retour à l'étape 10 (choix scénario) |
+| 🔧 **Changer le persona** | Retour à l'étape 11 (DISC) avec même scénario |
+| 🏠 **Retour à l'accueil** | Reset complet |
+
+---
+
+## ══════════════════════════════════════════════════════════════
+## 📐 STORE ZUSTAND — STRUCTURE MISE À JOUR
+## ══════════════════════════════════════════════════════════════
+
+```typescript
+interface ParcoursState {
+  // Phase 1 — Accueil & Profilage
+  currentStep: number; // 1-25
+  mode: 'avance' | 'rapide' | null;
+  profil: 'mp' | 'mi' | 'ms' | null;
+  barometre: {
+    qvt: 'bonne' | 'moyenne' | 'difficile' | null;
+    engagement: 'bon' | 'moyen' | 'faible' | null;
+  } | null;
+  experience: 'debutant' | 'intermediaire' | 'experimente' | null;
+  objectifs: string[];
+  difficulte: 'preparation' | 'conduite' | 'feedback' | 'formalisation' | 'suivi' | null;
+  typeCollab: 'agent' | 'manager' | null;
+  complement: { texte: string; fichier: File | null } | null;
+
+  // Phase 2 — Scénario
+  scenarioRecommande: string;
+  scenarioChoisi: 'feedback_recadrage' | 'feedback_positif' | 'decision_difficile' | null;
+
+  // Phase 3 — Persona DISC
+  persona: {
+    disc: 'dominant' | 'influent' | 'stable' | 'consciencieux' | null;
+    relation: 'bonne' | 'neutre' | 'tendue' | null;
+    etatEsprit: 'positif' | 'neutre' | 'stresse' | 'agace' | null;
+    niveauDifficulte: 'facile' | 'modere' | 'difficile' | 'expert';
+    prenomFictif: string; // généré automatiquement
+  };
+
+  // Phase 4 — Pré-simulation
+  choixPreSimulation: 'simulation' | 'theorie' | null;
+
+  // Phase 5 — Simulation
+  simulation: {
+    tourActuel: number;
+    tourMax: number;
+    messages: Array<{ role: 'manager' | 'collaborateur'; content: string; timestamp: Date }>;
+    etatInterneIA: {
+      ouverture: number; // 0-10
+      positionDeVie: 'ok+ok+' | 'ok-ok+' | 'ok+ok-' | 'ok-ok-';
+      tournantDetecte: boolean;
+    };
+  };
+
+  // Phase 6 — Analyse
+  analyse: {
+    clarte: number; // 1-5
+    ecoute: number;
+    assertivite: number;
+    global: number;
+    pointsForts: string[];
+    axesProgression: string[];
+    conseilCle: string;
+  } | null;
+
+  // Phase 7 — Feedback utilisateur
+  feedbackParcours: {
+    nps: number | null; // 0-10
+    facilite: number | null; // 1-5
+    pertinence: number | null;
+    realisme: number | null;
+    ameliorations: string[];
+    commentaire: string;
+  };
+
+  // Sessions précédentes (comparaison)
+  historiqueSession: Array<{
+    date: Date;
+    scenario: string;
+    persona: PersonaState;
+    scores: { clarte: number; ecoute: number; assertivite: number; global: number };
+  }>;
+
+  // Actions
+  nextStep: () => void;
+  previousStep: () => void;
+  setAnswer: (key: string, value: any) => void;
+  resetParcours: () => void;
+  resetToScenario: () => void; // retour étape 10
+  resetToPersona: () => void; // retour étape 11
+}
+```
+
+---
+
+## ══════════════════════════════════════════════════════════════
+## 🔗 MAPPING COMPOSANTS DSFR PAR ÉTAPE
+## ══════════════════════════════════════════════════════════════
+
+| Étape | Composant ChatCardDSFR | Variant | Options |
+|-------|----------------------|---------|---------|
+| 1 | Choix mode | `single` orientation="horizontal" | 2 |
+| 2 | Q1 Profil | `single` | 3 |
+| 3a | Q2a QVT | `single` | 3 |
+| 3b | Q2b Engagement | `single` | 3 |
+| 4 | Q3 Expérience | `single` | 3 |
+| 5 | Q4 Objectifs | `multi` | 4 |
+| 6 | Q5 Difficultés | `single` | 5 |
+| 7 | Q6 Type collab | `single` | 2 |
+| 8 | Q7 Complément | `Input textArea` + `Upload` DSFR | — |
+| 9 | Synthèse | `Callout` DSFR | — |
+| 10 | Choix scénario | `scenario` | 3 + badge |
+| 11 | DISC Profil | `single` | 4 |
+| 12 | DISC Relation | `single` | 3 |
+| 13 | DISC État esprit | `single` | 4 |
+| 14 | Récap persona | `Callout` + `Badge` DSFR | — |
+| 15 | Pré-simulation | `single` | 2 |
+| 22 | NPS | `nps` | 11 boutons |
+| 23 | Évaluations | `rating` × 3 | 1-5 |
+| 24 | Améliorations | `multi` exclusiveOptionId | 7 |
+| 25 | Commentaire | `Input textArea` DSFR | — |
+
+---
+
+*Document v2 — ChatFT SimuManager — Parcours conversationnel complet*
+*Intégration : Double parcours Agent/Manager + Persona DISC + Simulation + Feedback*
+*© LABNOO TECHNOLOGIES 2025 — Confidentiel — Usage interne France Travail*
