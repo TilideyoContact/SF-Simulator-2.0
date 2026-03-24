@@ -30,6 +30,8 @@ const simulationStartSchema = z.object({
   profil: z.string().optional().nullable(),
   experience: z.string().optional().nullable(),
   barometre: z.any().optional().nullable(),
+  objectifs: z.union([z.string(), z.array(z.string())]).optional().nullable(),
+  complement: z.string().optional().nullable(),
 });
 
 const simulationRespondSchema = z.object({
@@ -44,11 +46,18 @@ const simulationRespondSchema = z.object({
   typeCollab: z.string().optional(),
   prenomFictif: z.string().optional(),
   messages: z.array(z.object({ role: z.string(), content: z.string() })).optional(),
+  profil: z.string().optional().nullable(),
+  objectifs: z.union([z.string(), z.array(z.string())]).optional().nullable(),
+  complement: z.string().optional().nullable(),
+  mode: z.string().optional().nullable(),
 });
 
 const analyzeSchema = z.object({
   sessionId: z.string().optional().nullable(),
   messages: z.array(z.object({ role: z.string(), content: z.string() })).optional(),
+  scenario: z.string().optional().nullable(),
+  typeCollab: z.string().optional().nullable(),
+  profil: z.string().optional().nullable(),
 });
 
 export async function registerRoutes(
@@ -66,7 +75,7 @@ export async function registerRoutes(
       if (!parsed.success) {
         return res.status(400).json({ error: 'Invalid request body', details: parsed.error.issues });
       }
-      const { scenario, typeCollab, disc, relation, etatEsprit, niveauDifficulte, prenomFictif, profil, experience, barometre } = parsed.data;
+      const { scenario, typeCollab, disc, relation, etatEsprit, niveauDifficulte, prenomFictif, profil, experience, barometre, objectifs, complement } = parsed.data;
 
       const session = await storage.createSession({
         mode: req.body.mode || 'avance',
@@ -84,6 +93,8 @@ export async function registerRoutes(
 
       const relationStr = relation != null ? String(relation) : 'neutre';
 
+      const objectifsStr = Array.isArray(objectifs) ? objectifs.join(', ') : objectifs || null;
+
       let message: string;
       try {
         message = await generateFirstMessageAI(
@@ -92,7 +103,11 @@ export async function registerRoutes(
           relationStr,
           etatEsprit || 'neutre',
           typeCollab || 'agent',
-          prenomFictif || 'Thomas'
+          prenomFictif || 'Thomas',
+          profil,
+          objectifsStr,
+          complement,
+          req.body.mode || 'avance'
         );
       } catch (err) {
         console.error('OpenAI first message error, using fallback:', err);
@@ -116,9 +131,10 @@ export async function registerRoutes(
       if (!parsed.success) {
         return res.status(400).json({ error: 'Invalid request body', details: parsed.error.issues });
       }
-      const { sessionId, message, tourActuel, tourMax, scenario, disc, relation, etatEsprit, typeCollab, prenomFictif, messages } = parsed.data;
+      const { sessionId, message, tourActuel, tourMax, scenario, disc, relation, etatEsprit, typeCollab, prenomFictif, messages, profil, objectifs, complement, mode } = parsed.data;
 
       const relationStr = relation != null ? String(relation) : 'neutre';
+      const objectifsStr = Array.isArray(objectifs) ? objectifs.join(', ') : objectifs || null;
 
       let response: { message: string; isFinished: boolean };
       try {
@@ -131,7 +147,11 @@ export async function registerRoutes(
           prenomFictif || 'Thomas',
           tourActuel || 0,
           tourMax || 7,
-          messages || []
+          messages || [],
+          profil,
+          objectifsStr,
+          complement,
+          mode
         );
       } catch (err) {
         console.error('OpenAI respond error, using fallback:', err);
@@ -160,11 +180,11 @@ export async function registerRoutes(
       if (!parsed.success) {
         return res.status(400).json({ error: 'Invalid request body', details: parsed.error.issues });
       }
-      const { sessionId, messages } = parsed.data;
+      const { sessionId, messages, scenario, typeCollab, profil } = parsed.data;
 
       let analysis;
       try {
-        analysis = await generateAnalysisAI(messages || []);
+        analysis = await generateAnalysisAI(messages || [], scenario, typeCollab, profil);
       } catch (err) {
         console.error('OpenAI analysis error, using fallback:', err);
         analysis = generateFallbackAnalysis(messages || []);
@@ -216,7 +236,7 @@ export async function registerRoutes(
 
   app.post('/api/speech/synthesize', async (req, res) => {
     try {
-      const { text } = req.body;
+      const { text, disc } = req.body;
       if (!text || typeof text !== 'string') {
         return res.status(400).json({ error: 'No text provided' });
       }
@@ -224,7 +244,7 @@ export async function registerRoutes(
         return res.status(400).json({ error: 'Text too long' });
       }
 
-      const audioBuffer = await synthesizeSpeech(text);
+      const audioBuffer = await synthesizeSpeech(text, disc);
       res.set({
         'Content-Type': 'audio/mpeg',
         'Content-Length': audioBuffer.length.toString(),

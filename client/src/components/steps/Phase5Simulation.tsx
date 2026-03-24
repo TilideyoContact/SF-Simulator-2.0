@@ -59,7 +59,7 @@ export function SimulationView() {
       const response = await fetch('/api/speech/synthesize', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: cleanText }),
+        body: JSON.stringify({ text: cleanText, disc: persona.disc }),
       });
 
       if (!response.ok) throw new Error('TTS failed');
@@ -109,6 +109,9 @@ export function SimulationView() {
         profil: store.profil,
         experience: store.experience,
         barometre: store.barometre,
+        objectifs: store.objectifs,
+        complement: store.complement,
+        mode: store.mode,
       });
       const data = await res.json();
       addSimulationMessage({
@@ -220,7 +223,8 @@ export function SimulationView() {
     const text = input.trim();
     if (!text || isTyping) return;
 
-    if (text === '/fin') {
+    const finKeywords = ['/fin', '/analyse', 'fin', 'stop', 'débrief', 'debrief', 'bilan', 'analyse'];
+    if (finKeywords.includes(text.toLowerCase())) {
       setInput('');
       setSimulationFinished();
       useParcoursStore.setState({ currentStep: 18 });
@@ -257,6 +261,10 @@ export function SimulationView() {
         typeCollab,
         prenomFictif: persona.prenomFictif,
         messages: useParcoursStore.getState().simulation.messages,
+        profil: store.profil,
+        objectifs: store.objectifs,
+        complement: store.complement,
+        mode: store.mode,
       });
       const data = await res.json();
       addSimulationMessage({
