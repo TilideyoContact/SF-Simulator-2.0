@@ -719,14 +719,7 @@ export async function transcribeAudio(filePath: string): Promise<string> {
   return result.text;
 }
 
-// ElevenLabs voice IDs mapped to DISC profiles for distinct persona voices
-const ELEVENLABS_VOICES: Record<string, string> = {
-  dominant: "pNInz6obpgDQGcFmaJgB",   // Adam — voix grave, directe
-  influent: "EXAVITQu4vr4xnSDxMaL",   // Bella — voix chaleureuse, expressive
-  stable: "21m00Tcm4TlvDq8ikWAM",      // Rachel — voix calme, posée
-  consciencieux: "AZnzlk1XvdvUeBnXmlld", // Domi — voix précise, analytique
-  default: "21m00Tcm4TlvDq8ikWAM",     // Rachel — défaut
-};
+const ELEVENLABS_VOICE_ID = "QbsdzCokdlo98elkq4Pc";
 
 export async function synthesizeSpeech(text: string, disc?: string): Promise<Buffer> {
   const apiKey = process.env.ELEVENLABS_API_KEY;
@@ -734,7 +727,7 @@ export async function synthesizeSpeech(text: string, disc?: string): Promise<Buf
     throw new Error("ELEVENLABS_API_KEY is not set");
   }
 
-  const voiceId = ELEVENLABS_VOICES[disc || ""] || ELEVENLABS_VOICES.default;
+  const voiceId = ELEVENLABS_VOICE_ID;
 
   const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
     method: "POST",
