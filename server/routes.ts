@@ -55,6 +55,9 @@ const simulationRespondSchema = z.object({
 const analyzeSchema = z.object({
   sessionId: z.string().optional().nullable(),
   messages: z.array(z.object({ role: z.string(), content: z.string() })).optional(),
+  scenario: z.string().optional().nullable(),
+  typeCollab: z.string().optional().nullable(),
+  profil: z.string().optional().nullable(),
 });
 
 export async function registerRoutes(
@@ -177,11 +180,11 @@ export async function registerRoutes(
       if (!parsed.success) {
         return res.status(400).json({ error: 'Invalid request body', details: parsed.error.issues });
       }
-      const { sessionId, messages } = parsed.data;
+      const { sessionId, messages, scenario, typeCollab, profil } = parsed.data;
 
       let analysis;
       try {
-        analysis = await generateAnalysisAI(messages || []);
+        analysis = await generateAnalysisAI(messages || [], scenario, typeCollab, profil);
       } catch (err) {
         console.error('OpenAI analysis error, using fallback:', err);
         analysis = generateFallbackAnalysis(messages || []);

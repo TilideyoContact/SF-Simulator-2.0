@@ -28,6 +28,13 @@ export interface AnalyseResult {
   pointsForts: string[];
   axesProgression: string[];
   conseilCle: string;
+  impressionGenerale?: string;
+  ressentiCollaborateur?: string;
+  vigilances?: string;
+  prochaineEtape?: string;
+  axe1Label?: string;
+  axe2Label?: string;
+  axe3Label?: string;
 }
 
 export interface ParcoursState {

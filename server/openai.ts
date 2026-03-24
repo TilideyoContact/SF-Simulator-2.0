@@ -427,8 +427,112 @@ export async function generateResponseAI(
   return { message: content, isFinished: isNearEnd };
 }
 
+function getAnalysisAxes(scenario: string | null | undefined, typeCollab: string | null | undefined): { axe1: string; axe2: string; axe3: string; criteria1: string; criteria2: string; criteria3: string } {
+  const sc = scenario || "feedback_recadrage";
+  const tc = typeCollab || "agent";
+
+  if (sc === "feedback_recadrage") {
+    if (tc === "pairs") {
+      return {
+        axe1: "Assertivité", axe2: "Coopération", axe3: "Influence",
+        criteria1: "Position claire sans domination entre égaux, respect de la parité",
+        criteria2: "Compromis, solution co-construite, pas d'ultimatum unilatéral",
+        criteria3: "Argumentation factuelle, références communes PPC, persuasion sans pression",
+      };
+    }
+    return {
+      axe1: "Clarté", axe2: "Écoute", axe3: "Assertivité",
+      criteria1: "Faits datés, DESC visible, pas de jugement sur l'être",
+      criteria2: "Reformulation, questions ouvertes, prise en compte du ressenti",
+      criteria3: "Posture OK+/OK+, utilisation du JE, vérification d'adhésion",
+    };
+  }
+
+  if (sc === "feedback_positif") {
+    if (tc === "pairs") {
+      return {
+        axe1: "Authenticité", axe2: "Réciprocité", axe3: "Projection commune",
+        criteria1: "Sincérité perçue, pas d'instrumentalisation, pas de condescendance",
+        criteria2: "Valorisation mutuelle, formulation d'égal à égal",
+        criteria3: "Capitaliser ensemble, pas de projection unilatérale",
+      };
+    }
+    return {
+      axe1: "Précision", axe2: "Impact", axe3: "Projection",
+      criteria1: "Action nommée précisément, pas de « c'est bien » vague",
+      criteria2: "Lien collectif, usagers, résultats concrets",
+      criteria3: "Prochaine étape, développement, avenir",
+    };
+  }
+
+  if (sc === "decision_difficile") {
+    if (tc === "pairs") {
+      return {
+        axe1: "Clarté de l'annonce", axe2: "Ouverture au dialogue", axe3: "Gestion de l'impact",
+        criteria1: "Distinction non-négociable vs discutable",
+        criteria2: "Le pair a pu s'exprimer, proposer des alternatives",
+        criteria3: "Prise en compte du périmètre du pair",
+      };
+    }
+    if (tc === "manager") {
+      return {
+        axe1: "Clarté de l'annonce", axe2: "Accueil de la réaction", axe3: "Force de conviction",
+        criteria1: "Décision nommée, raisons factuelles",
+        criteria2: "Écoute, pas de confrontation directe",
+        criteria3: "Argumentation solide, assumer la décision",
+      };
+    }
+    return {
+      axe1: "Clarté de l'annonce", axe2: "Accueil de l'émotion", axe3: "Accompagnement",
+      criteria1: "Décision nommée dès le début, pas de tournage autour",
+      criteria2: "Écoute du ressenti, pas de minimisation",
+      criteria3: "Explication du pourquoi, perspectives, suivi",
+    };
+  }
+
+  return {
+    axe1: "Clarté", axe2: "Écoute", axe3: "Assertivité",
+    criteria1: "Structure du discours, faits précis",
+    criteria2: "Questions ouvertes, reformulation, empathie",
+    criteria3: "Position claire, utilisation du JE, actions concrètes",
+  };
+}
+
+function getVigilancesForScenario(scenario: string | null | undefined, typeCollab: string | null | undefined): string {
+  const sc = scenario || "feedback_recadrage";
+  const tc = typeCollab || "agent";
+
+  if (sc === "feedback_recadrage") {
+    if (tc === "pairs") return "Posture hiérarchique usurpée, ultimatum unilatéral, escalade prématurée, dénigrement.";
+    return "TU accusateur, jugement sur l'être, monologue sans écoute, généralisation abusive.";
+  }
+  if (sc === "feedback_positif") {
+    return "Feedback vague (« c'est bien »), conditionné (MAIS), instrumentalisé, sans lien collectif, condescendance entre pairs.";
+  }
+  if (sc === "decision_difficile") {
+    return "Tournage autour du pot, excuses excessives, négocier le non-négociable, minimiser l'émotion.";
+  }
+  return "";
+}
+
+function getNextScenarioSuggestion(scenario: string | null | undefined, typeCollab: string | null | undefined): string {
+  const sc = scenario || "feedback_recadrage";
+  const tc = typeCollab || "agent";
+
+  if (sc === "feedback_positif") return "Essayez maintenant le scénario Feedback/Recadrage.";
+  if (sc === "feedback_recadrage") return "Essayez maintenant le scénario Décision difficile.";
+  if (sc === "decision_difficile") {
+    if (tc === "pairs") return "Rejouez en inversant la position (vous dans le rôle du pair qui reçoit la décision).";
+    return "Rejouez avec un profil DISC différent ou une relation plus tendue.";
+  }
+  return "Continuez à explorer les autres scénarios.";
+}
+
 export async function generateAnalysisAI(
   messages: Array<{ role: string; content: string }>,
+  scenario?: string | null,
+  typeCollab?: string | null,
+  profil?: string | null,
 ): Promise<{
   clarte: number;
   ecoute: number;
@@ -437,45 +541,91 @@ export async function generateAnalysisAI(
   pointsForts: string[];
   axesProgression: string[];
   conseilCle: string;
+  impressionGenerale?: string;
+  ressentiCollaborateur?: string;
+  vigilances?: string;
+  prochaineEtape?: string;
+  axe1Label?: string;
+  axe2Label?: string;
+  axe3Label?: string;
 }> {
   const conversation = messages
     .map((m) => `${m.role === "manager" ? "MANAGER" : "COLLABORATEUR"}: ${m.content}`)
     .join("\n\n");
+
+  const axes = getAnalysisAxes(scenario, typeCollab);
+  const vigilancesContext = getVigilancesForScenario(scenario, typeCollab);
+  const nextSuggestion = getNextScenarioSuggestion(scenario, typeCollab);
+
+  const niveauManagerLabel: Record<string, string> = {
+    mp: "Manager de proximité (MPx) — axes Attendus FT : Accompagner/Mobiliser + Aller vers/Coopérer",
+    mi: "Manager intermédiaire (MI) — axes Attendus FT : Piloter/Organiser + Se connaître/Se développer",
+    ms: "Manager supérieur (MS) — axes Attendus FT : Piloter/Organiser + Aller vers/Coopérer",
+  };
 
   const response = await openai.chat.completions.create({
     model: "gpt-4o-mini",
     messages: [
       {
         role: "system",
-        content: `Tu es un expert en management et en communication interpersonnelle, specialise dans la formation des managers de la fonction publique territoriale.
+        content: `Tu es un expert en management et en communication interpersonnelle, spécialisé dans la formation des managers de la fonction publique française (France Travail).
 
-Analyse la conversation d'entretien managérial ci-dessous et fournis une evaluation structuree du manager (l'utilisateur qui joue le role "MANAGER").
+Analyse la conversation d'entretien managérial ci-dessous et fournis une évaluation COMPLÈTE du manager.
 
-Tu dois retourner un JSON valide avec exactement cette structure :
+CONTEXTE :
+- Scénario : ${scenario || "feedback_recadrage"}
+- Type de collaborateur : ${typeCollab || "agent"}
+- Niveau du manager : ${niveauManagerLabel[profil || ""] || "Non précisé"}
+
+Les 3 AXES D'ÉVALUATION pour ce croisement scénario×type sont :
+- AXE 1 « ${axes.axe1} » : ${axes.criteria1}
+- AXE 2 « ${axes.axe2} » : ${axes.criteria2}
+- AXE 3 « ${axes.axe3} » : ${axes.criteria3}
+
+Échelle : 1=Confus/Absent | 2=Insuffisant | 3=En progression | 4=Efficace | 5=Exemplaire
+
+VIGILANCES RELATIONNELLES À SURVEILLER :
+${vigilancesContext}
+
+Tu dois retourner un JSON valide avec EXACTEMENT cette structure :
 {
-  "clarte": <note de 1 a 5, avec 0.5 de precision>,
-  "ecoute": <note de 1 a 5, avec 0.5 de precision>,
-  "assertivite": <note de 1 a 5, avec 0.5 de precision>,
-  "global": <moyenne des 3 notes, arrondie a 1 decimale>,
-  "pointsForts": [<2 a 3 points forts concrets observes dans l'echange>],
-  "axesProgression": [<1 a 2 axes d'amelioration concrets et actionnables>],
-  "conseilCle": "<un conseil cle synthetique et motivant pour progresser>"
+  "impressionGenerale": "<2-3 phrases d'appréciation d'ensemble de la posture du manager>",
+  "ressentiCollaborateur": "<2-3 phrases expliquant concrètement ce que le collaborateur a ressenti, relié aux formulations réellement utilisées par le manager>",
+  "clarte": <note de 1 à 5 pour AXE 1>,
+  "ecoute": <note de 1 à 5 pour AXE 2>,
+  "assertivite": <note de 1 à 5 pour AXE 3>,
+  "global": <moyenne des 3 notes, arrondie à 1 décimale>,
+  "pointsForts": [
+    "<point fort 1 avec citation exacte du manager entre guillemets + pourquoi c'est efficace>",
+    "<point fort 2 avec citation + effet probable>",
+    "<point fort 3 (optionnel)>"
+  ],
+  "axesProgression": [
+    {"observation": "<citation exacte du manager>", "impact": "<impact sur le collaborateur>", "conseil": "<conseil actionnable>", "phraseAlternative": "<phrase de remplacement prête à l'emploi>"},
+    {"observation": "<citation>", "impact": "<impact>", "conseil": "<conseil>", "phraseAlternative": "<phrase alternative>"}
+  ],
+  "vigilances": "<signalement des points de vigilance observés ou 'Aucune vigilance particulière'>",
+  "conseilCle": "<un conseil clé synthétique et motivant>",
+  "prochaineEtape": "${nextSuggestion}"
 }
 
-Criteres d'evaluation :
-- CLARTE : Le manager structure-t-il bien son discours ? Annonce-t-il l'objectif ? Utilise-t-il des faits precis ? La methode DESC est-elle appliquee ?
-- ECOUTE : Le manager pose-t-il des questions ouvertes ? Reformule-t-il ? Laisse-t-il parler le collaborateur ? Montre-t-il de l'empathie ?
-- ASSERTIVITE : Le manager exprime-t-il sa position clairement ? Utilise-t-il le "je" ? Fixe-t-il un cadre ? Propose-t-il des actions concretes ?
+RÈGLES :
+- Cite au moins 2 formulations EXACTES du manager (entre guillemets). N'invente jamais de citations.
+- Explique comment les formulations ont influencé l'état émotionnel du collaborateur.
+- Ton : exigeant mais soutenant, précis, pédagogique, orienté progression.
+- Ne flatte pas artificiellement. Ne juge pas le manager comme personne.
+- Si le manager a très peu parlé, indique que l'analyse repose sur peu d'éléments.
+- Rappel : repère personnel, NON-évaluatif.
 
-Sois exigeant mais bienveillant. Ne mets pas de notes trop hautes si le manager n'a pas vraiment demontre la competence. Retourne UNIQUEMENT le JSON, sans texte avant ou apres.`,
+Retourne UNIQUEMENT le JSON, sans texte avant ou après.`,
       },
       {
         role: "user",
-        content: `Voici la conversation a analyser :\n\n${conversation}`,
+        content: `Voici la conversation à analyser :\n\n${conversation}`,
       },
     ],
     temperature: 0.3,
-    max_tokens: 800,
+    max_tokens: 1500,
   });
 
   const content = response.choices[0]?.message?.content || "";
@@ -487,16 +637,34 @@ Sois exigeant mais bienveillant. Ne mets pas de notes trop hautes si le manager 
       const clarte = Math.min(5, Math.max(1, parsed.clarte || 3));
       const ecoute = Math.min(5, Math.max(1, parsed.ecoute || 3));
       const assertivite = Math.min(5, Math.max(1, parsed.assertivite || 3));
+
+      // Normalize axesProgression to string array for backwards compatibility
+      let axesProgression: string[] = [];
+      if (Array.isArray(parsed.axesProgression)) {
+        axesProgression = parsed.axesProgression.map((a: any) => {
+          if (typeof a === "string") return a;
+          if (a && typeof a === "object") {
+            return `${a.observation ? `« ${a.observation} » — ` : ""}${a.impact ? `Impact : ${a.impact}. ` : ""}${a.conseil ? `Conseil : ${a.conseil}. ` : ""}${a.phraseAlternative ? `Alternative : « ${a.phraseAlternative} »` : ""}`;
+          }
+          return "";
+        }).filter(Boolean).slice(0, 3);
+      }
+
       return {
         clarte,
         ecoute,
         assertivite,
         global: Math.round(((clarte + ecoute + assertivite) / 3) * 10) / 10,
         pointsForts: Array.isArray(parsed.pointsForts) ? parsed.pointsForts.slice(0, 3) : [],
-        axesProgression: Array.isArray(parsed.axesProgression)
-          ? parsed.axesProgression.slice(0, 2)
-          : [],
-        conseilCle: parsed.conseilCle || "Continuez a pratiquer pour progresser.",
+        axesProgression,
+        conseilCle: parsed.conseilCle || "Continuez à pratiquer pour progresser.",
+        impressionGenerale: parsed.impressionGenerale || undefined,
+        ressentiCollaborateur: parsed.ressentiCollaborateur || undefined,
+        vigilances: parsed.vigilances || undefined,
+        prochaineEtape: parsed.prochaineEtape || nextSuggestion,
+        axe1Label: axes.axe1,
+        axe2Label: axes.axe2,
+        axe3Label: axes.axe3,
       };
     }
   } catch (e) {
@@ -508,9 +676,12 @@ Sois exigeant mais bienveillant. Ne mets pas de notes trop hautes si le manager 
     ecoute: 3,
     assertivite: 3,
     global: 3,
-    pointsForts: ["Vous avez mene l'entretien jusqu'au bout."],
+    pointsForts: ["Vous avez mené l'entretien jusqu'au bout."],
     axesProgression: ["Structurez davantage votre discours."],
-    conseilCle: "Continuez a pratiquer pour progresser.",
+    conseilCle: "Continuez à pratiquer pour progresser.",
+    axe1Label: axes.axe1,
+    axe2Label: axes.axe2,
+    axe3Label: axes.axe3,
   };
 }
 
