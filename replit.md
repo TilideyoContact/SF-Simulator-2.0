@@ -78,4 +78,6 @@ The app implements a 25-step guided flow organized into 7 phases. Scenario selec
 
 - **PostgreSQL**: Primary database, connected via `DATABASE_URL` environment variable. Required for the app to function.
 - **Google Fonts**: Loaded client-side for typography
-- **OpenAI API**: Used for ChatGPT (simulation responses + analysis), Whisper (speech-to-text), and TTS (text-to-speech). Requires `OPENAI_API_KEY` environment secret.
+- **OpenAI API**: Used for ChatGPT (simulation responses + analysis) via Replit AI Integrations (`AI_INTEGRATIONS_OPENAI_API_KEY`, `AI_INTEGRATIONS_OPENAI_BASE_URL`). Model: gpt-4o-mini.
+- **Eleven Labs API**: Used for TTS (text-to-speech, voice ID `QbsdzCokdlo98elkq4Pc`, model `eleven_multilingual_v2`) and STT (speech-to-text, model `scribe_v1`, language `fra`). Requires `ELEVENLABS_API_KEY` environment secret.
+- **jsPDF**: Client-side PDF generation for session reports (`client/src/lib/generateReportPdf.ts`). Generates a downloadable PDF with scores, feedback, and resources after debrief.

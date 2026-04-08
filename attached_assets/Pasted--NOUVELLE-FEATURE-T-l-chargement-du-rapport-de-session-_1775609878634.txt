@@ -1,0 +1,148 @@
+  ## NOUVELLE FEATURE — Téléchargement du rapport de session (PDF)
+
+  ### Contexte
+  Les données de débrief existent déjà dans le store Zustand et sont affichées dans
+  Phase6Analysis.tsx (Step19Scores, Step20Feedback, Step21Ressources). Il faut ajouter un bouton
+  de téléchargement PDF qui génère un rapport personnalisé avec ces données.
+
+  ### Approche technique
+  Utilise `jspdf` (génération PDF côté client, pas besoin de serveur) :
+  ```bash
+  npm install jspdf
+
+  Fichiers à créer/modifier
+
+  1. Créer client/src/lib/generateReportPdf.ts
+
+  Fonction generateSessionReport(data) qui prend en paramètre :
+  interface ReportData {
+    // Contexte
+    scenario: string;           // "feedback_recadrage" | "feedback_positif" |
+  "decision_difficile"
+    typeCollab: string;         // "agent" | "pairs" | "manager"
+    profil: string;             // "mp" | "mi" | "ms"
+    disc: string;               // "dominant" | "influent" | "stable" | "consciencieux"
+    relation: number;           // 1-5
+    etatEsprit: string;         // "positif" | "neutre" | "stresse" | "agace"
+    mode: string;               // "avance" | "rapide"
+    // Analyse
+    analyse: {
+      clarte: number;
+      ecoute: number;
+      assertivite: number;
+      global: number;
+      axe1Label?: string;
+      axe2Label?: string;
+      axe3Label?: string;
+      pointsForts: string[];
+      axesProgression: string[];
+      conseilCle: string;
+      impressionGenerale?: string;
+      ressentiCollaborateur?: string;
+      vigilances?: string;
+      prochaineEtape?: string;
+    };
+    // Ressources conditionnelles
+    resources: Array<{ label: string; subtitle: string }>;
+  }
+
+  Et génère un PDF A4 structuré ainsi :
+
+  En-tête :
+  - "FRANCE TRAVAIL — SimuManager" (bleu #000091)
+  - "Rapport de session" + date du jour
+  - Ligne de séparation
+
+  Section 1 — Contexte de la simulation :
+  - Scénario joué (label français)
+  - Type de collaborateur simulé (agent/pair/manager)
+  - Profil DISC du collaborateur + qualité de relation (/5) + état d'esprit
+  - Niveau du manager (MPx/MI/MS)
+  - Mode utilisé (Avancé/Rapide)
+
+  Section 2 — Scores (/5) :
+  - 3 axes avec leurs noms dynamiques (axe1Label, axe2Label, axe3Label) + note /5
+  - Score global /5
+  - Utiliser des barres de progression visuelles simples (rectangles remplis proportionnellement)
+
+  Section 3 — Feedback détaillé :
+  - Impression générale (si disponible)
+  - Ressenti du collaborateur (si disponible)
+  - Points forts (2-3 items, avec bullet points verts)
+  - Axes de progression (1-2 items, avec bullet points bleus)
+  - Vigilances (si disponible, en rouge)
+
+  Section 4 — Conseil clé :
+  - Encadré avec le conseil clé (1 phrase motivante)
+
+  Section 5 — Ressources recommandées :
+  - Liste des ressources conditionnelles (label + subtitle)
+  - Prochaine étape suggérée
+
+  Pied de page :
+  - "Document généré par SimuManager — ChatFT × France Travail"
+  - "Outil de développement des compétences — Non évaluatif — Confidentiel"
+  - Date de génération
+
+  Style :
+  - Couleurs DSFR : bleu #000091, rouge #E1000F, vert #18753C
+  - Police Helvetica (disponible par défaut dans jspdf)
+  - Ton sobre et institutionnel
+
+  La fonction doit appeler doc.save('SimuManager_Rapport_Session.pdf') pour déclencher le
+  téléchargement.
+
+  2. Modifier client/src/lib/helpers.ts
+
+  Utilise les fonctions de label existantes (getScenarioLabel, getDiscLabel, getTypeCollabLabel,
+  etc.) dans generateReportPdf.ts — elles sont déjà exportées.
+
+  3. Modifier client/src/components/steps/Phase6Analysis.tsx
+
+  Dans Step21Ressources, après le bouton "Continuer" existant, ajouter un bouton de téléchargement
+   :
+
+  import { Download } from 'lucide-react';
+  import { generateSessionReport } from '@/lib/generateReportPdf';
+
+  // Dans Step21Ressources, après le bouton "Continuer" :
+  <Button
+    variant="outline"
+    onClick={() => {
+      const store = useParcoursStore.getState();
+      generateSessionReport({
+        scenario: store.scenarioChoisi || 'feedback_recadrage',
+        typeCollab: store.typeCollab || 'agent',
+        profil: store.profil || 'mp',
+        disc: store.persona.disc || 'stable',
+        relation: store.persona.relation || 3,
+        etatEsprit: store.persona.etatEsprit || 'neutre',
+        mode: store.mode || 'rapide',
+        analyse: store.analyse!,
+        resources: resources.filter(r => r.id !== 'replay' && r.id !== 'complex').map(r => ({
+          label: r.label,
+          subtitle: r.subtitle,
+        })),
+      });
+    }}
+    className="w-full"
+  >
+    <Download className="w-4 h-4 mr-2" />
+    Télécharger mon rapport de session (PDF)
+  </Button>
+
+  Contraintes
+
+  - Génération 100% côté client (pas de endpoint serveur)
+  - Le bouton ne s'affiche que si analyse existe
+  - Le PDF ne doit PAS contenir le transcript de la conversation (confidentialité RGPD)
+  - Maximum 2 pages
+  - Ne modifie pas la logique existante de Step19/Step20/Step21, ajoute uniquement le bouton de
+  téléchargement
+
+  Test
+
+  - Fais un parcours complet jusqu'au débrief
+  - Clique sur "Télécharger mon rapport de session"
+  - Vérifie que le PDF contient les scores, les points forts, les axes de progression, le conseil
+  clé et les ressources

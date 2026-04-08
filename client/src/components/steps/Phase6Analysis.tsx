@@ -5,7 +5,8 @@ import { Button } from '@/components/ui/button';
 import { getScoreLabel } from '@/lib/helpers';
 import { apiRequest } from '@/lib/queryClient';
 import { cn } from '@/lib/utils';
-import { BarChart3, CheckCircle, TrendingUp, Lightbulb, BookOpen, RefreshCw, MessageCircle, AlertTriangle, ArrowRight } from 'lucide-react';
+import { BarChart3, CheckCircle, TrendingUp, Lightbulb, BookOpen, RefreshCw, MessageCircle, AlertTriangle, ArrowRight, Download } from 'lucide-react';
+import { generateSessionReport } from '@/lib/generateReportPdf';
 
 export function Step19Scores() {
   const store = useParcoursStore();
@@ -256,6 +257,31 @@ export function Step21Ressources() {
 
       <Button data-testid="button-continue-feedback" onClick={() => nextStep()} className="w-full">
         Continuer
+      </Button>
+
+      <Button
+        variant="outline"
+        onClick={() => {
+          const store = useParcoursStore.getState();
+          generateSessionReport({
+            scenario: store.scenarioChoisi || 'feedback_recadrage',
+            typeCollab: store.typeCollab || 'agent',
+            profil: store.profil || 'mp',
+            disc: store.persona.disc || 'stable',
+            relation: store.persona.relation || 3,
+            etatEsprit: store.persona.etatEsprit || 'neutre',
+            mode: store.mode || 'rapide',
+            analyse: store.analyse!,
+            resources: resources.filter(r => r.id !== 'replay' && r.id !== 'complex').map(r => ({
+              label: r.label,
+              subtitle: r.subtitle,
+            })),
+          });
+        }}
+        className="w-full"
+      >
+        <Download className="w-4 h-4 mr-2" />
+        Télécharger mon rapport de session (PDF)
       </Button>
     </div>
   );
