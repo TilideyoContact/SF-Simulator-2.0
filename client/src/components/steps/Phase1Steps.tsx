@@ -4,7 +4,8 @@ import { useParcoursStore } from '@/lib/store';
 import { ChatCardSingle, ChatCardMulti } from '@/components/ChatCard';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Microscope, Zap, User, Users, Building2, CheckCircle, AlertTriangle, AlertCircle, Sprout, TreePine, Award, Target, Shield, Search, TrendingUp, FileEdit, MessageSquare, MessageCircle, ClipboardList, RefreshCw, Sparkles, Upload } from 'lucide-react';
+import { Microscope, Zap, User, Users, Building2, CheckCircle, AlertTriangle, AlertCircle, Sprout, TreePine, Award, Target, Shield, Search, TrendingUp, FileEdit, MessageSquare, MessageCircle, ClipboardList, RefreshCw, Sparkles, Upload, Info, BookOpen, ListChecks } from 'lucide-react';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 
 const SCENARIO_CONTEXT: Record<string, { title: string; desc: string }> = {
   feedback_recadrage: {
@@ -41,28 +42,86 @@ export function Step1Welcome() {
             {ctx ? ctx.title : 'Entretiens manageriaux'}
           </h2>
         </div>
-        <p className="text-sm sm:text-base text-[var(--dsfr-grey-425)] max-w-2xl mx-auto leading-relaxed">
-          {ctx
-            ? ctx.desc
-            : "Cet outil a pour vocation de vous accompagner dans la preparation de vos entretiens manageriaux, qu'il s'agisse d'entretiens visant a soutenir, reconnaitre, projeter ou a aborder des situations plus sensibles."}
-        </p>
+        <div className="text-sm sm:text-base text-[var(--dsfr-grey-425)] max-w-2xl mx-auto leading-relaxed space-y-2">
+          {ctx ? (
+            <p>{ctx.desc}</p>
+          ) : (
+            <>
+              <p>Bienvenue dans un simulateur conversationnel dédié à la conduite de vos entretiens managériaux, dans un cadre respectant la confidentialité.</p>
+              <p>Cet outil vous accompagne dans leur préparation, qu'il s'agisse d'entretiens visant à soutenir, reconnaître, projeter ou à aborder des situations plus sensibles.</p>
+              <p>Et à l'issue de votre simulation, un débriefing détaillé vous sera proposé ainsi que des fiches pratiques utiles.</p>
+            </>
+          )}
+        </div>
       </div>
+
+      <Tabs defaultValue="conseils" className="w-full max-w-2xl mx-auto">
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="conseils" title="Conseils pour bien utiliser le simulateur" className="flex items-center gap-2 text-xs sm:text-sm">
+            <Info className="w-4 h-4" />
+            Conseils d'utilisation
+          </TabsTrigger>
+          <TabsTrigger value="mode" title="Comment fonctionne le simulateur" className="flex items-center gap-2 text-xs sm:text-sm">
+            <BookOpen className="w-4 h-4" />
+            Mode d'emploi
+          </TabsTrigger>
+          <TabsTrigger value="prerequis" title="Pré-requis pour un entretien managérial efficace" className="flex items-center gap-2 text-xs sm:text-sm">
+            <ListChecks className="w-4 h-4" />
+            Pré-requis
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="conseils" className="mt-4 p-4 bg-white dark:bg-[var(--dsfr-grey-950)] border border-[var(--dsfr-grey-850)] rounded-xl">
+          <p className="text-sm font-medium mb-3 text-foreground">Avant de commencer, nous vous invitons à :</p>
+          <ul className="text-sm text-[var(--dsfr-grey-425)] space-y-2 list-disc list-inside">
+            <li>prendre le temps nécessaire pour réaliser la simulation</li>
+            <li>éteindre votre téléphone</li>
+            <li>vous isoler</li>
+            <li>mettre votre casque</li>
+          </ul>
+        </TabsContent>
+
+        <TabsContent value="mode" className="mt-4 p-4 bg-white dark:bg-[var(--dsfr-grey-950)] border border-[var(--dsfr-grey-850)] rounded-xl">
+          <p className="text-sm font-medium mb-3 text-foreground">Deux modes disponibles :</p>
+          <ul className="text-sm text-[var(--dsfr-grey-425)] space-y-2 list-disc list-inside mb-4">
+            <li><strong>Mode Avancé</strong> — Questions détaillées pour un accompagnement sur-mesure</li>
+            <li><strong>Mode Rapide</strong> — 3 questions essentielles puis simulation directe</li>
+          </ul>
+          <p className="text-sm font-medium mb-3 text-foreground">3 situations d'entretien proposées :</p>
+          <ul className="text-sm text-[var(--dsfr-grey-425)] space-y-2 list-disc list-inside mb-4">
+            <li>Feedback / Recadrage</li>
+            <li>Feedback positif</li>
+            <li>Décision difficile</li>
+          </ul>
+          <p className="text-sm text-[var(--dsfr-grey-425)]">Ces scénarios sont issus de la remontée des besoins prioritaires exprimés par des managers. À vous de jouer en cliquant sur l'un des scénarios proposés !</p>
+        </TabsContent>
+
+        <TabsContent value="prerequis" className="mt-4 p-4 bg-white dark:bg-[var(--dsfr-grey-950)] border border-[var(--dsfr-grey-850)] rounded-xl">
+          <ol className="text-sm text-[var(--dsfr-grey-425)] space-y-3 list-inside" style={{ listStyleType: 'lower-alpha' }}>
+            <li><strong>Préparer le contenu de l'entretien</strong> (possible partage en ELD) : thème abordé, faits concrets (exemples précis, datés, factuels), éventuels rappels à la règle ou aux procédures, objectifs dont détermination des impacts.</li>
+            <li><strong>Proposer un créneau pour le rendez-vous</strong> dans un lieu calme, neutre et confidentiel : soyez clairs sur le but de l'entretien (feedback, reconnaissance, annonce difficile...). Cela vous aidera à structurer votre échange et à rester cohérent.</li>
+            <li><strong>Se préparer à aborder sereinement l'entretien</strong> : Soyez apaisé et concentré avant l'entretien. Prenez quelques minutes pour vous recentrer si nécessaire, afin d'aborder l'échange avec sérénité.</li>
+            <li><strong>Lors de l'entretien</strong> : restez factuels, adopter une posture assertive, faire preuve d'écoute active (reformulation…) et d'agilité…</li>
+            <li><strong>Assurer un suivi</strong> : une formalisation est préconisée pour tout entretien.</li>
+          </ol>
+        </TabsContent>
+      </Tabs>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div className="space-y-3">
           <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>
-            Mode avance
+            Mode avancé
           </h3>
           <button
             data-testid="card-option-avance"
             disabled={mode !== null && mode !== 'avance'}
-            onClick={() => handleSelect('avance', 'Mode avance')}
+            onClick={() => handleSelect('avance', 'Mode avancé')}
             className="w-full text-left px-5 py-4 border border-[var(--dsfr-grey-850)] rounded-xl bg-white dark:bg-[var(--dsfr-grey-950)] hover:border-[var(--dsfr-blue-france)] hover:shadow-sm transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <div className="flex items-center gap-3">
               <Microscope className="w-5 h-5 flex-shrink-0" style={{ color: 'var(--dsfr-blue-france)' }} />
               <div>
-                <p className="font-medium text-sm text-foreground">Questions detaillees pour un accompagnement sur-mesure</p>
+                <p className="font-medium text-sm text-foreground">Questions détaillées pour un accompagnement sur-mesure</p>
               </div>
             </div>
           </button>

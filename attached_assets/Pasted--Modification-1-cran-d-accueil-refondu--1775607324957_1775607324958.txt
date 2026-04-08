@@ -1,0 +1,118 @@
+  ## Modification 1 — Écran d'accueil refondu                                                     
+                                                                                                  
+  Fichier : `client/src/components/steps/Phase1Steps.tsx`
+                                                                                                  
+  Dans `Step1Welcome()`, remplace tout le contenu de la fonction par :
+                                                                                                  
+  1. Ajouter les imports en haut du fichier :            
+  - `import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';`            
+  - Ajouter `Info, BookOpen, ListChecks` aux imports lucide-react existants           
+                                                                                                  
+  2. Remplacer le paragraphe de description actuel (le `<p>` avec "Cet outil a pour vocation...") 
+  par ces 3 paragraphes :                                                                         
+  Bienvenue dans un simulateur conversationnel dédié à la conduite de vos entretiens managériaux, 
+  dans un cadre respectant la confidentialité.                                                    
+                                                         
+  Cet outil vous accompagne dans leur préparation, qu'il s'agisse d'entretiens visant à soutenir,
+  reconnaître, projeter ou à aborder des situations plus sensibles.                               
+   
+  Et à l'issue de votre simulation, un débriefing détaillé vous sera proposé ainsi que des fiches 
+  pratiques utiles.                                      
+                                                                                                  
+  3. Entre le message d'accueil et les boutons Mode avancé/rapide, ajouter 3 onglets interactifs
+  avec le composant Tabs de shadcn/ui :                                                           
+   
+  **Onglet 1 — "Conseils d'utilisation"** (icône : `<Info />`, tooltip title : "Conseils pour bien
+   utiliser le simulateur") :                            
+  Avant de commencer, nous vous invitons à :                                                      
+  • prendre le temps nécessaire pour réaliser la simulation
+  • éteindre votre téléphone                               
+  • vous isoler             
+  • mettre votre casque
+
+  **Onglet 2 — "Mode d'emploi"** (icône : `<BookOpen />`, tooltip title : "Comment fonctionne le  
+  simulateur") :
+  Deux modes disponibles :                                                                        
+  • Mode Avancé — Questions détaillées pour un accompagnement sur-mesure
+  • Mode Rapide — 3 questions essentielles puis simulation directe      
+                                                                                                  
+  3 situations d'entretien proposées :
+  • Feedback / Recadrage                                                                          
+  • Feedback positif                                     
+  • Décision difficile                                                                            
+                                                                                                  
+  Ces scénarios sont issus de la remontée des besoins prioritaires exprimés par des managers. À   
+  vous de jouer en cliquant sur l'un des scénarios proposés !                                     
+                                                                                                  
+  **Onglet 3 — "Pré-requis"** (icône : `<ListChecks />`, tooltip title : "Pré-requis pour un
+  entretien managérial efficace") :
+  a) Préparer le contenu de l'entretien (possible partage en ELD) : thème abordé, faits concrets
+  (exemples précis, datés, factuels), éventuels rappels à la règle ou aux procédures, objectifs   
+  dont détermination des impacts.                                                              
+  b) Proposer un créneau pour le rendez-vous dans un lieu calme, neutre et confidentiel : soyez   
+  clairs sur le but de l'entretien (feedback, reconnaissance, annonce difficile...). Cela vous 
+  aidera à structurer votre échange et à rester cohérent.                                         
+  c) Se préparer à aborder sereinement l'entretien : Soyez apaisé et concentré avant l'entretien.
+  Prenez quelques minutes pour vous recentrer si nécessaire, afin d'aborder l'échange avec        
+  sérénité.                                                                                       
+  d) Lors de l'entretien : restez factuels, adopter une posture assertive, faire preuve d'écoute
+  active (reformulation…) et d'agilité…                                                           
+  e) Assurer un suivi : une formalisation est préconisée pour tout entretien.                     
+                                                                             
+  Chaque `TabsTrigger` doit avoir un attribut `title` pour le tooltip natif au survol. Les boutons
+   Mode avancé / Mode rapide restent en dessous, inchangés. Ne touche pas aux autres fonctions du 
+  fichier.                                                                                        
+                                                                                                  
+  ---                                                                                             
+                                      
+  ## Modification 2 — Tutoiement par défaut
+
+  Fichier : `server/openai.ts`
+
+  Dans `typeCollabBlocs` (BLOC A1), modifier 2 lignes :                                           
+                                             
+  - Entrée `agent` : remplacer `Registre : vouvoiement par défaut, ton courant professionnel.` par
+   `Registre : tutoiement par défaut, ton courant professionnel.`
+  - Entrée `manager` : remplacer `Registre : vouvoiement systématique, ton professionnel soutenu.`
+   par `Registre : tutoiement par défaut, ton professionnel soutenu.`                             
+  - Entrée `pairs` : ne pas toucher (déjà en tutoiement)
+                                                                                                  
+  ---                                            
+                                                                                                  
+  ## Modification 3 — Interdire la proposition de profils types
+
+  Fichier : `server/openai.ts`
+
+  Dans `buildSystemPrompt()`, juste AVANT la section `## Détection de fin`, ajouter ce bloc :     
+                                                         
+  Interdiction de proposer des profils                                                            
+                                      
+  Tu ne proposes JAMAIS de "profils types" ou de "types d'agent" au manager. Tu ne demandes JAMAIS
+   au manager de choisir un profil. Tu incarnes DIRECTEMENT le collaborateur tel que configuré
+  (DISC, relation, état d'esprit). Tu ne sors JAMAIS du rôle pour proposer des options ou des     
+  menus de sélection.                 
+
+  ---
+
+  ## Modification 4 — Interdire les noms de formations inventés dans le débrief                   
+                                                          
+  Fichier : `server/openai.ts`                                                                    
+                                      
+  Dans `generateAnalysisAI()`, dans la section `RÈGLES :` du prompt d'analyse, après la ligne `-  
+  Rappel : repère personnel, NON-évaluatif.`, ajouter cette règle :   
+                                                                                                  
+  - NE CITE JAMAIS de noms de formations spécifiques. Ne mentionne JAMAIS de titres de modules de 
+  formation. Tu peux recommander des MÉTHODES (DESC, DEPAR, ASAP+D, OK+/OK+) mais pas des
+  formations institutionnelles dont tu ne connais pas les intitulés exacts.                       
+                                      
+  ---
+
+  ## Après les 4 modifications
+
+  Teste un parcours complet (Mode Avancé, feedback/recadrage, agent, DISC dominant, relation 2)   
+  jusqu'au débrief. Vérifie :                                                      
+  - Les 3 onglets s'affichent avec icônes et tooltips                                             
+  - Le collaborateur IA tutoie le manager
+  - L'IA ne propose pas de liste de profils types                                                 
+  - Le débrief ne cite pas de noms de formations inventés                                         
+                                                             
