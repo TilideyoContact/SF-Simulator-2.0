@@ -61,35 +61,73 @@ export function Step15bTheory() {
         <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>
           {theory.title}
         </h3>
+        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">{theory.introduction}</p>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-2">
+        <h4 className="text-sm font-bold uppercase tracking-wider" style={{ color: 'var(--dsfr-blue-france)' }}>
+          Methode {theory.method.name}
+        </h4>
         <div className="space-y-2">
-          <p className="text-xs font-bold text-[var(--dsfr-grey-425)] uppercase tracking-wider">Methodes :</p>
-          <ul className="space-y-1.5 text-sm">
-            {theory.methods.map((m, i) => (
-              <li key={i} className="flex gap-2">
-                <span className="font-bold shrink-0" style={{ color: 'var(--dsfr-blue-france)' }}>&#8250;</span>
-                <span>{m}</span>
-              </li>
-            ))}
-          </ul>
+          {theory.method.steps.map((step, i) => (
+            <div key={i} className="flex gap-3 p-3 rounded-lg border border-[var(--dsfr-grey-925)] bg-white">
+              <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-white text-sm" style={{ backgroundColor: 'var(--dsfr-blue-france)' }}>
+                {step.letter}
+              </div>
+              <div>
+                <p className="font-bold text-sm">{step.title}</p>
+                <p className="text-xs text-[var(--dsfr-grey-425)]">{step.description}</p>
+              </div>
+            </div>
+          ))}
         </div>
-        <div className="space-y-2">
-          <p className="text-xs font-bold text-[var(--dsfr-grey-425)] uppercase tracking-wider">Conseils pratiques :</p>
-          <ul className="space-y-1.5 text-sm">
-            {theory.tips.map((t, i) => (
-              <li key={i} className="flex gap-2">
-                <span className="font-bold shrink-0" style={{ color: 'var(--dsfr-blue-france)' }}>&#8250;</span>
-                <span>{t}</span>
-              </li>
-            ))}
-          </ul>
+      </div>
+
+      <div className="space-y-2">
+        <h4 className="text-sm font-bold uppercase tracking-wider" style={{ color: 'var(--dsfr-success, #18753C)' }}>
+          Posture a adopter
+        </h4>
+        <ul className="space-y-1 text-sm">
+          {theory.posture.map((p, i) => (
+            <li key={i} className="flex gap-2">
+              <span className="text-[var(--dsfr-success, #18753C)] font-bold">+</span>
+              <span>{p}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="space-y-2">
+        <h4 className="text-sm font-bold uppercase tracking-wider" style={{ color: 'var(--dsfr-red-marianne)' }}>
+          Erreurs a eviter
+        </h4>
+        <ul className="space-y-1 text-sm">
+          {theory.erreurs.map((e, i) => (
+            <li key={i} className="flex gap-2">
+              <span className="text-[var(--dsfr-red-marianne)] font-bold">x</span>
+              <span>{e}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="space-y-2">
+        <h4 className="text-sm font-bold uppercase tracking-wider" style={{ color: 'var(--dsfr-blue-france)' }}>
+          Exemple concret
+        </h4>
+        <p className="text-sm italic text-[var(--dsfr-grey-425)]">{theory.exemple.situation}</p>
+        <div className="p-3 rounded-lg border-l-[3px] bg-[var(--dsfr-success-bg,#f6fef9)]" style={{ borderLeftColor: 'var(--dsfr-success, #18753C)' }}>
+          <p className="text-xs font-bold text-[var(--dsfr-success, #18753C)] mb-1">Bonne approche :</p>
+          <p className="text-sm italic">"{theory.exemple.bonneApproche}"</p>
+        </div>
+        <div className="p-3 rounded-lg border-l-[3px] bg-[var(--dsfr-error-bg,#fff5f5)]" style={{ borderLeftColor: 'var(--dsfr-red-marianne)' }}>
+          <p className="text-xs font-bold text-[var(--dsfr-red-marianne)] mb-1">Mauvaise approche :</p>
+          <p className="text-sm italic">"{theory.exemple.mauvaiseApproche}"</p>
         </div>
       </div>
 
       <Button data-testid="button-launch-simulation" onClick={() => useParcoursStore.setState({ currentStep: 16 })} className="w-full">
-        Lancer la simulation
+        Je suis pret(e), lancer la simulation
       </Button>
     </div>
   );
