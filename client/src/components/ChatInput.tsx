@@ -18,7 +18,7 @@ interface ChatInputProps {
 
 export function ChatInput({
   onSend,
-  placeholder = 'Saisissez votre prompt',
+  placeholder = 'Saisis ton prompt',
   disabled = false,
   label,
   showNav = false,

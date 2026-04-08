@@ -108,8 +108,8 @@ export default function ChatPage({ activeSlug }: ChatPageProps) {
               <div className="max-w-3xl mx-auto px-4 sm:px-6 py-3">
                 <ChatInput
                   onSend={handleChatSend}
-                  label="Posez votre question ... Win+H pour la dicter"
-                  placeholder="Saisissez votre prompt"
+                  label="Pose ta question ... Win+H pour la dicter"
+                  placeholder="Saisis ton prompt"
                   showNav={currentStep > 1}
                   canGoBack={canGoBack}
                   canSkip={canSkip}

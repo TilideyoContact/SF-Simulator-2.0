@@ -12,14 +12,14 @@ export function Step9Synthese() {
     <div className="space-y-6">
       <div className="text-center space-y-3">
         <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>
-          Synthese de votre profil
+          Synthese de ton profil
         </h3>
       </div>
 
       <div className="bg-[var(--dsfr-blue-france-light)] p-4 space-y-2 text-sm border-l-[3px]" style={{ borderLeftColor: 'var(--dsfr-blue-france)' }}>
-        <p className="font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>Votre profil :</p>
+        <p className="font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>Ton profil :</p>
         <ul className="space-y-1 list-none pl-0 text-xs">
-          <li>Vous etes <strong>{getProfilLabel(store.profil)}</strong>
+          <li>Tu es <strong>{getProfilLabel(store.profil)}</strong>
             {store.experience && <> avec <strong>{getExperienceLabel(store.experience)}</strong> d'experience</>}
           </li>
           {store.barometre && (
@@ -32,13 +32,13 @@ export function Step9Synthese() {
             <li>Etape la plus delicate : <strong>{store.difficulte}</strong></li>
           )}
         </ul>
-        <p className="font-bold pt-1" style={{ color: 'var(--dsfr-blue-france)' }}>Votre entretien :</p>
+        <p className="font-bold pt-1" style={{ color: 'var(--dsfr-blue-france)' }}>Ton entretien :</p>
         <ul className="space-y-1 list-none pl-0 text-xs">
-          <li>Vous allez vous entrainer avec <strong>{getTypeCollabLabel(store.typeCollab)}</strong></li>
+          <li>Tu vas t'entrainer avec <strong>{getTypeCollabLabel(store.typeCollab)}</strong></li>
         </ul>
       </div>
 
-      <p className="text-sm text-center text-[var(--dsfr-grey-425)]">Sur cette base, je vous recommande de commencer par le scenario suivant :</p>
+      <p className="text-sm text-center text-[var(--dsfr-grey-425)]">Sur cette base, je te recommande de commencer par le scenario suivant :</p>
 
       <button
         data-testid="button-continue-scenario"
@@ -69,10 +69,10 @@ export function Step10Scenario() {
         <div className="flex items-center justify-center gap-2">
           <Sparkles className="w-6 h-6" style={{ color: 'var(--dsfr-blue-france)' }} />
           <h3 className="text-xl font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>
-            Choisissez votre scenario
+            Choisis ton scenario
           </h3>
         </div>
-        <p className="text-sm text-[var(--dsfr-grey-425)]">Selectionnez le scenario qui correspond le mieux a votre besoin</p>
+        <p className="text-sm text-[var(--dsfr-grey-425)]">Selectionne le scenario qui correspond le mieux a ton besoin</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

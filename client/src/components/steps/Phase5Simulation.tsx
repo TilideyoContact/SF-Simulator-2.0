@@ -150,15 +150,15 @@ export function SimulationView() {
   const getDefaultFirstMessage = (): string => {
     const name = persona.prenomFictif;
     if (persona.disc === 'dominant' && persona.etatEsprit === 'agace') {
-      return `*[${name} entre, pose ses documents sur la table sans s'asseoir.]*\n\nBon, vous vouliez me voir. Je vous previens, j'ai un comite dans 30 minutes. De quoi s'agit-il ?`;
+      return `*[${name} entre, pose ses documents sur la table sans s'asseoir.]*\n\nBon, tu voulais me voir. Je te previens, j'ai un comite dans 30 minutes. De quoi s'agit-il ?`;
     }
     if (persona.disc === 'stable') {
-      return `*[${name} entre dans le bureau et s'assoit calmement.]*\n\nBonjour. Vous m'avez demande de passer vous voir, j'espere que ce ne sera pas trop long, j'ai beaucoup de dossiers en attente. Je vous ecoute.`;
+      return `*[${name} entre dans le bureau et s'assoit calmement.]*\n\nBonjour. Tu m'as demande de passer te voir, j'espere que ce ne sera pas trop long, j'ai beaucoup de dossiers en attente. Je t'ecoute.`;
     }
     if (persona.disc === 'influent') {
-      return `*[${name} entre avec enthousiasme.]*\n\nBonjour ! Ca va bien ? J'ai eu une matinee chargee mais bon, ca fait du bien de changer d'air. Vous aviez quelque chose a me dire ?`;
+      return `*[${name} entre avec enthousiasme.]*\n\nBonjour ! Ca va bien ? J'ai eu une matinee chargee mais bon, ca fait du bien de changer d'air. Tu avais quelque chose a me dire ?`;
     }
-    return `*[${name} entre et s'installe.]*\n\nBonjour. J'ai recu votre invitation pour cet entretien. Qu'avez-vous a me dire ?`;
+    return `*[${name} entre et s'installe.]*\n\nBonjour. J'ai recu ton invitation pour cet entretien. Qu'as-tu a me dire ?`;
   };
 
   const startRecording = async () => {
@@ -284,7 +284,7 @@ export function SimulationView() {
     } catch {
       addSimulationMessage({
         role: 'collaborateur',
-        content: "Je comprends ce que vous dites. Pouvez-vous developper votre pensee ?",
+        content: "Je comprends ce que tu dis. Peux-tu developper ta pensee ?",
         timestamp: new Date().toISOString(),
       });
     } finally {
@@ -358,7 +358,7 @@ export function SimulationView() {
             <Textarea
               ref={textareaRef}
               data-testid="input-simulation"
-              placeholder={isTranscribing ? "Transcription en cours..." : "Ecrivez votre message en tant que manager..."}
+              placeholder={isTranscribing ? "Transcription en cours..." : "Ecris ton message en tant que manager..."}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
@@ -377,7 +377,7 @@ export function SimulationView() {
           </div>
           {isTranscribing && (
             <p data-testid="text-transcribing" className="text-xs text-muted-foreground mt-1 px-1 animate-pulse">
-              Transcription de votre message vocal...
+              Transcription de ton message vocal...
             </p>
           )}
           {isRecording && (

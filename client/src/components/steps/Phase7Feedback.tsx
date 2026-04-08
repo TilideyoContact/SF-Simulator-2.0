@@ -22,8 +22,8 @@ export function Step22Nps() {
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>Votre avis compte</h3>
-        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Sur une echelle de 0 a 10, quelle est la probabilite que vous recommandiez ChatFT SimuManager a un collegue manager ?</p>
+        <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>Ton avis compte</h3>
+        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Sur une echelle de 0 a 10, quelle est la probabilite que tu recommandes ChatFT SimuManager a un collegue manager ?</p>
       </div>
       <NpsCard selected={feedbackParcours.nps} onSelect={handleSelect} />
     </div>
@@ -39,7 +39,7 @@ export function Step23Ratings() {
     <div className="space-y-6">
       <div className="text-center">
         <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>Evaluations</h3>
-        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Comment evaluez-vous...</p>
+        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Comment evalues-tu...</p>
       </div>
       <div className="space-y-4">
         <RatingCard
@@ -257,7 +257,7 @@ export function Step25Closing() {
         <div className="space-y-3">
           <Textarea
             data-testid="input-comment"
-            placeholder="Votre commentaire (optionnel)..."
+            placeholder="Ton commentaire (optionnel)..."
             value={text}
             onChange={(e) => setText(e.target.value)}
             className="min-h-[80px] resize-none"
@@ -279,11 +279,11 @@ export function Step25Closing() {
     <div className="space-y-6">
       <div className="text-center space-y-3">
         <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>Merci !</h3>
-        <p className="text-sm text-[var(--dsfr-grey-425)]">Merci beaucoup pour votre participation et vos retours !</p>
+        <p className="text-sm text-[var(--dsfr-grey-425)]">Merci beaucoup pour ta participation et tes retours !</p>
       </div>
 
       <div className="bg-[var(--dsfr-blue-france-light)] p-4 space-y-2 text-xs border-l-[3px]" style={{ borderLeftColor: 'var(--dsfr-blue-france)' }}>
-        <p className="font-bold text-sm" style={{ color: 'var(--dsfr-blue-france)' }}>Recapitulatif de votre session :</p>
+        <p className="font-bold text-sm" style={{ color: 'var(--dsfr-blue-france)' }}>Recapitulatif de ta session :</p>
         <ul className="space-y-1 list-none pl-0">
           <li>Scenario joue : <strong>{getScenarioLabel(scenarioChoisi)}</strong></li>
           <li className="flex items-center gap-1 flex-wrap">

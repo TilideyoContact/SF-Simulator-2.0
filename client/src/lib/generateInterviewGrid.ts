@@ -173,7 +173,7 @@ export function generateInterviewGrid(scenario: string) {
   doc.setFont('Helvetica', 'normal');
   doc.setFontSize(8);
   doc.setTextColor('#666666');
-  const subtitle = 'Remplissez cette grille avant et pendant votre entretien réel pour structurer votre échange. L\'aide-mémoire méthodologique est en page suivante.';
+  const subtitle = 'Remplis cette grille avant et pendant ton entretien réel pour structurer ton échange. L\'aide-mémoire méthodologique est en page suivante.';
   const subLines = doc.splitTextToSize(subtitle, cw);
   for (const line of subLines) {
     doc.text(line, m, y);
@@ -578,7 +578,7 @@ export function generateInterviewGrid(scenario: string) {
   doc.setFont('Helvetica', 'normal');
   doc.setFontSize(7);
   doc.setTextColor('#666666');
-  const rappel = 'Rappel : Cet outil accompagne votre développement managérial. Il n\'est ni un support d\'évaluation ni un document RH. Les informations restent confidentielles et à votre usage personnel.';
+  const rappel = 'Rappel : Cet outil accompagne ton développement managérial. Il n\'est ni un support d\'évaluation ni un document RH. Les informations restent confidentielles et à ton usage personnel.';
   const rappelLines = doc.splitTextToSize(rappel, cw - 6);
   let ry = y + 4;
   for (const rl of rappelLines) {

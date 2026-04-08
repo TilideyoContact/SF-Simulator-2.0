@@ -1,0 +1,84 @@
+## Ajout d'un bouton retour pendant les étapes de configuration
+
+  ### Problème
+  Actuellement, si le manager fait une erreur de sélection pendant les étapes de configuration
+  (profil, baromètre, DISC, relation, etc.), il doit tout recommencer depuis le début. Il n'y a
+   aucun bouton "retour" pour revenir à l'étape précédente.
+
+  ### Ce qu'il faut faire
+  Ajouter un bouton "Retour" discret sur chaque étape de configuration (Step2 à Step15), qui
+  ramène à l'étape précédente sans perdre les données déjà saisies.
+
+  ### Implémentation
+
+  Le store Zustand a déjà une méthode `prevStep()` qui gère la navigation arrière selon le mode
+   (rapide/avancé). Il suffit d'ajouter un bouton qui l'appelle.
+
+  #### 1. Créer un composant réutilisable `BackButton`
+
+  Crée un petit composant (soit dans un fichier séparé `client/src/components/BackButton.tsx`,
+  soit directement inline) :
+
+  ```tsx
+  import { ArrowLeft } from 'lucide-react';
+  import { useParcoursStore } from '@/lib/store';
+
+  export function BackButton() {
+    const { prevStep, currentStep } = useParcoursStore();
+
+    // Ne pas afficher sur la première étape (Step1)
+    if (currentStep <= 1) return null;
+
+    // Ne pas afficher pendant la simulation (steps 16-17) ni après
+    if (currentStep >= 16) return null;
+
+    return (
+      <button
+        onClick={() => prevStep()}
+        className="flex items-center gap-1.5 text-sm text-[var(--dsfr-grey-425)]
+  hover:text-[var(--dsfr-blue-france)] transition-colors mb-2"
+      >
+        <ArrowLeft className="w-4 h-4" />
+        Retour
+      </button>
+    );
+  }
+
+  2. Intégrer dans ChatPage.tsx
+
+  Dans le rendu du StepRenderer (ChatPage.tsx), ajoute <BackButton /> juste au-dessus du
+  composant de step actuel. De cette façon, il apparaît automatiquement sur toutes les étapes
+  de configuration sans modifier chaque composant individuellement.
+
+  Cherche l'endroit où les steps sont rendus (le switch/case ou le mapping step → composant) et
+   ajoute le BackButton juste avant :
+
+  import { BackButton } from '@/components/BackButton';
+
+  // Dans le rendu, juste avant le composant de step :
+  <BackButton />
+  {renderCurrentStep()}
+
+  3. Vérifications
+
+  Le bouton doit :
+  - Apparaître sur les étapes 2 à 15 (configuration)
+  - NE PAS apparaître sur Step1 (accueil — c'est la première étape)
+  - NE PAS apparaître pendant la simulation (steps 16+)
+  - NE PAS apparaître sur les étapes d'analyse et feedback (steps 18+)
+  - Conserver toutes les données déjà saisies quand on revient en arrière (le store garde
+  l'état)
+
+  Style
+
+  - Discret, en haut à gauche de la zone de contenu
+  - Texte gris qui passe en bleu au hover
+  - Icône flèche gauche (ArrowLeft de lucide-react)
+  - Pas de background, pas de bordure — juste un lien textuel
+
+  Test
+
+  - Fais un parcours, arrive à Step12 (relation) → clique Retour → vérifie que tu reviens à
+  Step11 (DISC) avec la sélection DISC toujours en place
+  - Vérifie que le bouton n'apparaît pas sur Step1 ni pendant la simulation
+  - Vérifie que revenir en arrière puis avancer ne casse pas le flow

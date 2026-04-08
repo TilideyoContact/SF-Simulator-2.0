@@ -156,7 +156,7 @@ export async function registerRoutes(
       } catch (err) {
         console.error('OpenAI respond error, using fallback:', err);
         response = {
-          message: "Je comprends ce que vous dites. Pouvez-vous developper votre pensee ?",
+          message: "Je comprends ce que tu dis. Peux-tu developper ta pensee ?",
           isFinished: (tourActuel || 0) >= (tourMax || 7) - 1,
         };
       }
@@ -284,9 +284,9 @@ function generateFallbackFirstMessage(disc: string, etatEsprit: string, prenomFi
     consciencieux: `*[${prenomFictif} entre avec un dossier sous le bras et s'installe en sortant un stylo.]*`,
   };
   const greetings: Record<string, string> = {
-    dominant: `Bonjour. Vous vouliez me voir ? Allons droit au but.`,
-    influent: `Bonjour ! Comment ca va ? Vous aviez quelque chose a me dire ?`,
-    stable: `Bonjour. Vous m'avez demande de passer. Je vous ecoute.`,
+    dominant: `Bonjour. Tu voulais me voir ? Allons droit au but.`,
+    influent: `Bonjour ! Comment ca va ? Tu avais quelque chose a me dire ?`,
+    stable: `Bonjour. Tu m'as demande de passer. Je t'ecoute.`,
     consciencieux: `Bonjour. J'ai prepare quelques notes. Quel est l'ordre du jour ?`,
   };
   const stage = stageDirections[disc] || stageDirections.stable;
@@ -321,8 +321,8 @@ function generateFallbackAnalysis(messages: Array<{ role: string; content: strin
     ecoute,
     assertivite,
     global,
-    pointsForts: ["Vous avez mene l'entretien jusqu'au bout."],
-    axesProgression: ["Structurez davantage votre discours avec la methode DESC."],
-    conseilCle: "Continuez a pratiquer pour progresser.",
+    pointsForts: ["Tu as mene l'entretien jusqu'au bout."],
+    axesProgression: ["Structure davantage ton discours avec la methode DESC."],
+    conseilCle: "Continue a pratiquer pour progresser.",
   };
 }

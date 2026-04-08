@@ -36,13 +36,13 @@ export function Step19Scores() {
         assertivite: 3,
         global: 3,
         pointsForts: [
-          "Vous avez engage la conversation de maniere professionnelle",
-          "Votre approche etait structuree et claire",
+          "Tu as engage la conversation de maniere professionnelle",
+          "Ton approche etait structuree et claire",
         ],
         axesProgression: [
-          "Pensez a reformuler davantage les propos de votre collaborateur pour montrer votre ecoute",
+          "Pense a reformuler davantage les propos de ton collaborateur pour montrer ton ecoute",
         ],
-        conseilCle: "L'ecoute active est la cle : montrez que vous comprenez avant de proposer des solutions.",
+        conseilCle: "L'ecoute active est la cle : montre que tu comprends avant de proposer des solutions.",
       });
     } finally {
       setLoading(false);
@@ -70,7 +70,7 @@ export function Step19Scores() {
       <div className="text-center">
         <div className="flex items-center justify-center gap-2">
           <BarChart3 className="w-6 h-6" style={{ color: 'var(--dsfr-blue-france)' }} />
-          <h3 className="text-xl font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>Resultats de votre simulation</h3>
+          <h3 className="text-xl font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>Resultats de ta simulation</h3>
         </div>
       </div>
 
@@ -98,7 +98,7 @@ export function Step19Scores() {
       </div>
 
       <p className="text-xs text-[var(--dsfr-grey-425)] italic text-center">
-        Rappel : cet outil est un entrainement, pas une evaluation. Ce score est un repere personnel pour votre progression.
+        Rappel : cet outil est un entrainement, pas une evaluation. Ce score est un repere personnel pour ta progression.
       </p>
 
       <Button data-testid="button-see-feedback" onClick={() => nextStep()} className="w-full">
@@ -142,7 +142,7 @@ export function Step20Feedback() {
         <div className="space-y-2">
           <div className="flex items-center gap-2" style={{ color: 'var(--dsfr-success)' }}>
             <CheckCircle className="w-4 h-4" />
-            <span className="font-bold text-sm">Ce que vous avez bien fait :</span>
+            <span className="font-bold text-sm">Ce que tu as bien fait :</span>
           </div>
           <ul className="space-y-1.5 text-sm pl-1">
             {analyse.pointsForts.map((p, i) => (
@@ -216,7 +216,7 @@ export function Step21Ressources() {
   // Ressources conditionnelles croisées axe×scénario (BLOC D2 section 7)
   if (sc === 'feedback_recadrage') {
     if (analyse.clarte <= 3) resources.push({ id: 'desc', label: 'Fiche DESC + DEPAR', subtitle: 'Structurer un feedback factuel sans jugement (Smartpocket Cegos)', icon: <BookOpen className="w-5 h-5" /> });
-    if (analyse.ecoute <= 3) resources.push({ id: 'ecoute', label: 'Tuto ecoute active + reformulation', subtitle: 'Techniques pour montrer que vous comprenez avant de proposer', icon: <BookOpen className="w-5 h-5" /> });
+    if (analyse.ecoute <= 3) resources.push({ id: 'ecoute', label: 'Tuto ecoute active + reformulation', subtitle: 'Techniques pour montrer que tu comprends avant de proposer', icon: <BookOpen className="w-5 h-5" /> });
     if (tc === 'pairs' && analyse.assertivite <= 3) resources.push({ id: 'influence', label: 'Methode Ecouter puis JE + principes PPC', subtitle: 'Influence entre pairs sans rapport hierarchique', icon: <BookOpen className="w-5 h-5" /> });
     if (tc !== 'pairs' && analyse.assertivite <= 3) resources.push({ id: 'assert', label: 'Fiche OK+/OK+ et posture assertive', subtitle: 'Positions de vie et regle du JE pour un cadrage bienveillant', icon: <BookOpen className="w-5 h-5" /> });
   } else if (sc === 'feedback_positif') {
@@ -229,8 +229,8 @@ export function Step21Ressources() {
     if (analyse.assertivite <= 3) resources.push({ id: 'suivi', label: 'Fiche suivi post-decision', subtitle: 'Accompagnement, perspectives et suivi apres une annonce difficile', icon: <BookOpen className="w-5 h-5" /> });
   }
 
-  if (analyse.global >= 4) resources.push({ id: 'complex', label: 'Scenario plus complexe', subtitle: 'Testez-vous avec un profil plus exigeant', icon: <TrendingUp className="w-5 h-5" /> });
-  resources.push({ id: 'replay', label: 'Rejouer ce scenario', subtitle: 'Comparer votre progression', icon: <RefreshCw className="w-5 h-5" /> });
+  if (analyse.global >= 4) resources.push({ id: 'complex', label: 'Scenario plus complexe', subtitle: 'Teste-toi avec un profil plus exigeant', icon: <TrendingUp className="w-5 h-5" /> });
+  resources.push({ id: 'replay', label: 'Rejouer ce scenario', subtitle: 'Comparer ta progression', icon: <RefreshCw className="w-5 h-5" /> });
 
   return (
     <div className="space-y-6">

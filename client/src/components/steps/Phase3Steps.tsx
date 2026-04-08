@@ -74,10 +74,10 @@ export function Step11Disc() {
           Profil du collaborateur
         </h3>
         <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">
-          Pour le scenario <strong>"{getScenarioLabel(scenarioChoisi)}"</strong>, choisissez le type de personnalite de votre collaborateur.
+          Pour le scenario <strong>"{getScenarioLabel(scenarioChoisi)}"</strong>, choisis le type de personnalite de ton collaborateur.
         </p>
         <p className="text-xs text-[var(--dsfr-grey-425)] mt-1">
-          Votre collaborateur s'appellera <strong className="text-foreground">{persona.prenomFictif}</strong>.
+          Ton collaborateur s'appellera <strong className="text-foreground">{persona.prenomFictif}</strong>.
         </p>
       </div>
 
@@ -115,7 +115,7 @@ export function Step11Disc() {
                 ))}
               </div>
               <p className="text-xs italic">
-                En choisissant un profil pour votre collaborateur virtuel, vous adaptez le niveau de difficulte et le realisme de la simulation.
+                En choisissant un profil pour ton collaborateur virtuel, tu adaptes le niveau de difficulte et le realisme de la simulation.
               </p>
             </div>
           </DialogContent>
@@ -280,7 +280,7 @@ export function Step13EtatEsprit() {
         <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>
           Etat d'esprit du collaborateur
         </h3>
-        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Dans quel etat d'esprit souhaitez-vous que votre collaborateur se trouve au debut ?</p>
+        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Dans quel etat d'esprit souhaites-tu que ton collaborateur se trouve au debut ?</p>
       </div>
       <ChatCardSingle
         selected={persona.etatEsprit}
@@ -307,12 +307,12 @@ export function Step14RecapPersona() {
         <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>
           Recapitulatif avant simulation
         </h3>
-        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Verifiez votre configuration avant de demarrer</p>
+        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Verifie ta configuration avant de demarrer</p>
       </div>
 
       {(profil || typeCollab || objectifs.length > 0) && (
         <div className="bg-[var(--dsfr-blue-france-light)] p-4 space-y-2 border-l-[3px]" style={{ borderLeftColor: 'var(--dsfr-blue-france)' }}>
-          <p className="font-bold text-xs uppercase tracking-wider" style={{ color: 'var(--dsfr-blue-france)' }}>Votre profil :</p>
+          <p className="font-bold text-xs uppercase tracking-wider" style={{ color: 'var(--dsfr-blue-france)' }}>Ton profil :</p>
           <ul className="space-y-1 list-none pl-0 text-xs text-[var(--dsfr-grey-425)]">
             {profil && (
               <li>Role : <strong className="text-foreground">{getProfilLabel(profil)}</strong>

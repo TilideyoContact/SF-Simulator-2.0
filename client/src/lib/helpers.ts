@@ -95,11 +95,11 @@ export function getDifficultyStars(d: DifficultyLevel): number {
 export function getPersonaDescription(disc: DiscProfil, relation: Relation, etatEsprit: EtatEsprit): string {
   const descriptions: Record<string, Record<string, string>> = {
     stable: {
-      default: 'un collaborateur cooperatif et a l\'ecoute, qui cherchera des solutions avec vous',
+      default: 'un collaborateur cooperatif et a l\'ecoute, qui cherchera des solutions avec toi',
       tendue: 'un collaborateur reserve mais loyal, qui aura besoin de temps pour s\'ouvrir',
     },
     dominant: {
-      default: 'un collaborateur direct et impatient, qui challengera vos arguments et demandera des actions concretes rapidement',
+      default: 'un collaborateur direct et impatient, qui challengera tes arguments et demandera des actions concretes rapidement',
       bonne: 'un collaborateur energique et oriente resultats, ouvert mais exigeant',
     },
     consciencieux: {
@@ -157,38 +157,38 @@ export function getTheoryContent(scenario: Scenario): { title: string; methods: 
       methods: [
         'Methode DESC : Decrire les faits, Exprimer le ressenti, Specifier les attentes, Conclure positivement',
         'Methode DEPAR : Demander, Ecouter, Proposer, Agir ensemble, Recapituler',
-        'Technique du JE : Formuler en "je constate" plutot que "vous faites"',
+        'Technique du JE : Formuler en "je constate" plutot que "tu fais"',
       ],
       tips: [
-        'Commencez par reconnaitre ce qui fonctionne bien',
-        'Soyez factuel et specifique dans vos observations',
-        'Proposez un plan d\'action co-construit',
+        'Commence par reconnaitre ce qui fonctionne bien',
+        'Sois factuel et specifique dans tes observations',
+        'Propose un plan d\'action co-construit',
       ],
     },
     feedback_positif: {
       title: 'Methodes cles pour le feedback positif',
       methods: [
-        'Soyez specifique : citez des faits precis plutot que des generalites',
-        'Reliez la performance aux objectifs de l\'equipe',
-        'Encouragez le developpement : montrez les perspectives d\'evolution',
+        'Sois specifique : cite des faits precis plutot que des generalites',
+        'Relie la performance aux objectifs de l\'equipe',
+        'Encourage le developpement : montre les perspectives d\'evolution',
       ],
       tips: [
-        'Faites le feedback au plus pres de l\'action',
-        'Evitez le "mais" apres un compliment',
-        'Demandez au collaborateur comment il percoit sa performance',
+        'Fais le feedback au plus pres de l\'action',
+        'Evite le "mais" apres un compliment',
+        'Demande au collaborateur comment il percoit sa performance',
       ],
     },
     decision_difficile: {
       title: 'Methodes cles pour annoncer une decision difficile',
       methods: [
-        'Annoncez la decision clairement des le debut',
-        'Expliquez le contexte et les raisons factuelles',
-        'Laissez un espace d\'expression pour les reactions',
+        'Annonce la decision clairement des le debut',
+        'Explique le contexte et les raisons factuelles',
+        'Laisse un espace d\'expression pour les reactions',
       ],
       tips: [
-        'Ne tournez pas autour du pot, soyez direct mais empathique',
-        'Preparez-vous aux differentes reactions possibles',
-        'Proposez un accompagnement pour la suite',
+        'Ne tourne pas autour du pot, sois direct mais empathique',
+        'Prepare-toi aux differentes reactions possibles',
+        'Propose un accompagnement pour la suite',
       ],
     },
   };

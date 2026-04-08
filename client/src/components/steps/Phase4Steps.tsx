@@ -28,14 +28,14 @@ export function Step15PreSimulation() {
           Pret(e) a commencer ?
         </h3>
         <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">
-          Pour le scenario <strong>"{getScenarioLabel(scenarioChoisi)}"</strong> avec {desc ? desc : 'votre collaborateur'}, que preferez-vous ?
+          Pour le scenario <strong>"{getScenarioLabel(scenarioChoisi)}"</strong> avec {desc ? desc : 'ton collaborateur'}, que preferes-tu ?
         </p>
       </div>
       <div className="flex items-start gap-2.5 p-3 rounded-lg bg-[var(--dsfr-success-bg,#f6fef9)] border border-[var(--dsfr-success,#18753C)]20">
         <ShieldCheck className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: 'var(--dsfr-success, #18753C)' }} />
         <div className="text-xs text-[var(--dsfr-grey-425)]">
           <p className="font-bold text-[var(--dsfr-success, #18753C)] mb-0.5">Cadre securise et anonyme</p>
-          <p>Cet exercice est strictement confidentiel. Vos resultats ne sont visibles que par vous et ne constituent en aucun cas une evaluation hierarchique. Installez-vous dans un endroit calme pour profiter pleinement de la simulation.</p>
+          <p>Cet exercice est strictement confidentiel. Tes resultats ne sont visibles que par toi et ne constituent en aucun cas une evaluation hierarchique. Installe-toi dans un endroit calme pour profiter pleinement de la simulation.</p>
         </div>
       </div>
 
@@ -119,9 +119,9 @@ export function Step15c() {
             </li>
           </ul>
         </div>
-        <p className="text-sm"><strong>Vous jouez le role du manager. L'IA joue le role du collaborateur.</strong></p>
-        <p className="text-sm">Ecrivez votre premiere intervention comme si vous commenciez l'entretien. L'echange durera environ <strong>{tourMax} tours</strong>.</p>
-        <p className="text-xs text-[var(--dsfr-grey-425)] italic">A tout moment, tapez "/fin" pour terminer la simulation.</p>
+        <p className="text-sm"><strong>Tu joues le role du manager. L'IA joue le role du collaborateur.</strong></p>
+        <p className="text-sm">Ecris ta premiere intervention comme si tu commencais l'entretien. L'echange durera environ <strong>{tourMax} tours</strong>.</p>
+        <p className="text-xs text-[var(--dsfr-grey-425)] italic">A tout moment, tape "/fin" pour terminer la simulation.</p>
       </div>
     </div>
   );

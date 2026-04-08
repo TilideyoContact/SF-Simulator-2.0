@@ -10,15 +10,15 @@ import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/
 const SCENARIO_CONTEXT: Record<string, { title: string; desc: string }> = {
   feedback_recadrage: {
     title: 'Feedback / Recadrage',
-    desc: 'Vous allez vous entrainer a recadrer un collaborateur tout en preservant la qualite de votre relation professionnelle.',
+    desc: 'Tu vas t\'entrainer a recadrer un collaborateur tout en preservant la qualite de ta relation professionnelle.',
   },
   feedback_positif: {
     title: 'Feedback positif',
-    desc: 'Vous allez vous entrainer a donner un feedback valorisant, precis et structurant pour motiver votre collaborateur.',
+    desc: 'Tu vas t\'entrainer a donner un feedback valorisant, precis et structurant pour motiver ton collaborateur.',
   },
   decision_difficile: {
     title: 'Decision difficile',
-    desc: 'Vous allez vous entrainer a annoncer une decision difficile ou non negociable avec clarte et empathie.',
+    desc: 'Tu vas t\'entrainer a annoncer une decision difficile ou non negociable avec clarte et empathie.',
   },
 };
 
@@ -43,9 +43,9 @@ export function Step1Welcome() {
           </h2>
         </div>
         <div className="text-sm sm:text-base text-[var(--dsfr-grey-425)] max-w-2xl mx-auto leading-relaxed space-y-2">
-          <p>Bienvenue dans un simulateur conversationnel dédié à la conduite de vos entretiens managériaux, dans un cadre respectant la confidentialité.</p>
-          <p>Cet outil vous accompagne dans leur préparation, qu'il s'agisse d'entretiens visant à soutenir, reconnaître, projeter ou à aborder des situations plus sensibles.</p>
-          <p>Et à l'issue de votre simulation, un débriefing détaillé vous sera proposé ainsi que des fiches pratiques utiles.</p>
+          <p>Bienvenue dans un simulateur conversationnel dédié à la conduite de tes entretiens managériaux, dans un cadre respectant la confidentialité.</p>
+          <p>Cet outil t'accompagne dans leur préparation, qu'il s'agisse d'entretiens visant à soutenir, reconnaître, projeter ou à aborder des situations plus sensibles.</p>
+          <p>Et à l'issue de ta simulation, un débriefing détaillé te sera proposé ainsi que des fiches pratiques utiles.</p>
         </div>
       </div>
 
@@ -59,12 +59,12 @@ export function Step1Welcome() {
           </AccordionTrigger>
           <AccordionContent>
             <div className="p-4 bg-white dark:bg-[var(--dsfr-grey-950)] border border-[var(--dsfr-grey-850)] rounded-xl">
-              <p className="text-sm font-medium mb-3 text-foreground">Avant de commencer, nous vous invitons à :</p>
+              <p className="text-sm font-medium mb-3 text-foreground">Avant de commencer, nous t'invitons à :</p>
               <ul className="text-sm text-[var(--dsfr-grey-425)] space-y-2 list-disc list-inside">
                 <li>prendre le temps nécessaire pour réaliser la simulation</li>
-                <li>éteindre votre téléphone</li>
-                <li>vous isoler</li>
-                <li>mettre votre casque</li>
+                <li>éteindre ton téléphone</li>
+                <li>t'isoler</li>
+                <li>mettre ton casque</li>
               </ul>
             </div>
           </AccordionContent>
@@ -90,13 +90,13 @@ export function Step1Welcome() {
                 <li>Feedback positif</li>
                 <li>Décision difficile</li>
               </ul>
-              <p className="text-sm text-[var(--dsfr-grey-425)] mb-4">Ces scénarios sont issus de la remontée des besoins prioritaires exprimés par des managers. À vous de jouer en cliquant sur l'un des scénarios proposés !</p>
+              <p className="text-sm text-[var(--dsfr-grey-425)] mb-4">Ces scénarios sont issus de la remontée des besoins prioritaires exprimés par des managers. À toi de jouer en cliquant sur l'un des scénarios proposés !</p>
               <p className="text-sm font-medium mb-3 text-foreground">Comment ça fonctionne :</p>
               <ol className="text-sm text-[var(--dsfr-grey-425)] space-y-2 list-decimal list-inside">
-                <li>Choisissez un scénario dans le menu ou ci-dessus</li>
-                <li>Répondez à quelques questions de profilage (mode avancé) ou passez directement (mode rapide)</li>
-                <li>Configurez le profil de votre collaborateur virtuel</li>
-                <li>Jouez la simulation puis recevez une analyse de votre performance</li>
+                <li>Choisis un scénario dans le menu ou ci-dessus</li>
+                <li>Réponds à quelques questions de profilage (mode avancé) ou passe directement (mode rapide)</li>
+                <li>Configure le profil de ton collaborateur virtuel</li>
+                <li>Joue la simulation puis reçois une analyse de ta performance</li>
               </ol>
             </div>
           </AccordionContent>
@@ -113,9 +113,9 @@ export function Step1Welcome() {
             <div className="p-4 bg-white dark:bg-[var(--dsfr-grey-950)] border border-[var(--dsfr-grey-850)] rounded-xl">
               <ol className="text-sm text-[var(--dsfr-grey-425)] space-y-3 list-inside" style={{ listStyleType: 'lower-alpha' }}>
                 <li><strong>Préparer le contenu de l'entretien</strong> (possible partage en ELD) : thème abordé, faits concrets (exemples précis, datés, factuels), éventuels rappels à la règle ou aux procédures, objectifs dont détermination des impacts.</li>
-                <li><strong>Proposer un créneau pour le rendez-vous</strong> dans un lieu calme, neutre et confidentiel : soyez clairs sur le but de l'entretien (feedback, reconnaissance, annonce difficile...). Cela vous aidera à structurer votre échange et à rester cohérent.</li>
-                <li><strong>Se préparer à aborder sereinement l'entretien</strong> : Soyez apaisé et concentré avant l'entretien. Prenez quelques minutes pour vous recentrer si nécessaire, afin d'aborder l'échange avec sérénité.</li>
-                <li><strong>Lors de l'entretien</strong> : restez factuels, adopter une posture assertive, faire preuve d'écoute active (reformulation…) et d'agilité…</li>
+                <li><strong>Proposer un créneau pour le rendez-vous</strong> dans un lieu calme, neutre et confidentiel : sois clair sur le but de l'entretien (feedback, reconnaissance, annonce difficile...). Cela t'aidera à structurer ton échange et à rester cohérent.</li>
+                <li><strong>Se préparer à aborder sereinement l'entretien</strong> : Sois apaisé et concentré avant l'entretien. Prends quelques minutes pour te recentrer si nécessaire, afin d'aborder l'échange avec sérénité.</li>
+                <li><strong>Lors de l'entretien</strong> : reste factuel, adopte une posture assertive, fais preuve d'écoute active (reformulation…) et d'agilité…</li>
                 <li><strong>Assurer un suivi</strong> : une formalisation est préconisée pour tout entretien.</li>
               </ol>
             </div>
@@ -178,9 +178,9 @@ export function Step2Profil() {
     <div className="space-y-6">
       <div className="text-center">
         <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>
-          Votre niveau de responsabilite
+          Ton niveau de responsabilite
         </h3>
-        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Pour mieux adapter mes conseils, quel est votre niveau de responsabilite manageriale ?</p>
+        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Pour mieux adapter mes conseils, quel est ton niveau de responsabilite manageriale ?</p>
       </div>
       <ChatCardSingle
         selected={profil}
@@ -222,11 +222,11 @@ export function Step3Barometre() {
         <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>
           Barometre de contexte
         </h3>
-        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Deux questions rapides sur votre contexte actuel pour mieux calibrer la simulation.</p>
+        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Deux questions rapides sur ton contexte actuel pour mieux calibrer la simulation.</p>
       </div>
 
       <div className="space-y-4">
-        <p className="text-sm font-medium text-foreground">Comment evaluez-vous la qualite de vie au travail de votre equipe actuellement ?</p>
+        <p className="text-sm font-medium text-foreground">Comment evalues-tu la qualite de vie au travail de ton equipe actuellement ?</p>
         <ChatCardSingle
           selected={qvt}
           onSelect={handleQvt}
@@ -240,7 +240,7 @@ export function Step3Barometre() {
 
       {qvt && (
         <div className="space-y-4">
-          <p className="text-sm font-medium text-foreground">Et l'engagement de vos collaborateurs au quotidien ?</p>
+          <p className="text-sm font-medium text-foreground">Et l'engagement de tes collaborateurs au quotidien ?</p>
           <ChatCardSingle
             selected={engagement}
             onSelect={handleEngagement}
@@ -268,9 +268,9 @@ export function Step4Experience() {
     <div className="space-y-6">
       <div className="text-center">
         <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>
-          Votre experience
+          Ton experience
         </h3>
-        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Depuis combien de temps exercez-vous des fonctions manageriales ?</p>
+        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Depuis combien de temps exerces-tu des fonctions manageriales ?</p>
       </div>
       <ChatCardSingle
         selected={experience}
@@ -302,9 +302,9 @@ export function Step5Objectifs() {
     <div className="space-y-6">
       <div className="text-center">
         <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>
-          Vos objectifs
+          Tes objectifs
         </h3>
-        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Qu'est-ce qui vous amene a utiliser cet outil aujourd'hui ? Vous pouvez selectionner plusieurs reponses.</p>
+        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Qu'est-ce qui t'amene a utiliser cet outil aujourd'hui ? Tu peux selectionner plusieurs reponses.</p>
       </div>
       <div className="space-y-3">
         <ChatCardMulti
@@ -346,7 +346,7 @@ export function Step6Difficultes() {
         <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>
           Etape la plus delicate
         </h3>
-        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Quelle etape de l'entretien vous semble la plus delicate ?</p>
+        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Quelle etape de l'entretien te semble la plus delicate ?</p>
       </div>
       <div className="space-y-3">
         <ChatCardMulti
@@ -384,7 +384,7 @@ export function Step7TypeCollab() {
         <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>
           Type de collaborateur
         </h3>
-        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Avec quel type de collaborateur aurez-vous votre entretien ?</p>
+        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Avec quel type de collaborateur auras-tu ton entretien ?</p>
       </div>
       <ChatCardSingle
         selected={typeCollab}
@@ -438,7 +438,7 @@ export function Step8Complement() {
         <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>
           Informations complementaires
         </h3>
-        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Avez-vous d'autres elements a preciser ? Vous pouvez joindre une fiche de poste, un descriptif d'activite, ou tout autre document.</p>
+        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">As-tu d'autres elements a preciser ? Tu peux joindre une fiche de poste, un descriptif d'activite, ou tout autre document.</p>
       </div>
       <div className="space-y-3">
         <Textarea
@@ -471,7 +471,7 @@ export function Step8Complement() {
           />
           <Upload className="w-8 h-8 mx-auto mb-2" style={{ color: 'var(--dsfr-blue-france)' }} />
           <p className="text-sm font-medium" style={{ color: 'var(--dsfr-blue-france)' }}>
-            Glissez vos fichiers ici ou cliquez pour parcourir
+            Glisse tes fichiers ici ou clique pour parcourir
           </p>
           <p className="text-xs text-[var(--dsfr-grey-425)] mt-1">
             PDF, Word, Excel, images (max 10 Mo)
