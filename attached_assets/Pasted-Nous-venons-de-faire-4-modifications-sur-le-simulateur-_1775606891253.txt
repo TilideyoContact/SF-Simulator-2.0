@@ -1,0 +1,47 @@
+Nous venons de faire 4 modifications sur le simulateur. Vérifie que tout fonctionne correctement
+   en testant chaque point :
+
+  ## Modifications à vérifier
+
+  ### 1. Écran d'accueil refondu (Phase1Steps.tsx — Step1Welcome)
+  - Le message d'accueil enrichi s'affiche (3 paragraphes : confidentialité, préparation,
+  débriefing)
+  - Les 3 onglets interactifs apparaissent avec icônes :
+    - "Conseils d'utilisation" → 4 bullets (temps, téléphone, isoler, casque)
+    - "Mode d'emploi" → explication des 2 modes + 3 scénarios + "À vous de jouer"
+    - "Pré-requis" → 5 points (a→e) avec préparation, créneau, sérénité, posture, suivi
+  - Les tooltips natifs apparaissent au survol de chaque onglet
+  - Les boutons Mode avancé / Mode rapide sont toujours en dessous et fonctionnent
+
+  ### 2. Tutoiement par défaut (openai.ts — BLOC A1)
+  - Lance une simulation en mode agent → le collaborateur IA doit tutoyer le manager (plus de
+  "vous")
+  - Lance une simulation en mode manager → idem, tutoiement
+  - Lance une simulation en mode pairs → tutoiement (inchangé)
+  - Vérifie que le tutoiement est cohérent tout au long de la conversation
+
+  ### 3. Profils collaborateur stabilisés (openai.ts — system prompt)
+  - Lance une simulation feedback/recadrage → l'IA ne doit PAS proposer de liste de "profils
+  types"
+  - Lance une simulation feedback positif → idem, pas de liste de profils
+  - Lance une simulation décision difficile → idem
+  - L'IA doit directement incarner le collaborateur configuré (DISC + relation + état d'esprit)
+  sans demander au manager de choisir un profil
+
+  ### 4. Formations dans le débrief (openai.ts — prompt d'analyse)
+  - Termine une simulation et va jusqu'au débrief
+  - Vérifie que l'analyse ne cite PAS de noms de formations institutionnelles inventés (ex:
+  "Formation Prévenir et gérer les situations difficiles")
+  - L'analyse peut recommander des MÉTHODES (DESC, DEPAR, ASAP+D, OK+/OK+) mais pas des titres de
+  formations
+
+  ## Tests à faire
+  - Un parcours complet Mode Avancé (feedback/recadrage, agent, profil DISC dominant, relation 2)
+  jusqu'au débrief
+  - Un parcours complet Mode Rapide (décision difficile) jusqu'au débrief
+  - Vérifier qu'il n'y a pas de régressions sur les steps existants (baromètre, expérience,
+  objectifs, difficultés, type collaborateur, complément)
+  - Vérifier la console navigateur pour erreurs JS
+  - Vérifier les logs serveur pour erreurs API
+
+  Signale tout problème visuel, fonctionnel ou de cohérence.
