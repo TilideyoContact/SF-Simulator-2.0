@@ -482,20 +482,20 @@ export function generateInterviewGrid(scenario: string) {
   y += 1;
 
   const doItems = [
-    '✓ Posture OK+/OK+ — respect mutuel, ni soumission ni domination',
-    '✓ Écoute active — reformuler ce que dit le collaborateur avant de répondre',
-    '✓ Utiliser le JE — « je constate que... », « ce que ça génère chez moi... »',
-    '✓ Laisser des silences — ne pas combler, laisser le temps de réfléchir',
-    '✓ Co-construire — impliquer dans la recherche de solutions',
-    '✓ Vérifier l\'adhésion — « comment tu vois les choses de ton côté ? »',
+    '+ Posture OK+/OK+ — respect mutuel, ni soumission ni domination',
+    '+ Écoute active — reformuler ce que dit le collaborateur avant de répondre',
+    '+ Utiliser le JE — « je constate que... », « ce que ça génère chez moi... »',
+    '+ Laisser des silences — ne pas combler, laisser le temps de réfléchir',
+    '+ Co-construire — impliquer dans la recherche de solutions',
+    '+ Vérifier l\'adhésion — « comment tu vois les choses de ton côté ? »',
   ];
   const dontItems = [
-    '✗ TU accusateur — « tu fais toujours... », « tu n\'es pas... »',
-    '✗ Généralisations — « jamais », « toujours », « tout le monde dit que »',
-    '✗ Jugement sur l\'être — « tu es incompétent / paresseux »',
-    '✗ Monologue — parler sans écouter, couper la parole',
-    '✗ Condescendance — ton paternaliste ou infantilisant',
-    '✗ Minimiser — « c\'est pas grave », « tu exagères »',
+    'x TU accusateur — « tu fais toujours... », « tu n\'es pas... »',
+    'x Généralisations — « jamais », « toujours », « tout le monde dit que »',
+    'x Jugement sur l\'être — « tu es incompétent / paresseux »',
+    'x Monologue — parler sans écouter, couper la parole',
+    'x Condescendance — ton paternaliste ou infantilisant',
+    'x Minimiser — « c\'est pas grave », « tu exagères »',
   ];
 
   const postureHalfW = cw / 2;
