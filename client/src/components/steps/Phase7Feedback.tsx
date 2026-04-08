@@ -7,7 +7,8 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { getScenarioLabel, getDiscLabel, getDifficultyStars, getTypeCollabShortLabel } from '@/lib/helpers';
 import { apiRequest } from '@/lib/queryClient';
-import { Star, RefreshCw, Shuffle, Home } from 'lucide-react';
+import { Star, RefreshCw, Shuffle, Home, Download } from 'lucide-react';
+import { generateInterviewGrid } from '@/lib/generateInterviewGrid';
 import { cn } from '@/lib/utils';
 
 export function Step22Nps() {
@@ -119,6 +120,42 @@ export function Step24Ameliorations() {
           </Button>
         )}
       </div>
+    </div>
+  );
+}
+
+const SUPPORT_MESSAGES: Record<string, string> = {
+  feedback_recadrage: "Tu as travaillé sur le feedback et le recadrage — c'est l'un des exercices managériaux les plus exigeants. Pour t'accompagner dans tes prochains entretiens réels, voici une grille de préparation et un aide-mémoire méthode DESC à garder sous les yeux.",
+  feedback_positif: "Reconnaître et valoriser, c'est un acte managérial puissant. Pour structurer tes prochains feedbacks positifs en entretien réel, voici une grille de préparation et un aide-mémoire méthode MERCI.",
+  decision_difficile: "Annoncer une décision difficile demande du courage et de la méthode. Pour te préparer à tes prochains entretiens d'annonce, voici une grille de préparation et un aide-mémoire structuré.",
+};
+
+export function Step26GrilleEntretien() {
+  const { scenarioChoisi, nextStep } = useParcoursStore();
+  const sc = scenarioChoisi || 'feedback_recadrage';
+  const message = SUPPORT_MESSAGES[sc] || SUPPORT_MESSAGES.feedback_recadrage;
+
+  return (
+    <div className="space-y-6">
+      <div className="text-center">
+        <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>Ta grille d'entretien</h3>
+      </div>
+
+      <div className="bg-[var(--dsfr-blue-france-light)] p-4 rounded-xl text-sm text-[var(--dsfr-grey-425)] leading-relaxed border-l-[3px]" style={{ borderLeftColor: 'var(--dsfr-blue-france)' }}>
+        {message}
+      </div>
+
+      <Button
+        onClick={() => generateInterviewGrid(sc)}
+        className="w-full"
+      >
+        <Download className="w-4 h-4 mr-2" />
+        Télécharger ma grille d'entretien (PDF)
+      </Button>
+
+      <Button data-testid="button-continue-grille" variant="outline" onClick={() => nextStep()} className="w-full">
+        Continuer
+      </Button>
     </div>
   );
 }

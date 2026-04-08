@@ -64,12 +64,12 @@ The app implements a 25-step guided flow organized into 7 phases. Scenario selec
 2. **Persona** (Steps 11-14): DISC personality (redesigned with visual cards + "En savoir plus" modal), relationship quality (1-5 slider), emotional state, recap
 3. **Pre-Simulation** (Step 15-16): Optional theory review, intro message, then simulation start
 4. **Simulation** (Steps 16-18): Live role-play conversation with collaborator, end of simulation
-5. **Analyse** (Steps 19-21): AI-generated performance scores, feedback, and resources
+5. **Analyse** (Steps 19-21, 26): AI-generated performance scores, feedback, resources, and downloadable interview grid PDF
 6. **Feedback** (Steps 22-25): NPS, ratings, improvement suggestions, closing
 
 **Step order**: Step 7 (TypeCollab) → Step 5 (Objectifs) → Step 6 (Étape délicate) → Step 8 (Complément) in both modes
-**Avancé sequence**: `[1, 2, 7, 5, 6, 11, 12, 8, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]`
-**Mode rapide**: `[1, 2, 7, 5, 6, 8, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]` — skips DISC persona config (11, 12, 13), uses defaults (Stable + 3/Neutre + Neutre)
+**Avancé sequence**: `[1, 2, 7, 5, 6, 11, 12, 8, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 25]`
+**Mode rapide**: `[1, 2, 7, 5, 6, 11, 12, 13, 8, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 25]`
 **TypeCollab options**: agent, manager, pairs (3 choices)
 **Relation**: numeric 1-5 scale (1=Tendue, 3=Neutre, 5=Excellente)
 **SKIPPABLE_STEPS**: [5, 6, 8, 11, 12, 13, 24]

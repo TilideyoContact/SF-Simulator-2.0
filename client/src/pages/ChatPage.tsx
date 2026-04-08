@@ -9,7 +9,7 @@ import { Step11Disc, Step12Relation, Step13EtatEsprit, Step14RecapPersona } from
 import { Step15PreSimulation, Step15bTheory, Step15c } from '@/components/steps/Phase4Steps';
 import { SimulationView, Step18EndSimulation } from '@/components/steps/Phase5Simulation';
 import { Step19Scores, Step20Feedback, Step21Ressources } from '@/components/steps/Phase6Analysis';
-import { Step22Nps, Step23Ratings, Step24Ameliorations, Step25Closing } from '@/components/steps/Phase7Feedback';
+import { Step22Nps, Step23Ratings, Step24Ameliorations, Step25Closing, Step26GrilleEntretien } from '@/components/steps/Phase7Feedback';
 
 function StepRenderer({ step }: { step: number }) {
   const { choixPreSimulation } = useParcoursStore();
@@ -38,6 +38,7 @@ function StepRenderer({ step }: { step: number }) {
     case 23: return <Step23Ratings />;
     case 24: return <Step24Ameliorations />;
     case 25: return <Step25Closing />;
+    case 26: return <Step26GrilleEntretien />;
     default: return <Step1Welcome />;
   }
 }

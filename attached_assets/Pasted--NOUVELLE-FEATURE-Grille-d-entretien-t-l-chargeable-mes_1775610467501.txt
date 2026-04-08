@@ -1,0 +1,146 @@
+ ## NOUVELLE FEATURE — Grille d'entretien téléchargeable + message de soutien
+                                                                                                  
+  ### Contexte
+  En plus du rapport de session (déjà implémenté), on veut proposer une grille d'entretien à      
+  remplir — un template vierge pour préparer les prochains entretiens réels. C'est un PDF statique
+   qui s'adapte au scénario joué. Il doit être proposé à la fin du parcours avec un message de
+  soutien dédié.                                                                                  
+                                                         
+  ### Ce qu'il faut faire
+
+  #### 1. Créer `client/src/lib/generateInterviewGrid.ts`                                         
+  
+  Fonction `generateInterviewGrid(scenario: string)` qui génère un PDF A4 de 2 pages selon le     
+  scénario :                                             
+                                                                                                  
+  **Le PDF contient :**                                                                           
+  
+  **PAGE 1 — Grille de préparation à remplir**                                                    
+                                                         
+  En-tête :                                                                                       
+  - "FRANCE TRAVAIL" (bleu #000091) | "SimuManager — Grille d'entretien" | "Grille de préparation"
+   (rouge #E1000F)                                                                                
+  - Titre : "Grille d'entretien — [Nom du scénario]"     
+  - Sous-titre : "Remplissez cette grille avant et pendant votre entretien réel pour structurer   
+  votre échange. L'aide-mémoire méthodologique est en page suivante."                             
+                                                                                                  
+  Cartouche infos (tableau avec bordures) :                                                       
+  - Date | Collaborateur                                 
+  - Lieu | Durée prévue                                                                           
+  - But de l'entretien (sur toute la largeur)            
+                                                                                                  
+  Section "AVANT L'ENTRETIEN — Préparation (J-2 minimum)" (bandeau bleu) :                        
+  Tableau avec colonne label (fond bleu clair) + colonne vide à remplir :                         
+  - Adapté selon le scénario :                                                                    
+    - **feedback_recadrage** : "Faits concrets observés (datés, précis, sans jugement)" | "Règle  
+  ou procédure concernée" | "Impact constaté (sur l'équipe, le service, les usagers)" | "Objectif 
+  visé" | "Ce qui se passe si rien ne change"                                                     
+    - **feedback_positif** : "Action ou comportement à valoriser (précis, daté)" | "Impact positif
+   constaté (équipe, usagers, résultats)" | "Compétence ou valeur illustrée" | "Objectif de       
+  l'entretien" | "Projection envisagée (développement, responsabilités)"
+    - **decision_difficile** : "Décision à annoncer (claire, factuelle)" | "Raisons de la décision
+   (contexte, contraintes)" | "Impact sur le collaborateur" | "Ce qui est non-négociable vs       
+  discutable" | "Accompagnement prévu"
+                                                                                                  
+  Profil collaborateur (checkboxes) :                                                             
+  - Profil probable : ☐ Direct/Décideur | ☐ Expressif/Relationnel | ☐ Stable/Prudent | ☐
+  Analytique/Rigoureux                                                                            
+  - État d'esprit : ☐ Positif | ☐ Neutre | ☐ Stressé | ☐ Agacé
+                                                                                                  
+  Section "PENDANT L'ENTRETIEN — Méthode [NOM]" (bandeau bleu) :                                  
+  Tableau 4 colonnes : Étape | Ce que je prévois de dire/faire | Réaction anticipée | Notes       
+  pendant                                                                                         
+  - Adapté selon le scénario :                           
+    - **feedback_recadrage** : D — Faits (Décrire) | E — Ressenti (Exprimer en JE) | S — Solution 
+  (Co-construire) | C — Conclusion (Engager)                                                      
+    - **feedback_positif** : M — Mentionner (l'action précise) | E — Expliquer (l'impact) | R —   
+  Relier (à l'équipe/valeurs) | C — Conclure (projeter) | I — Impliquer (prochaine étape)         
+    - **decision_difficile** : Cadrer (poser le contexte) | Annoncer (nommer la décision) |
+  Accueillir (écouter la réaction) | Tenir (rester ferme) | Accompagner (perspectives)            
+                                                         
+  Section "APRÈS L'ENTRETIEN — Formaliser et suivre" (bandeau vert #18753C) :                     
+  Tableau : Engagements pris | Par qui | Échéance | Fait ☐ (3 lignes vides)
+  Champ : "Mon auto-évaluation — Ce qui a fonctionné / ce que j'améliorerai la prochaine fois"    
+                                                                                                  
+  Footer : "SimuManager — ChatFT × France Travail | Développement des compétences managériales |  
+  Document confidentiel"                                                                          
+                                                                                                  
+  **PAGE 2 — Aide-mémoire**                              
+
+  En-tête : même style, label "Aide-mémoire"                                                      
+  Titre : "Aide-mémoire — [Nom du scénario]"
+  Sous-titre : "Gardez cette page sous les yeux pendant l'entretien. Elle résume la méthode, la   
+  posture et les formulations clés."                                                              
+  
+  Méthode visuelle (adapté au scénario) :                                                         
+  - **feedback_recadrage** : Tableau 4 colonnes D | E | S | C avec lettres grandes, titres,
+  descriptions. + Variante DEPAR en dessous (5 colonnes plus compactes)                           
+  - **feedback_positif** : Tableau 5 colonnes M | E | R | C | I avec mêmes niveaux de détail
+  - **decision_difficile** : Tableau 5 colonnes : Cadrer | Annoncer | Accueillir | Tenir |        
+  Accompagner                                            
+                                                                                                  
+  Posture managériale — OK+/OK+ :                                                                 
+  Tableau 2 colonnes "À FAIRE" (fond vert) et "À ÉVITER" (fond rouge), 6 lignes :
+  - ✓ Posture OK+/OK+ | ✗ TU accusateur                                                           
+  - ✓ Écoute active | ✗ Généralisations                                                           
+  - ✓ Utiliser le JE | ✗ Jugement sur l'être                                                      
+  - ✓ Laisser des silences | ✗ Monologue                                                          
+  - ✓ Co-construire | ✗ Condescendance                                                            
+  - ✓ Vérifier l'adhésion | ✗ Minimiser                                                           
+                                                                                                  
+  Phrases prêtes à l'emploi (adapté au scénario) :                                                
+  Tableau 2 colonnes : Label | Phrase en italique                                                 
+  - **feedback_recadrage** : Ouvrir / Faits / Ressenti / Écouter / Co-construire / Conclure       
+  - **feedback_positif** : Ouvrir / Valoriser / Impact / Projeter / Impliquer / Conclure          
+  - **decision_difficile** : Ouvrir / Annoncer / Accueillir / Tenir / Accompagner / Conclure      
+                                                                                                  
+  Rappel non-évaluatif en encadré gris en bas.                                                    
+  Footer identique.                                                                               
+                                                                                                  
+  #### 2. Créer un nouveau Step dans Phase7Feedback.tsx ou Phase6Analysis.tsx                     
+  
+  Ajouter un **Step26GrilleEntretien** (ou intégrer dans Step25Closing) qui affiche :             
+                                                         
+  Message de soutien personnalisé selon le scénario :                                             
+  - **feedback_recadrage** : "Tu as travaillé sur le feedback et le recadrage — c'est l'un des
+  exercices managériaux les plus exigeants. Pour t'accompagner dans tes prochains entretiens      
+  réels, voici une grille de préparation et un aide-mémoire méthode DESC à garder sous les yeux."
+  - **feedback_positif** : "Reconnaître et valoriser, c'est un acte managérial puissant. Pour     
+  structurer tes prochains feedbacks positifs en entretien réel, voici une grille de préparation  
+  et un aide-mémoire méthode MERCI."
+  - **decision_difficile** : "Annoncer une décision difficile demande du courage et de la méthode.
+   Pour te préparer à tes prochains entretiens d'annonce, voici une grille de préparation et un   
+  aide-mémoire structuré."
+                                                                                                  
+  Puis un bouton de téléchargement :                     
+  ```tsx
+  <Button onClick={() => generateInterviewGrid(scenarioChoisi || 'feedback_recadrage')}
+  className="w-full">                                                                             
+    <Download className="w-4 h-4 mr-2" />
+    Télécharger ma grille d'entretien (PDF)                                                       
+  </Button>                                                                                       
+   
+  Le message doit utiliser le tutoiement (cohérent avec les modifications précédentes).           
+                                                         
+  3. Intégrer le step dans le flow                                                                
+                                                         
+  Si tu crées un Step26, ajoute le step 26 dans les séquences de store.ts (getStepsForMode), juste
+   après le step 25 (Step25Closing), ou juste avant. Sinon, intègre le bouton + message
+  directement dans Step25Closing.                                                                 
+                                                         
+  Style
+
+  - Couleurs DSFR : bleu #000091, rouge #E1000F, vert #18753C, gris fond #F6F6F6, gris bordure    
+  #CECECE, bleu clair #E3E3FD
+  - Police Helvetica (par défaut dans jspdf)                                                      
+  - Ton institutionnel mais soutenant 
+  - Tutoiement dans le message de soutien                                                         
+                         
+  Test                                                                                            
+                                      
+  - Parcours complet feedback/recadrage → vérifie le PDF avec méthode DESC                        
+  - Parcours complet feedback positif → vérifie le PDF avec méthode MERCI
+  - Parcours complet décision difficile → vérifie le PDF avec les 5 phases d'annonce              
+  - Vérifie que le message de soutien change selon le scénario                                    
+  - Vérifie que le PDF fait exactement 2 pages
+                                                                        
