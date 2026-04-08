@@ -1,0 +1,99 @@
+ ## Remplacer "9 tours" par une durée en minutes + Ajouter un timer visible
+
+  ### 2 modifications :
+
+  ---
+
+  ### 1. Remplacer "9 tours" par une durée estimée en minutes
+
+  Fichier : `client/src/components/steps/Phase5Simulation.tsx` (ou Phase4Steps.tsx — cherche le
+   texte "L'echange durera environ")
+
+  Actuellement :
+  L'echange durera environ 9 tours.
+
+  Remplace par une estimation en minutes basée sur le nombre de tours. Logique : chaque tour ≈
+  2 minutes (le manager écrit + l'IA répond). Donc :
+
+  ```tsx
+  const tourMax = simulation.tourMax || 7;
+  const dureeEstimee = tourMax * 2; // ~2 min par tour
+
+  Affiche :
+  L'échange durera environ {dureeEstimee} minutes.
+
+  Par exemple : 7 tours → "L'échange durera environ 14 minutes", 9 tours → "environ 18
+  minutes".
+
+  Aussi corrige le vouvoiement dans ce même bloc récapitulatif :
+  - "Vous jouez le role du manager" → "Tu joues le rôle du manager"
+  - "L'IA joue le role du collaborateur" → reste OK
+  - "Ecrivez votre premiere intervention comme si vous commenciez l'entretien" → "Ecris ta
+  première intervention comme si tu commençais l'entretien"
+
+  ---
+  2. Ajouter un timer visible pendant la simulation
+
+  Fichier : client/src/components/steps/Phase5Simulation.tsx
+
+  Dans le composant SimulationView (le chat de simulation), ajoute un timer en haut de la zone
+  de chat qui démarre quand la simulation commence.
+
+  Implémentation :
+
+  Ajoute un state pour le timer dans SimulationView :
+
+  import { useState, useEffect, useRef } from 'react';
+  import { Clock } from 'lucide-react';
+
+  // Dans SimulationView :
+  const [elapsedSeconds, setElapsedSeconds] = useState(0);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    // Démarrer le timer quand la simulation commence (messages > 0)
+    if (simulation.messages.length > 0 && !simulation.isFinished) {
+      timerRef.current = setInterval(() => {
+        setElapsedSeconds(prev => prev + 1);
+      }, 1000);
+    }
+
+    // Arrêter quand la simulation est finie
+    if (simulation.isFinished && timerRef.current) {
+      clearInterval(timerRef.current);
+    }
+
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [simulation.messages.length, simulation.isFinished]);
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  Puis affiche le timer en haut de la zone de simulation, à côté de l'indicateur de tours :
+
+  <div className="flex items-center justify-between text-xs text-[var(--dsfr-grey-425)] mb-2">
+    <span>Tour {simulation.tourActuel} / {simulation.tourMax}</span>
+    <span className="flex items-center gap-1">
+      <Clock className="w-3.5 h-3.5" />
+      {formatTime(elapsedSeconds)}
+    </span>
+  </div>
+
+  Style du timer :
+
+  - Petit, discret, en haut à droite de la zone de chat
+  - Icône horloge (Clock de lucide-react) + temps écoulé mm:ss
+  - Gris (var(--dsfr-grey-425))
+  - S'arrête automatiquement quand la simulation se termine
+
+  Test
+
+  - Lance une simulation → vérifie que le récap dit "environ 14 minutes" (pas "9 tours")
+  - Vérifie que le timer démarre dès le premier message
+  - Vérifie que le timer s'arrête quand tu tapes /fin ou quand les tours sont épuisés
+  - Vérifie que le tutoiement est correct dans le récap

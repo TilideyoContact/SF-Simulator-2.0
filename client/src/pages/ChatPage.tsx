@@ -3,6 +3,7 @@ import { useParcoursStore } from '@/lib/store';
 import { ProgressBar } from '@/components/ProgressBar';
 import { ChatInput } from '@/components/ChatInput';
 import { SideMenu } from '@/components/SideMenu';
+import { BackButton } from '@/components/BackButton';
 import franceTravailLogo from '@assets/image_1771580674143.png';
 import { Step1Welcome, Step2Profil, Step5Objectifs, Step6Difficultes, Step7TypeCollab, Step8Complement } from '@/components/steps/Phase1Steps';
 import { Step11Disc, Step12Relation, Step13EtatEsprit, Step14RecapPersona } from '@/components/steps/Phase3Steps';
@@ -99,6 +100,7 @@ export default function ChatPage({ activeSlug }: ChatPageProps) {
             className="flex-1 overflow-y-auto"
           >
             <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6 min-h-full">
+              <BackButton />
               <StepRenderer step={currentStep} />
             </div>
           </div>
