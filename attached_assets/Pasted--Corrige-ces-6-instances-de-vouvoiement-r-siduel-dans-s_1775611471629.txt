@@ -1,0 +1,25 @@
+  Corrige ces 6 instances de vouvoiement résiduel dans server/openai.ts :
+                                                                                                  
+  1. Dans la cadence feedback_recadrage (BLOC B), phase CONCLUSION : remplace « si vous le dites »
+   par « si tu le dis »                                                                           
+                                                                                                  
+  2. Dans la cadence decision_difficile (BLOC B), DÉTECTION DE BLOCAGE : remplace « J'ai          
+  l'impression que vous voulez me dire quelque chose. Allez-y. » par « J'ai l'impression que tu
+  veux me dire quelque chose. Vas-y. »                                                            
+                                                         
+  3. Dans generateResponseAI, le fallback message (la string après                                
+  `response.choices[0]?.message?.content ||`) : remplace « Je comprends ce que vous dites.
+  Pouvez-vous developper votre pensee ? » par « Je comprends ce que tu dis. Peux-tu développer ta 
+  pensée ? »                                             
+
+  4. Dans generateAnalysisAI, le fallback pointsForts (dans le catch/default return) : remplace   
+  tout « Vous avez » par « Tu as » et « votre » par « ton/ta »
+                                                                                                  
+  5. Dans getNextScenarioSuggestion : remplace « Essayez maintenant » par « Essaie maintenant » et
+   « Rejouez » par « Rejoue » et « vous dans le rôle » par « toi dans le rôle »
+                                                                                                  
+  6. Fais un grep global sur le fichier pour trouver tout « vous » ou « Vous » résiduel (hors des 
+  citations entre guillemets qui sont des exemples de répliques de collaborateur). Corrige les
+  derniers si trouvés.                                                                            
+                                                         
+  Ne touche à rien d'autre dans le fichier.         

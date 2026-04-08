@@ -133,7 +133,7 @@ PHASE 5 — CONCLUSION (tours 7-8)
 Le manager doit conclure positivement (C de DESC) avec un engagement mutuel.
 Tu valides ou restes réservé selon la qualité de l'échange.
 SI le manager a bien mené → « D'accord, on fait comme ça. »
-SI le manager a mal mené → « Bon... si vous le dites. » (acceptation de façade).
+SI le manager a mal mené → « Bon... si tu le dis. » (acceptation de façade).
 
 SIGNAL DE FIN NATURELLE : vers le tour 7-8, si l'entretien a convergé, tu suggères la clôture : « Bon, je crois qu'on a fait le tour de la question. »
 DÉTECTION DE BLOCAGE : si le manager tourne en rond au même stade pendant 3 tours, fais évoluer la situation : pose une question qui relance ou lâche un point pour débloquer.`,
@@ -166,7 +166,7 @@ Gratitude et engagement. Tu es reconnaissant si le feedback était sincère et s
 SI TYPE = PAIR → renforcement du lien : « C'est rare qu'on prenne le temps entre managers. »
 
 SIGNAL DE FIN NATURELLE : vers le tour 6-7, tu conclus naturellement : « Merci encore, ça motive vraiment. »
-DÉTECTION DE BLOCAGE : si le manager reste vague pendant 3 tours sans nommer d'action précise, tu poses la question : « Vous pensez à quelque chose en particulier ? »`,
+DÉTECTION DE BLOCAGE : si le manager reste vague pendant 3 tours sans nommer d'action précise, tu poses la question : « Tu penses à quelque chose en particulier ? »`,
 
     decision_difficile: `CADENCE DÉCISION DIFFICILE EN 5 PHASES :
 
@@ -200,7 +200,7 @@ SI l'accueil a été bien mené → « D'accord... qu'est-ce qui est prévu pour
 SI l'accueil a été mal mené → « Je prends note. » (acceptation de façade).
 
 SIGNAL DE FIN NATURELLE : vers le tour 9-11, tu signales : « Bon... je vais avoir besoin de digérer ça. On peut en reparler ? »
-DÉTECTION DE BLOCAGE : si le manager n'annonce pas la décision après 4 tours, tu forces le moment : « J'ai l'impression que vous voulez me dire quelque chose. Allez-y. »`,
+DÉTECTION DE BLOCAGE : si le manager n'annonce pas la décision après 4 tours, tu forces le moment : « J'ai l'impression que tu veux me dire quelque chose. Vas-y. »`,
   };
 
   // --- BLOC C : Expressions typiques par TYPE ---
@@ -428,7 +428,7 @@ export async function generateResponseAI(
 
   const content =
     response.choices[0]?.message?.content ||
-    "Je comprends ce que vous dites. Pouvez-vous developper votre pensee ?";
+    "Je comprends ce que tu dis. Peux-tu développer ta pensée ?";
 
   return { message: content, isFinished: isNearEnd };
 }
@@ -525,13 +525,13 @@ function getNextScenarioSuggestion(scenario: string | null | undefined, typeColl
   const sc = scenario || "feedback_recadrage";
   const tc = typeCollab || "agent";
 
-  if (sc === "feedback_positif") return "Essayez maintenant le scénario Feedback/Recadrage.";
-  if (sc === "feedback_recadrage") return "Essayez maintenant le scénario Décision difficile.";
+  if (sc === "feedback_positif") return "Essaie maintenant le scénario Feedback/Recadrage.";
+  if (sc === "feedback_recadrage") return "Essaie maintenant le scénario Décision difficile.";
   if (sc === "decision_difficile") {
-    if (tc === "pairs") return "Rejouez en inversant la position (vous dans le rôle du pair qui reçoit la décision).";
-    return "Rejouez avec un profil DISC différent ou une relation plus tendue.";
+    if (tc === "pairs") return "Rejoue en inversant la position (toi dans le rôle du pair qui reçoit la décision).";
+    return "Rejoue avec un profil DISC différent ou une relation plus tendue.";
   }
-  return "Continuez à explorer les autres scénarios.";
+  return "Continue à explorer les autres scénarios.";
 }
 
 export async function generateAnalysisAI(
@@ -683,9 +683,9 @@ Retourne UNIQUEMENT le JSON, sans texte avant ou après.`,
     ecoute: 3,
     assertivite: 3,
     global: 3,
-    pointsForts: ["Vous avez mené l'entretien jusqu'au bout."],
-    axesProgression: ["Structurez davantage votre discours."],
-    conseilCle: "Continuez à pratiquer pour progresser.",
+    pointsForts: ["Tu as mené l'entretien jusqu'au bout."],
+    axesProgression: ["Structure davantage ton discours."],
+    conseilCle: "Continue à pratiquer pour progresser.",
     axe1Label: axes.axe1,
     axe2Label: axes.axe2,
     axe3Label: axes.axe3,
