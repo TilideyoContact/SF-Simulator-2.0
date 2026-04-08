@@ -4,7 +4,7 @@ import { ChatBubble, TypingIndicator } from '@/components/ChatBubble';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { getScenarioLabel, getDiscLabel, getTourMax } from '@/lib/helpers';
-import { Send, Mic, MicOff, Volume2, VolumeX } from 'lucide-react';
+import { Send, Mic, MicOff, Volume2, VolumeX, Clock } from 'lucide-react';
 import { apiRequest } from '@/lib/queryClient';
 import { cn } from '@/lib/utils';
 
@@ -18,6 +18,8 @@ export function SimulationView() {
   const [isTranscribing, setIsTranscribing] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+  const [elapsedSeconds, setElapsedSeconds] = useState(0);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -35,6 +37,20 @@ export function SimulationView() {
       fetchFirstMessage();
     }
   }, []);
+
+  useEffect(() => {
+    if (simulation.messages.length > 0 && !simulation.isFinished) {
+      timerRef.current = setInterval(() => {
+        setElapsedSeconds(prev => prev + 1);
+      }, 1000);
+    }
+    if (simulation.isFinished && timerRef.current) {
+      clearInterval(timerRef.current);
+    }
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [simulation.messages.length, simulation.isFinished]);
 
   useEffect(() => {
     return () => {
@@ -338,7 +354,10 @@ export function SimulationView() {
         <div className="sticky bottom-0 bg-background pt-3 pb-1 border-t border-[var(--dsfr-grey-925)]">
           <div className="flex items-center justify-between text-xs text-[var(--dsfr-grey-425)] mb-2 px-1 font-medium">
             <span>Tour {simulation.tourActuel} / {tourMax}</span>
-            <span className="italic">Tapez /fin pour terminer</span>
+            <span className="flex items-center gap-1">
+              <Clock className="w-3.5 h-3.5" />
+              {Math.floor(elapsedSeconds / 60)}:{(elapsedSeconds % 60).toString().padStart(2, '0')}
+            </span>
           </div>
           <div className="flex gap-2 items-end">
             <Button

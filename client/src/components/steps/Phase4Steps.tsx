@@ -120,7 +120,7 @@ export function Step15c() {
           </ul>
         </div>
         <p className="text-sm"><strong>Tu joues le role du manager. L'IA joue le role du collaborateur.</strong></p>
-        <p className="text-sm">Ecris ta premiere intervention comme si tu commencais l'entretien. L'echange durera environ <strong>{tourMax} tours</strong>.</p>
+        <p className="text-sm">Ecris ta premiere intervention comme si tu commencais l'entretien. L'echange durera environ <strong>{tourMax * 2} minutes</strong>.</p>
         <p className="text-xs text-[var(--dsfr-grey-425)] italic">A tout moment, tape "/fin" pour terminer la simulation.</p>
       </div>
     </div>
