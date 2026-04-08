@@ -218,9 +218,9 @@ export function Step12Relation() {
     <div className="space-y-8">
       <div className="text-center">
         <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>
-          Qualite de la relation
+          Qualité des échanges
         </h3>
-        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Quelle est votre relation actuelle avec ce collaborateur ?</p>
+        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Quelle est la qualité des échanges actuels avec ce collaborateur ?</p>
       </div>
 
       <div className="px-4">
