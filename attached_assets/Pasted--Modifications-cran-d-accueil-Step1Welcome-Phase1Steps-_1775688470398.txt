@@ -1,0 +1,124 @@
+## Modifications écran d'accueil — Step1Welcome (Phase1Steps.tsx)
+
+  ### 4 modifications à faire dans la fonction Step1Welcome :                                  
+   
+  ---                                                                                          
+                                                         
+  ### 1. Message de bienvenue TOUJOURS visible (pas conditionné au scénario)                   
+              
+  Actuellement le message d'accueil enrichi (3 paragraphes) ne s'affiche que quand aucun       
+  scénario n'est sélectionné (condition `ctx`). Or l'utilisateur arrive toujours avec un
+  scénario déjà choisi.                                                                        
+                                      
+  **Fix :** Afficher TOUJOURS le message de bienvenue enrichi, quel que soit le scénario. Le   
+  titre du scénario peut rester au-dessus, mais les 3 paragraphes doivent toujours apparaître.
+                                                                                               
+  Remplace la logique conditionnelle du message (le bloc `{ctx ? (<p>{ctx.desc}</p>) :         
+  (<>...</>)}`) par :
+                                                                                               
+  ```tsx                              
+  <div className="text-sm sm:text-base text-[var(--dsfr-grey-425)] max-w-2xl mx-auto
+  leading-relaxed space-y-2">                                                                  
+    <p>Bienvenue dans un simulateur conversationnel dédié à la conduite de vos entretiens
+  managériaux, dans un cadre respectant la confidentialité.</p>                                
+    <p>Cet outil vous accompagne dans leur préparation, qu'il s'agisse d'entretiens visant à
+  soutenir, reconnaître, projeter ou à aborder des situations plus sensibles.</p>              
+    <p>Et à l'issue de votre simulation, un débriefing détaillé vous sera proposé ainsi que des
+   fiches pratiques utiles.</p>                                                                
+  </div>                              
+                                                                                               
+  Le titre du scénario (h2) peut rester conditionnel au-dessus.                                
+              
+  ---                                                                                          
+  2. Remplacer les onglets Tabs par des toggles déroulants (Accordion)
+                                                                                               
+  Actuellement les 3 sections sont des onglets (Tabs) — on ne voit qu'un contenu à la fois. Le
+  client veut des toggles déroulants (accordéon) qu'on ouvre en cliquant dessus, pour pouvoir  
+  tous les voir.                                                                               
+                                                                                             
+  Fix : Remplacer le composant Tabs / TabsList / TabsTrigger / TabsContent par le composant    
+  Accordion de shadcn/ui (déjà disponible dans @/components/ui/accordion).                   
+                                                                                               
+  Remplace :                                                                                   
+  import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';             
+  Par :                                                  
+  import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from
+  '@/components/ui/accordion';                                                               
+                                                                                               
+  Et remplace toute la structure Tabs par :
+  <Accordion type="multiple" className="w-full max-w-2xl mx-auto">                             
+    <AccordionItem value="conseils">                                                         
+      <AccordionTrigger>                                                                       
+        <span className="flex items-center gap-2">                                           
+          <Info className="w-4 h-4" />                                                         
+          Conseils d'utilisation                         
+        </span>                                                                                
+      </AccordionTrigger>                                                                      
+      <AccordionContent>          
+        <!-- contenu actuel de l'onglet Conseils -->                                           
+      </AccordionContent>                                
+    </AccordionItem>     
+                                                                                             
+    <AccordionItem value="mode-emploi">                                                        
+      <AccordionTrigger>               
+        <span className="flex items-center gap-2">                                             
+          <BookOpen className="w-4 h-4" />                                                     
+          Mode d'emploi                   
+        </span>                                                                                
+      </AccordionTrigger>                                
+      <AccordionContent> 
+        <!-- contenu actuel de l'onglet Mode d'emploi -->                                    
+      </AccordionContent>                                                                      
+    </AccordionItem>              
+                                                                                               
+    <AccordionItem value="prerequis">                    
+      <AccordionTrigger>             
+        <span className="flex items-center gap-2">                                           
+          <ListChecks className="w-4 h-4" />                                                   
+          Pré-requis vos entretiens         
+        </span>                                                                                
+      </AccordionTrigger>                                
+      <AccordionContent> 
+        <!-- contenu actuel de l'onglet Pré-requis -->                                       
+      </AccordionContent>                                                                      
+    </AccordionItem>              
+  </Accordion>                                                                                 
+                                                         
+  Le contenu à l'intérieur de chaque AccordionContent reste identique à ce qui était dans les
+  TabsContent.
+                                                                                             
+  ---                                                                                          
+  3. Fusionner "Comment ça fonctionne" dans "Mode d'emploi"
+                                                                                               
+  S'il existe un bloc ou une section "Comment ça fonctionne" quelque part dans le flow (cherche
+   dans Phase1Steps.tsx ou les autres steps), intègre son contenu dans l'AccordionItem "Mode   
+  d'emploi" pour éviter la redondance. Si ce bloc n'existe pas comme élément séparé, ignore ce
+  point.                                                                                       
+                                                         
+  ---                                                                                          
+  4. Renommer "Pré-requis" en "Pré-requis vos entretiens"
+                                                         
+  Dans le AccordionTrigger du troisième item, le texte doit être :
+  Pré-requis vos entretiens
+  au lieu de :                                                                               
+  Pré-requis                                                                                   
+                                  
+  ---                                                                                          
+  Résumé des imports après modification                  
+
+  // Retirer :                                                                               
+  import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';             
+                                  
+  // Ajouter :                                                                                 
+  import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from               
+  '@/components/ui/accordion';                                                                 
+                                  
+  Les icônes Info, BookOpen, ListChecks restent utilisées dans les AccordionTrigger.           
+                                                                                             
+  Test                                                                                         
+                                  
+  - Va sur n'importe quel scénario → vérifie que le message de bienvenue (3 paragraphes)       
+  s'affiche                                                                                  
+  - Vérifie que les 3 sections sont des toggles déroulants (clic pour ouvrir/fermer)           
+  - Vérifie que le 3ème toggle s'appelle "Pré-requis vos entretiens"
+  - Vérifie que les boutons Mode avancé / Mode rapide sont toujours en dessous

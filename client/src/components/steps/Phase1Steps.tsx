@@ -5,7 +5,7 @@ import { ChatCardSingle, ChatCardMulti } from '@/components/ChatCard';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Microscope, Zap, User, Users, Building2, CheckCircle, AlertTriangle, AlertCircle, Sprout, TreePine, Award, Target, Shield, Search, TrendingUp, FileEdit, MessageSquare, MessageCircle, ClipboardList, RefreshCw, Sparkles, Upload, Info, BookOpen, ListChecks } from 'lucide-react';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
 
 const SCENARIO_CONTEXT: Record<string, { title: string; desc: string }> = {
   feedback_recadrage: {
@@ -43,69 +43,85 @@ export function Step1Welcome() {
           </h2>
         </div>
         <div className="text-sm sm:text-base text-[var(--dsfr-grey-425)] max-w-2xl mx-auto leading-relaxed space-y-2">
-          {ctx ? (
-            <p>{ctx.desc}</p>
-          ) : (
-            <>
-              <p>Bienvenue dans un simulateur conversationnel dédié à la conduite de vos entretiens managériaux, dans un cadre respectant la confidentialité.</p>
-              <p>Cet outil vous accompagne dans leur préparation, qu'il s'agisse d'entretiens visant à soutenir, reconnaître, projeter ou à aborder des situations plus sensibles.</p>
-              <p>Et à l'issue de votre simulation, un débriefing détaillé vous sera proposé ainsi que des fiches pratiques utiles.</p>
-            </>
-          )}
+          <p>Bienvenue dans un simulateur conversationnel dédié à la conduite de vos entretiens managériaux, dans un cadre respectant la confidentialité.</p>
+          <p>Cet outil vous accompagne dans leur préparation, qu'il s'agisse d'entretiens visant à soutenir, reconnaître, projeter ou à aborder des situations plus sensibles.</p>
+          <p>Et à l'issue de votre simulation, un débriefing détaillé vous sera proposé ainsi que des fiches pratiques utiles.</p>
         </div>
       </div>
 
-      <Tabs defaultValue="conseils" className="w-full max-w-2xl mx-auto">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="conseils" title="Conseils pour bien utiliser le simulateur" className="flex items-center gap-2 text-xs sm:text-sm">
-            <Info className="w-4 h-4" />
-            Conseils d'utilisation
-          </TabsTrigger>
-          <TabsTrigger value="mode" title="Comment fonctionne le simulateur" className="flex items-center gap-2 text-xs sm:text-sm">
-            <BookOpen className="w-4 h-4" />
-            Mode d'emploi
-          </TabsTrigger>
-          <TabsTrigger value="prerequis" title="Pré-requis pour un entretien managérial efficace" className="flex items-center gap-2 text-xs sm:text-sm">
-            <ListChecks className="w-4 h-4" />
-            Pré-requis
-          </TabsTrigger>
-        </TabsList>
+      <Accordion type="multiple" className="w-full max-w-2xl mx-auto">
+        <AccordionItem value="conseils">
+          <AccordionTrigger>
+            <span className="flex items-center gap-2">
+              <Info className="w-4 h-4" />
+              Conseils d'utilisation
+            </span>
+          </AccordionTrigger>
+          <AccordionContent>
+            <div className="p-4 bg-white dark:bg-[var(--dsfr-grey-950)] border border-[var(--dsfr-grey-850)] rounded-xl">
+              <p className="text-sm font-medium mb-3 text-foreground">Avant de commencer, nous vous invitons à :</p>
+              <ul className="text-sm text-[var(--dsfr-grey-425)] space-y-2 list-disc list-inside">
+                <li>prendre le temps nécessaire pour réaliser la simulation</li>
+                <li>éteindre votre téléphone</li>
+                <li>vous isoler</li>
+                <li>mettre votre casque</li>
+              </ul>
+            </div>
+          </AccordionContent>
+        </AccordionItem>
 
-        <TabsContent value="conseils" className="mt-4 p-4 bg-white dark:bg-[var(--dsfr-grey-950)] border border-[var(--dsfr-grey-850)] rounded-xl">
-          <p className="text-sm font-medium mb-3 text-foreground">Avant de commencer, nous vous invitons à :</p>
-          <ul className="text-sm text-[var(--dsfr-grey-425)] space-y-2 list-disc list-inside">
-            <li>prendre le temps nécessaire pour réaliser la simulation</li>
-            <li>éteindre votre téléphone</li>
-            <li>vous isoler</li>
-            <li>mettre votre casque</li>
-          </ul>
-        </TabsContent>
+        <AccordionItem value="mode-emploi">
+          <AccordionTrigger>
+            <span className="flex items-center gap-2">
+              <BookOpen className="w-4 h-4" />
+              Mode d'emploi
+            </span>
+          </AccordionTrigger>
+          <AccordionContent>
+            <div className="p-4 bg-white dark:bg-[var(--dsfr-grey-950)] border border-[var(--dsfr-grey-850)] rounded-xl">
+              <p className="text-sm font-medium mb-3 text-foreground">Deux modes disponibles :</p>
+              <ul className="text-sm text-[var(--dsfr-grey-425)] space-y-2 list-disc list-inside mb-4">
+                <li><strong>Mode Avancé</strong> — Questions détaillées pour un accompagnement sur-mesure</li>
+                <li><strong>Mode Rapide</strong> — 3 questions essentielles puis simulation directe</li>
+              </ul>
+              <p className="text-sm font-medium mb-3 text-foreground">3 situations d'entretien proposées :</p>
+              <ul className="text-sm text-[var(--dsfr-grey-425)] space-y-2 list-disc list-inside mb-4">
+                <li>Feedback / Recadrage</li>
+                <li>Feedback positif</li>
+                <li>Décision difficile</li>
+              </ul>
+              <p className="text-sm text-[var(--dsfr-grey-425)] mb-4">Ces scénarios sont issus de la remontée des besoins prioritaires exprimés par des managers. À vous de jouer en cliquant sur l'un des scénarios proposés !</p>
+              <p className="text-sm font-medium mb-3 text-foreground">Comment ça fonctionne :</p>
+              <ol className="text-sm text-[var(--dsfr-grey-425)] space-y-2 list-decimal list-inside">
+                <li>Choisissez un scénario dans le menu ou ci-dessus</li>
+                <li>Répondez à quelques questions de profilage (mode avancé) ou passez directement (mode rapide)</li>
+                <li>Configurez le profil de votre collaborateur virtuel</li>
+                <li>Jouez la simulation puis recevez une analyse de votre performance</li>
+              </ol>
+            </div>
+          </AccordionContent>
+        </AccordionItem>
 
-        <TabsContent value="mode" className="mt-4 p-4 bg-white dark:bg-[var(--dsfr-grey-950)] border border-[var(--dsfr-grey-850)] rounded-xl">
-          <p className="text-sm font-medium mb-3 text-foreground">Deux modes disponibles :</p>
-          <ul className="text-sm text-[var(--dsfr-grey-425)] space-y-2 list-disc list-inside mb-4">
-            <li><strong>Mode Avancé</strong> — Questions détaillées pour un accompagnement sur-mesure</li>
-            <li><strong>Mode Rapide</strong> — 3 questions essentielles puis simulation directe</li>
-          </ul>
-          <p className="text-sm font-medium mb-3 text-foreground">3 situations d'entretien proposées :</p>
-          <ul className="text-sm text-[var(--dsfr-grey-425)] space-y-2 list-disc list-inside mb-4">
-            <li>Feedback / Recadrage</li>
-            <li>Feedback positif</li>
-            <li>Décision difficile</li>
-          </ul>
-          <p className="text-sm text-[var(--dsfr-grey-425)]">Ces scénarios sont issus de la remontée des besoins prioritaires exprimés par des managers. À vous de jouer en cliquant sur l'un des scénarios proposés !</p>
-        </TabsContent>
-
-        <TabsContent value="prerequis" className="mt-4 p-4 bg-white dark:bg-[var(--dsfr-grey-950)] border border-[var(--dsfr-grey-850)] rounded-xl">
-          <ol className="text-sm text-[var(--dsfr-grey-425)] space-y-3 list-inside" style={{ listStyleType: 'lower-alpha' }}>
-            <li><strong>Préparer le contenu de l'entretien</strong> (possible partage en ELD) : thème abordé, faits concrets (exemples précis, datés, factuels), éventuels rappels à la règle ou aux procédures, objectifs dont détermination des impacts.</li>
-            <li><strong>Proposer un créneau pour le rendez-vous</strong> dans un lieu calme, neutre et confidentiel : soyez clairs sur le but de l'entretien (feedback, reconnaissance, annonce difficile...). Cela vous aidera à structurer votre échange et à rester cohérent.</li>
-            <li><strong>Se préparer à aborder sereinement l'entretien</strong> : Soyez apaisé et concentré avant l'entretien. Prenez quelques minutes pour vous recentrer si nécessaire, afin d'aborder l'échange avec sérénité.</li>
-            <li><strong>Lors de l'entretien</strong> : restez factuels, adopter une posture assertive, faire preuve d'écoute active (reformulation…) et d'agilité…</li>
-            <li><strong>Assurer un suivi</strong> : une formalisation est préconisée pour tout entretien.</li>
-          </ol>
-        </TabsContent>
-      </Tabs>
+        <AccordionItem value="prerequis">
+          <AccordionTrigger>
+            <span className="flex items-center gap-2">
+              <ListChecks className="w-4 h-4" />
+              Pré-requis vos entretiens
+            </span>
+          </AccordionTrigger>
+          <AccordionContent>
+            <div className="p-4 bg-white dark:bg-[var(--dsfr-grey-950)] border border-[var(--dsfr-grey-850)] rounded-xl">
+              <ol className="text-sm text-[var(--dsfr-grey-425)] space-y-3 list-inside" style={{ listStyleType: 'lower-alpha' }}>
+                <li><strong>Préparer le contenu de l'entretien</strong> (possible partage en ELD) : thème abordé, faits concrets (exemples précis, datés, factuels), éventuels rappels à la règle ou aux procédures, objectifs dont détermination des impacts.</li>
+                <li><strong>Proposer un créneau pour le rendez-vous</strong> dans un lieu calme, neutre et confidentiel : soyez clairs sur le but de l'entretien (feedback, reconnaissance, annonce difficile...). Cela vous aidera à structurer votre échange et à rester cohérent.</li>
+                <li><strong>Se préparer à aborder sereinement l'entretien</strong> : Soyez apaisé et concentré avant l'entretien. Prenez quelques minutes pour vous recentrer si nécessaire, afin d'aborder l'échange avec sérénité.</li>
+                <li><strong>Lors de l'entretien</strong> : restez factuels, adopter une posture assertive, faire preuve d'écoute active (reformulation…) et d'agilité…</li>
+                <li><strong>Assurer un suivi</strong> : une formalisation est préconisée pour tout entretien.</li>
+              </ol>
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div className="space-y-3">

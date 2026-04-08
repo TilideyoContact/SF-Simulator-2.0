@@ -73,21 +73,6 @@ export default function LandingPage() {
                 );
               })}
             </div>
-
-            <div
-              className="rounded-xl p-5 text-sm space-y-2"
-              style={{ backgroundColor: 'rgba(0,0,145,0.05)', borderLeft: '3px solid var(--dsfr-blue-france)' }}
-            >
-              <p className="font-bold text-xs uppercase tracking-wider" style={{ color: 'var(--dsfr-blue-france)' }}>
-                Comment ca fonctionne ?
-              </p>
-              <ol className="space-y-1.5 text-xs text-[var(--dsfr-grey-425)] list-decimal list-inside">
-                <li>Choisissez un scenario dans le menu ou ci-dessus</li>
-                <li>Repondez a quelques questions de profilage (mode avance) ou passez directement (mode rapide)</li>
-                <li>Configurez le profil de votre collaborateur virtuel</li>
-                <li>Jouez la simulation puis recevez une analyse de votre performance</li>
-              </ol>
-            </div>
           </div>
         </main>
       </div>
