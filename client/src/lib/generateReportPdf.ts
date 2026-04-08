@@ -130,9 +130,9 @@ export function generateSessionReport(data: ReportData) {
   y += 8;
 
   const axes = [
-    { label: data.analyse.axe1Label || 'Axe 1', score: data.analyse.clarte },
-    { label: data.analyse.axe2Label || 'Axe 2', score: data.analyse.ecoute },
-    { label: data.analyse.axe3Label || 'Axe 3', score: data.analyse.assertivite },
+    { label: data.analyse.axe1Label || 'Clart\u00e9 du discours', score: data.analyse.clarte },
+    { label: data.analyse.axe2Label || "Qualit\u00e9 d'\u00e9coute", score: data.analyse.ecoute },
+    { label: data.analyse.axe3Label || 'Assertivit\u00e9', score: data.analyse.assertivite },
   ];
 
   doc.setFontSize(10);
