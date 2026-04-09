@@ -1,6 +1,7 @@
-import { useState, useRef, useEffect } from 'react';
-import { Send, Paperclip, ChevronLeft, SkipForward, Mic } from 'lucide-react';
+import { useState, useRef, useEffect, useCallback } from 'react';
+import { Send, Paperclip, ChevronLeft, SkipForward, Mic, MicOff } from 'lucide-react';
 import { useParcoursStore } from '@/lib/store';
+import { cn } from '@/lib/utils';
 
 interface ChatInputProps {
   onSend: (message: string) => void;
@@ -30,8 +31,12 @@ export function ChatInput({
   onFileUpload,
 }: ChatInputProps) {
   const [value, setValue] = useState('');
+  const [isRecording, setIsRecording] = useState(false);
+  const [isTranscribing, setIsTranscribing] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const chunksRef = useRef<Blob[]>([]);
   const pendingMessage = useParcoursStore((s) => s.pendingMessage);
   const setPendingMessage = useParcoursStore((s) => s.setPendingMessage);
 
@@ -71,6 +76,88 @@ export function ChatInput({
     }
   };
 
+  const stopRecording = useCallback(() => {
+    if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
+      mediaRecorderRef.current.stop();
+    }
+  }, []);
+
+  const startRecording = useCallback(async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      chunksRef.current = [];
+
+      const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus')
+        ? 'audio/webm;codecs=opus'
+        : MediaRecorder.isTypeSupported('audio/webm')
+          ? 'audio/webm'
+          : 'audio/mp4';
+
+      const recorder = new MediaRecorder(stream, { mimeType });
+
+      recorder.ondataavailable = (e) => {
+        if (e.data.size > 0) chunksRef.current.push(e.data);
+      };
+
+      recorder.onstop = async () => {
+        stream.getTracks().forEach((t) => t.stop());
+        const blob = new Blob(chunksRef.current, { type: mimeType });
+        setIsRecording(false);
+
+        if (blob.size < 1000) return;
+
+        setIsTranscribing(true);
+        try {
+          const formData = new FormData();
+          const ext = mimeType.includes('webm') ? 'webm' : 'm4a';
+          formData.append('audio', blob, `recording.${ext}`);
+
+          const res = await fetch('/api/speech/transcribe', {
+            method: 'POST',
+            body: formData,
+          });
+
+          if (res.ok) {
+            const data = await res.json();
+            if (data.text && data.text.trim()) {
+              setValue((prev) => {
+                const combined = prev ? prev + ' ' + data.text.trim() : data.text.trim();
+                return combined;
+              });
+              inputRef.current?.focus();
+            }
+          }
+        } catch (err) {
+          console.error('Transcription error:', err);
+        } finally {
+          setIsTranscribing(false);
+        }
+      };
+
+      mediaRecorderRef.current = recorder;
+      recorder.start(250);
+      setIsRecording(true);
+    } catch (err) {
+      console.error('Microphone access error:', err);
+    }
+  }, []);
+
+  const toggleRecording = useCallback(() => {
+    if (isRecording) {
+      stopRecording();
+    } else {
+      startRecording();
+    }
+  }, [isRecording, startRecording, stopRecording]);
+
+  useEffect(() => {
+    return () => {
+      if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
+        mediaRecorderRef.current.stop();
+      }
+    };
+  }, []);
+
   return (
     <div className="w-full" data-testid="chat-input-bar">
       {label && (
@@ -100,7 +187,10 @@ export function ChatInput({
           </div>
         )}
 
-        <div className="flex-1 flex items-center border border-[var(--dsfr-grey-850)] bg-white dark:bg-[var(--dsfr-grey-950)] rounded-lg overflow-hidden">
+        <div className={cn(
+          "flex-1 flex items-center border bg-white dark:bg-[var(--dsfr-grey-950)] rounded-lg overflow-hidden transition-colors",
+          isRecording ? "border-[var(--dsfr-red-marianne)]" : "border-[var(--dsfr-grey-850)]"
+        )}>
           <input
             ref={inputRef}
             data-testid="input-chat"
@@ -108,8 +198,8 @@ export function ChatInput({
             value={value}
             onChange={(e) => setValue(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder={placeholder}
-            disabled={disabled}
+            placeholder={isTranscribing ? "Transcription en cours..." : isRecording ? "Enregistrement..." : placeholder}
+            disabled={disabled || isTranscribing}
             className="flex-1 px-4 py-3 text-sm bg-transparent outline-none text-foreground placeholder:text-[var(--dsfr-grey-425)]"
           />
           <input
@@ -132,11 +222,20 @@ export function ChatInput({
           </button>
           <button
             data-testid="button-mic"
-            className="flex items-center justify-center w-9 h-9 mr-1 rounded-md text-[var(--dsfr-grey-425)] hover:text-[var(--dsfr-blue-france)] hover:bg-[var(--dsfr-blue-france-light)] transition-colors"
+            className={cn(
+              "flex items-center justify-center w-9 h-9 mr-1 rounded-md transition-colors",
+              isRecording
+                ? "text-white bg-[var(--dsfr-red-marianne)] animate-pulse"
+                : isTranscribing
+                  ? "text-[var(--dsfr-grey-625)] cursor-wait"
+                  : "text-[var(--dsfr-grey-425)] hover:text-[var(--dsfr-blue-france)] hover:bg-[var(--dsfr-blue-france-light)]"
+            )}
             type="button"
-            title="Saisie vocale disponible en simulation"
+            onClick={toggleRecording}
+            disabled={disabled || isTranscribing}
+            title={isRecording ? "Arrêter l'enregistrement" : "Saisie vocale"}
           >
-            <Mic className="w-4 h-4" />
+            {isRecording ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
           </button>
         </div>
         <button
@@ -149,9 +248,21 @@ export function ChatInput({
           <Send className="w-4 h-4" />
         </button>
       </div>
-      <p className="text-[10px] text-center text-[var(--dsfr-grey-425)] mt-1.5">
-        ChatFT peut faire des erreurs. Pense à vérifier les informations.
-      </p>
+      {isRecording && (
+        <p className="text-[10px] text-center mt-1.5 animate-pulse" style={{ color: 'var(--dsfr-red-marianne)' }}>
+          Enregistrement en cours... Clique sur le micro pour arrêter
+        </p>
+      )}
+      {isTranscribing && (
+        <p className="text-[10px] text-center text-[var(--dsfr-blue-france)] mt-1.5 animate-pulse">
+          Transcription en cours...
+        </p>
+      )}
+      {!isRecording && !isTranscribing && (
+        <p className="text-[10px] text-center text-[var(--dsfr-grey-425)] mt-1.5">
+          ChatFT peut faire des erreurs. Pense à vérifier les informations.
+        </p>
+      )}
     </div>
   );
 }
