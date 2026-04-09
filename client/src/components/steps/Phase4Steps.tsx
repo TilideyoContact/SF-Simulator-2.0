@@ -50,14 +50,22 @@ export function Step15PreSimulation() {
 }
 
 export function Step15bTheory() {
-  const { scenarioChoisi } = useParcoursStore();
+  const { scenarioChoisi, setChoixPreSimulation } = useParcoursStore();
   const theory = getTheoryContent(scenarioChoisi);
+  const scenarioLabel = getScenarioLabel(scenarioChoisi);
 
   return (
     <div className="space-y-6">
+      <button
+        onClick={() => setChoixPreSimulation(null)}
+        className="inline-flex items-center gap-1.5 text-sm font-medium text-[var(--dsfr-blue-france)] hover:underline transition-colors py-1"
+      >
+        <span>←</span>
+        Retour au choix
+      </button>
       <div className="text-center">
         <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>
-          {theory.title}
+          Conseils théoriques : {scenarioLabel}
         </h3>
         <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">{theory.introduction}</p>
       </div>
