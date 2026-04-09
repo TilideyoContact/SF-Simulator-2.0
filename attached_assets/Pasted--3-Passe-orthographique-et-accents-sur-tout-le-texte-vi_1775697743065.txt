@@ -1,0 +1,38 @@
+### 3. Passe orthographique et accents sur tout le texte visible                             
+  
+  Fichier : TOUS les fichiers contenant du texte français affiché à l'utilisateur              
+                                                         
+  L'app contient beaucoup de texte sans accents (héritage Replit qui supprime parfois les      
+  accents). Fais un scan global et corrige :             
+                                                                                               
+  **Ce qu'il faut chercher et corriger :**                                                     
+  - "Recapitulatif" → "Récapitulatif"
+  - "Verifie" → "Vérifie"                                                                      
+  - "demarrer" → "démarrer"                                                                    
+  - "Etat" → "État"
+  - "Etapes" → "Étapes"                                                                        
+  - "Scenario" → "Scénario"                              
+  - "Pret" → "Prêt"                                                                            
+  - "entrainer" → "entraîner"                                                                  
+  - "equipe" → "équipe"
+  - "delicates" → "délicates"                                                                  
+  - "difficulte" → "difficulté"                                                                
+  - "securise" → "sécurisé"
+  - "resultat" → "résultat"                                                                    
+  - "matinee" → "matinée"                                
+  - "chargee" → "chargée"                                                                      
+  - "preoccupe" → "préoccupé"                                                                  
+  - Tout autre texte français visible par l'utilisateur sans ses accents
+                                                                                               
+  **Fichiers prioritaires à scanner :**                                                        
+  - Phase1Steps.tsx, Phase2Steps.tsx, Phase3Steps.tsx, Phase4Steps.tsx, Phase5Simulation.tsx,  
+  Phase6Analysis.tsx, Phase7Feedback.tsx                                                       
+  - helpers.ts (labels, descriptions)                    
+  - LandingPage.tsx                                                                            
+  - ChatPage.tsx                                         
+  - SideMenu.tsx                                                                               
+  - ProgressBar.tsx                                                                            
+  
+  **Ne PAS toucher :** les data-testid, les noms de variables/fonctions, les clés d'objets (id,
+   slug). Uniquement le texte affiché à l'utilisateur.   
+                                                                    

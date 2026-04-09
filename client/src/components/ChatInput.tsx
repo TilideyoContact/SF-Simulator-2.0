@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Send, Paperclip, ChevronLeft, SkipForward } from 'lucide-react';
+import { Send, Paperclip, ChevronLeft, SkipForward, Mic } from 'lucide-react';
 import { useParcoursStore } from '@/lib/store';
 
 interface ChatInputProps {
@@ -129,6 +129,14 @@ export function ChatInput({
           >
             <Paperclip className="w-4 h-4" />
             <span className="hidden sm:inline">Ajouter un fichier</span>
+          </button>
+          <button
+            data-testid="button-mic"
+            className="flex items-center justify-center w-9 h-9 mr-1 rounded-md text-[var(--dsfr-grey-425)] hover:text-[var(--dsfr-blue-france)] hover:bg-[var(--dsfr-blue-france-light)] transition-colors"
+            type="button"
+            title="Saisie vocale disponible en simulation"
+          >
+            <Mic className="w-4 h-4" />
           </button>
         </div>
         <button
