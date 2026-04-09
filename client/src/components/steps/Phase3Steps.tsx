@@ -9,6 +9,14 @@ import { getScenarioLabel, getDiscLabel, getRelationLabel, getEtatEspritLabel, g
 import { ArrowUpCircle, Sun, ShieldCheck, FileSearch, Heart, Minus, AlertTriangle, Smile, Meh, Frown, Angry, Star, Info, Zap, MessageCircle, Clock, Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
+const RELATION_DESCRIPTIONS: Record<number, string> = {
+  1: "La relation est très dégradée. Le collaborateur sera méfiant, distant, avec des réponses courtes. Il faudra plusieurs échanges constructifs avant toute ouverture. Niveau de difficulté élevé.",
+  2: "La relation est sous tension. Le collaborateur est sur la défensive, pas hostile mais pas coopératif. L'ouverture est possible si tu es factuel et à l'écoute.",
+  3: "La relation est professionnelle, ni chaleureuse ni froide. Le collaborateur attend de voir comment tu abordes le sujet. Bon équilibre pour s'entraîner.",
+  4: "Il y a une relation de confiance. Le collaborateur est ouvert et coopératif. La résistance n'apparaîtra que si tu es maladroit (jugement, TU accusateur).",
+  5: "Complicité professionnelle forte. Le collaborateur s'exprime librement. Attention : le risque est de tomber dans la complaisance (pas de cadre, pas de faits).",
+};
+
 const DISC_PROFILES = [
   {
     id: 'dominant',
@@ -235,16 +243,20 @@ export function Step12Relation() {
         />
         <div className="flex justify-between mt-2">
           {[1, 2, 3, 4, 5].map(n => (
-            <span
-              key={n}
-              className={cn(
-                'text-sm font-bold w-8 text-center cursor-pointer transition-colors',
-                value === n ? 'text-[var(--dsfr-blue-france)]' : 'text-[var(--dsfr-grey-625)]'
+            <div key={n} className="flex flex-col items-center w-8">
+              <span
+                className={cn(
+                  'text-sm font-bold text-center cursor-pointer transition-colors',
+                  value === n ? 'text-[var(--dsfr-blue-france)]' : 'text-[var(--dsfr-grey-625)]'
+                )}
+                onClick={() => setValue(n)}
+              >
+                {n}
+              </span>
+              {n === 3 && (
+                <span className="text-[9px] text-[var(--dsfr-blue-france)] font-medium whitespace-nowrap mt-0.5">(recommandé)</span>
               )}
-              onClick={() => setValue(n)}
-            >
-              {n}
-            </span>
+            </div>
           ))}
         </div>
         <div className="flex justify-between mt-1">
@@ -253,9 +265,12 @@ export function Step12Relation() {
         </div>
       </div>
 
-      <div className="text-center">
-        <p className="text-sm font-medium text-foreground">
-          {getRelationLabel(value)}
+      <div className="p-3 bg-[var(--dsfr-grey-975)] rounded-lg border border-[var(--dsfr-grey-925)] transition-all">
+        <p className="text-sm font-bold text-foreground mb-1">
+          {getRelationLabel(value)}{value === 3 ? ' (recommandé)' : ''}
+        </p>
+        <p className="text-xs text-[var(--dsfr-grey-425)] leading-relaxed">
+          {RELATION_DESCRIPTIONS[value]}
         </p>
       </div>
 
