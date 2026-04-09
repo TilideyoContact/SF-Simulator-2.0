@@ -1,19 +1,19 @@
 import { ArrowLeft } from 'lucide-react';
-import { useParcoursStore } from '@/lib/store';
+import { useParcoursStore, canGoBackFromStep } from '@/lib/store';
 
 export function BackButton() {
   const { prevStep, currentStep } = useParcoursStore();
 
-  if (currentStep <= 1) return null;
-  if (currentStep >= 16) return null;
+  if (!canGoBackFromStep(currentStep)) return null;
 
   return (
     <button
+      data-testid="button-back-step"
       onClick={() => prevStep()}
-      className="flex items-center gap-1.5 text-sm text-[var(--dsfr-grey-425)] hover:text-[var(--dsfr-blue-france)] transition-colors mb-2"
+      className="inline-flex items-center gap-1.5 text-sm font-medium text-[var(--dsfr-blue-france)] hover:text-[var(--dsfr-blue-france)] hover:underline transition-colors mb-4 py-1"
     >
       <ArrowLeft className="w-4 h-4" />
-      Retour
+      Retour à l'étape précédente
     </button>
   );
 }

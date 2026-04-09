@@ -165,6 +165,14 @@ function getNextStepForMode(currentStep: number, mode: Mode): number {
   return steps[currentIndex + 1];
 }
 
+export function canGoBackFromStep(step: number): boolean {
+  if (step <= 1) return false;
+  if (step >= 16 && step <= 19) return false;
+  if (step === 25) return false;
+  if (step === 26) return false;
+  return true;
+}
+
 function getPrevStepForMode(currentStep: number, mode: Mode): number {
   const steps = getStepsForMode(mode);
   const currentIndex = steps.indexOf(currentStep);
@@ -283,6 +291,7 @@ export const useParcoursStore = create<ParcoursState>((set, get) => ({
   },
   prevStep: () => {
     const state = get();
+    if (!canGoBackFromStep(state.currentStep)) return;
     const prev = getPrevStepForMode(state.currentStep, state.mode);
     set({ currentStep: prev });
   },

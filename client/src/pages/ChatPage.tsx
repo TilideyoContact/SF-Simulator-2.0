@@ -1,5 +1,5 @@
 import { useRef, useEffect, useCallback } from 'react';
-import { useParcoursStore } from '@/lib/store';
+import { useParcoursStore, canGoBackFromStep } from '@/lib/store';
 import { ProgressBar } from '@/components/ProgressBar';
 import { ChatInput } from '@/components/ChatInput';
 import { SideMenu } from '@/components/SideMenu';
@@ -70,7 +70,7 @@ export default function ChatPage({ activeSlug }: ChatPageProps) {
   }, []);
 
   const showChatInput = !isSimulationStep(currentStep);
-  const canGoBack = currentStep > 1;
+  const canGoBack = canGoBackFromStep(currentStep);
   const canSkip = SKIPPABLE_STEPS.includes(currentStep);
 
   return (
