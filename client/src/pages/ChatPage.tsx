@@ -83,7 +83,7 @@ export default function ChatPage({ activeSlug }: ChatPageProps) {
               <div className="h-8 w-px bg-[var(--dsfr-grey-925)]" />
               <div>
                 <h1 className="font-bold text-sm text-[var(--dsfr-blue-france)] leading-tight">ChatFT SimuManager</h1>
-                <p className="text-[11px] text-[var(--dsfr-grey-425)] font-medium">Entrainement managerial</p>
+                <p className="text-[11px] text-[var(--dsfr-grey-425)] font-medium">Entraînement managérial</p>
               </div>
             </div>
           </div>

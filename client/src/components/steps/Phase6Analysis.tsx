@@ -36,13 +36,13 @@ export function Step19Scores() {
         assertivite: 3,
         global: 3,
         pointsForts: [
-          "Tu as engage la conversation de maniere professionnelle",
-          "Ton approche etait structuree et claire",
+          "Tu as engagé la conversation de manière professionnelle",
+          "Ton approche était structurée et claire",
         ],
         axesProgression: [
-          "Pense a reformuler davantage les propos de ton collaborateur pour montrer ton ecoute",
+          "Pense à reformuler davantage les propos de ton collaborateur pour montrer ton écoute",
         ],
-        conseilCle: "L'ecoute active est la cle : montre que tu comprends avant de proposer des solutions.",
+        conseilCle: "L'écoute active est la clé : montre que tu comprends avant de proposer des solutions.",
       });
     } finally {
       setLoading(false);
@@ -60,9 +60,9 @@ export function Step19Scores() {
   if (!analyse) return null;
 
   const axes = [
-    { label: analyse.axe1Label || 'Clarte du discours', score: analyse.clarte, color: 'var(--dsfr-blue-france)' },
-    { label: analyse.axe2Label || "Qualite d'ecoute", score: analyse.ecoute, color: 'var(--dsfr-success)' },
-    { label: analyse.axe3Label || 'Assertivite', score: analyse.assertivite, color: 'var(--dsfr-info)' },
+    { label: analyse.axe1Label || 'Clarté du discours', score: analyse.clarte, color: 'var(--dsfr-blue-france)' },
+    { label: analyse.axe2Label || "Qualité d'écoute", score: analyse.ecoute, color: 'var(--dsfr-success)' },
+    { label: analyse.axe3Label || 'Assertivité', score: analyse.assertivite, color: 'var(--dsfr-info)' },
   ];
 
   return (
@@ -70,7 +70,7 @@ export function Step19Scores() {
       <div className="text-center">
         <div className="flex items-center justify-center gap-2">
           <BarChart3 className="w-6 h-6" style={{ color: 'var(--dsfr-blue-france)' }} />
-          <h3 className="text-xl font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>Resultats de ta simulation</h3>
+          <h3 className="text-xl font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>Résultats de ta simulation</h3>
         </div>
       </div>
 
@@ -98,11 +98,11 @@ export function Step19Scores() {
       </div>
 
       <p className="text-xs text-[var(--dsfr-grey-425)] italic text-center">
-        Rappel : cet outil est un entrainement, pas une evaluation. Ce score est un repere personnel pour ta progression.
+        Rappel : cet outil est un entraînement, pas une évaluation. Ce score est un repère personnel pour ta progression.
       </p>
 
       <Button data-testid="button-see-feedback" onClick={() => nextStep()} className="w-full">
-        Voir le feedback detaille
+        Voir le feedback détaillé
       </Button>
     </div>
   );
@@ -115,7 +115,7 @@ export function Step20Feedback() {
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>Feedback detaille</h3>
+        <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>Feedback détaillé</h3>
       </div>
 
       <div className="space-y-4">
@@ -123,7 +123,7 @@ export function Step20Feedback() {
           <div className="p-3 bg-[var(--dsfr-blue-france-light)] border-l-[3px]" style={{ borderLeftColor: 'var(--dsfr-blue-france)' }}>
             <div className="flex items-center gap-2 mb-1" style={{ color: 'var(--dsfr-blue-france)' }}>
               <BarChart3 className="w-4 h-4" />
-              <span className="font-bold text-sm">Impression generale :</span>
+              <span className="font-bold text-sm">Impression générale :</span>
             </div>
             <p className="text-sm">{analyse.impressionGenerale}</p>
           </div>
@@ -182,7 +182,7 @@ export function Step20Feedback() {
         <div className="p-3 bg-[var(--dsfr-info-light)] border-l-[3px]" style={{ borderLeftColor: 'var(--dsfr-info)' }}>
           <div className="flex items-center gap-2 mb-1" style={{ color: 'var(--dsfr-warning)' }}>
             <Lightbulb className="w-4 h-4" />
-            <span className="font-bold text-sm">Conseil cle :</span>
+            <span className="font-bold text-sm">Conseil clé :</span>
           </div>
           <p className="text-sm italic">{analyse.conseilCle}</p>
         </div>
@@ -191,7 +191,7 @@ export function Step20Feedback() {
           <div className="p-3 bg-[var(--dsfr-grey-975)] border-l-[3px]" style={{ borderLeftColor: 'var(--dsfr-success)' }}>
             <div className="flex items-center gap-2 mb-1" style={{ color: 'var(--dsfr-success)' }}>
               <ArrowRight className="w-4 h-4" />
-              <span className="font-bold text-sm">Prochaine etape :</span>
+              <span className="font-bold text-sm">Prochaine étape :</span>
             </div>
             <p className="text-sm">{analyse.prochaineEtape}</p>
           </div>
@@ -216,21 +216,21 @@ export function Step21Ressources() {
   // Ressources conditionnelles croisées axe×scénario (BLOC D2 section 7)
   if (sc === 'feedback_recadrage') {
     if (analyse.clarte <= 3) resources.push({ id: 'desc', label: 'Fiche DESC + DEPAR', subtitle: 'Structurer un feedback factuel sans jugement (Smartpocket Cegos)', icon: <BookOpen className="w-5 h-5" /> });
-    if (analyse.ecoute <= 3) resources.push({ id: 'ecoute', label: 'Tuto ecoute active + reformulation', subtitle: 'Techniques pour montrer que tu comprends avant de proposer', icon: <BookOpen className="w-5 h-5" /> });
-    if (tc === 'pairs' && analyse.assertivite <= 3) resources.push({ id: 'influence', label: 'Methode Ecouter puis JE + principes PPC', subtitle: 'Influence entre pairs sans rapport hierarchique', icon: <BookOpen className="w-5 h-5" /> });
-    if (tc !== 'pairs' && analyse.assertivite <= 3) resources.push({ id: 'assert', label: 'Fiche OK+/OK+ et posture assertive', subtitle: 'Positions de vie et regle du JE pour un cadrage bienveillant', icon: <BookOpen className="w-5 h-5" /> });
+    if (analyse.ecoute <= 3) resources.push({ id: 'ecoute', label: 'Tuto écoute active + reformulation', subtitle: 'Techniques pour montrer que tu comprends avant de proposer', icon: <BookOpen className="w-5 h-5" /> });
+    if (tc === 'pairs' && analyse.assertivite <= 3) resources.push({ id: 'influence', label: 'Méthode Écouter puis JE + principes PPC', subtitle: 'Influence entre pairs sans rapport hiérarchique', icon: <BookOpen className="w-5 h-5" /> });
+    if (tc !== 'pairs' && analyse.assertivite <= 3) resources.push({ id: 'assert', label: 'Fiche OK+/OK+ et posture assertive', subtitle: 'Positions de vie et règle du JE pour un cadrage bienveillant', icon: <BookOpen className="w-5 h-5" /> });
   } else if (sc === 'feedback_positif') {
-    if (analyse.clarte <= 3) resources.push({ id: 'merci', label: 'Methode MERCI + ASAP+D', subtitle: 'Structurer un feedback positif precis et sincere', icon: <BookOpen className="w-5 h-5" /> });
+    if (analyse.clarte <= 3) resources.push({ id: 'merci', label: 'Méthode MERCI + ASAP+D', subtitle: 'Structurer un feedback positif précis et sincère', icon: <BookOpen className="w-5 h-5" /> });
     if (analyse.ecoute <= 3) resources.push({ id: 'signes', label: 'Signes de reconnaissance conditionnels', subtitle: 'Valoriser l\'impact collectif, pas juste l\'individu', icon: <BookOpen className="w-5 h-5" /> });
-    if (analyse.assertivite <= 3) resources.push({ id: 'projection', label: 'Fiche feedback constructif Cegos', subtitle: 'Projeter vers l\'avenir apres la valorisation', icon: <BookOpen className="w-5 h-5" /> });
+    if (analyse.assertivite <= 3) resources.push({ id: 'projection', label: 'Fiche feedback constructif Cegos', subtitle: 'Projeter vers l\'avenir après la valorisation', icon: <BookOpen className="w-5 h-5" /> });
   } else if (sc === 'decision_difficile') {
-    if (analyse.clarte <= 3) resources.push({ id: 'annonce', label: 'Fiche annonce decision + Ecouter puis JE', subtitle: 'Nommer la decision clairement sans tourner autour', icon: <BookOpen className="w-5 h-5" /> });
-    if (analyse.ecoute <= 3) resources.push({ id: 'emotion', label: 'Vocabulaire du ressenti + Positions de vie', subtitle: 'Accueillir l\'emotion sans la nier ni negocier le non-negociable', icon: <BookOpen className="w-5 h-5" /> });
-    if (analyse.assertivite <= 3) resources.push({ id: 'suivi', label: 'Fiche suivi post-decision', subtitle: 'Accompagnement, perspectives et suivi apres une annonce difficile', icon: <BookOpen className="w-5 h-5" /> });
+    if (analyse.clarte <= 3) resources.push({ id: 'annonce', label: 'Fiche annonce décision + Écouter puis JE', subtitle: 'Nommer la décision clairement sans tourner autour', icon: <BookOpen className="w-5 h-5" /> });
+    if (analyse.ecoute <= 3) resources.push({ id: 'emotion', label: 'Vocabulaire du ressenti + Positions de vie', subtitle: 'Accueillir l\'émotion sans la nier ni négocier le non-négociable', icon: <BookOpen className="w-5 h-5" /> });
+    if (analyse.assertivite <= 3) resources.push({ id: 'suivi', label: 'Fiche suivi post-décision', subtitle: 'Accompagnement, perspectives et suivi après une annonce difficile', icon: <BookOpen className="w-5 h-5" /> });
   }
 
-  if (analyse.global >= 4) resources.push({ id: 'complex', label: 'Scenario plus complexe', subtitle: 'Teste-toi avec un profil plus exigeant', icon: <TrendingUp className="w-5 h-5" /> });
-  resources.push({ id: 'replay', label: 'Rejouer ce scenario', subtitle: 'Comparer ta progression', icon: <RefreshCw className="w-5 h-5" /> });
+  if (analyse.global >= 4) resources.push({ id: 'complex', label: 'Scénario plus complexe', subtitle: 'Teste-toi avec un profil plus exigeant', icon: <TrendingUp className="w-5 h-5" /> });
+  resources.push({ id: 'replay', label: 'Rejouer ce scénario', subtitle: 'Comparer ta progression', icon: <RefreshCw className="w-5 h-5" /> });
 
   return (
     <div className="space-y-6">

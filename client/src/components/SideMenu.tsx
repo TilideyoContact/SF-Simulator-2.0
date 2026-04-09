@@ -6,7 +6,7 @@ const SCENARIOS = [
     slug: 'feedback-recadrage',
     id: 'feedback_recadrage',
     label: 'Feedback / Recadrage',
-    desc: 'Recadrer sans degrader la relation',
+    desc: 'Recadrer sans dégrader la relation',
     icon: MessageSquare,
     accent: '#000091',
     bg: 'rgba(0, 0, 145, 0.06)',
@@ -15,7 +15,7 @@ const SCENARIOS = [
     slug: 'feedback-positif',
     id: 'feedback_positif',
     label: 'Feedback positif',
-    desc: 'Reconnaitre et valoriser',
+    desc: 'Reconnaître et valoriser',
     icon: TrendingUp,
     accent: '#18753c',
     bg: 'rgba(24, 117, 60, 0.06)',
@@ -23,8 +23,8 @@ const SCENARIOS = [
   {
     slug: 'decision-difficile',
     id: 'decision_difficile',
-    label: 'Decision difficile',
-    desc: 'Annoncer une decision non negociable',
+    label: 'Décision difficile',
+    desc: 'Annoncer une décision non négociable',
     icon: AlertTriangle,
     accent: '#E1000F',
     bg: 'rgba(225, 0, 15, 0.06)',
@@ -45,7 +45,7 @@ export function SideMenu({ activeSlug }: SideMenuProps) {
     >
       <div className="p-4 border-b border-[var(--dsfr-grey-925)]">
         <p className="text-[11px] font-bold uppercase tracking-widest text-[var(--dsfr-grey-425)]">
-          Choisir un scenario
+          Choisir un scénario
         </p>
       </div>
 
@@ -91,7 +91,7 @@ export function SideMenu({ activeSlug }: SideMenuProps) {
 
       <div className="mt-auto p-4 border-t border-[var(--dsfr-grey-925)]">
         <p className="text-[10px] text-[var(--dsfr-grey-425)] leading-relaxed">
-          Chaque scenario lance une nouvelle conversation independante.
+          Chaque scénario lance une nouvelle conversation indépendante.
         </p>
       </div>
     </nav>

@@ -10,15 +10,15 @@ import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/
 const SCENARIO_CONTEXT: Record<string, { title: string; desc: string }> = {
   feedback_recadrage: {
     title: 'Feedback / Recadrage',
-    desc: 'Tu vas t\'entrainer a recadrer un collaborateur tout en preservant la qualite de ta relation professionnelle.',
+    desc: 'Tu vas t\'entraîner à recadrer un collaborateur tout en préservant la qualité de ta relation professionnelle.',
   },
   feedback_positif: {
     title: 'Feedback positif',
-    desc: 'Tu vas t\'entrainer a donner un feedback valorisant, precis et structurant pour motiver ton collaborateur.',
+    desc: 'Tu vas t\'entraîner à donner un feedback valorisant, précis et structurant pour motiver ton collaborateur.',
   },
   decision_difficile: {
-    title: 'Decision difficile',
-    desc: 'Tu vas t\'entrainer a annoncer une decision difficile ou non negociable avec clarte et empathie.',
+    title: 'Décision difficile',
+    desc: 'Tu vas t\'entraîner à annoncer une décision difficile ou non négociable avec clarté et empathie.',
   },
 };
 
@@ -39,7 +39,7 @@ export function Step1Welcome() {
         <div className="flex items-center justify-center gap-3">
           <Sparkles className="w-8 h-8" style={{ color: 'var(--dsfr-blue-france)' }} />
           <h2 className="text-2xl sm:text-3xl font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>
-            {ctx ? ctx.title : 'Entretiens manageriaux'}
+            {ctx ? ctx.title : 'Entretiens managériaux'}
           </h2>
         </div>
         <div className="text-sm sm:text-base text-[var(--dsfr-grey-425)] max-w-2xl mx-auto leading-relaxed space-y-2">
@@ -106,7 +106,7 @@ export function Step1Welcome() {
           <AccordionTrigger>
             <span className="flex items-center gap-2">
               <ListChecks className="w-4 h-4" />
-              Pré-requis vos entretiens
+              Pré-requis pour tes entretiens
             </span>
           </AccordionTrigger>
           <AccordionContent>
@@ -178,17 +178,17 @@ export function Step2Profil() {
     <div className="space-y-6">
       <div className="text-center">
         <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>
-          Ton niveau de responsabilite
+          Ton niveau de responsabilité
         </h3>
-        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Pour mieux adapter mes conseils, quel est ton niveau de responsabilite manageriale ?</p>
+        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Pour mieux adapter mes conseils, quel est ton niveau de responsabilité managériale ?</p>
       </div>
       <ChatCardSingle
         selected={profil}
         onSelect={handleSelect}
         options={[
-          { id: 'mp', label: 'Manager de proximite', subtitle: "J'anime une equipe operationnelle au quotidien", icon: <User className="w-5 h-5" /> },
-          { id: 'mi', label: 'Manager intermediaire', subtitle: 'Je pilote plusieurs equipes ou projets transverses', icon: <Users className="w-5 h-5" /> },
-          { id: 'ms', label: 'Manager superieur', subtitle: 'Je dirige une direction ou un service', icon: <Building2 className="w-5 h-5" /> },
+          { id: 'mp', label: 'Manager de proximité', subtitle: "J'anime une équipe opérationnelle au quotidien", icon: <User className="w-5 h-5" /> },
+          { id: 'mi', label: 'Manager intermédiaire', subtitle: 'Je pilote plusieurs équipes ou projets transverses', icon: <Users className="w-5 h-5" /> },
+          { id: 'ms', label: 'Manager supérieur', subtitle: 'Je dirige une direction ou un service', icon: <Building2 className="w-5 h-5" /> },
         ]}
       />
     </div>
@@ -220,20 +220,20 @@ export function Step3Barometre() {
     <div className="space-y-6">
       <div className="text-center">
         <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>
-          Barometre de contexte
+          Baromètre de contexte
         </h3>
         <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Deux questions rapides sur ton contexte actuel pour mieux calibrer la simulation.</p>
       </div>
 
       <div className="space-y-4">
-        <p className="text-sm font-medium text-foreground">Comment evalues-tu la qualite de vie au travail de ton equipe actuellement ?</p>
+        <p className="text-sm font-medium text-foreground">Comment évalues-tu la qualité de vie au travail de ton équipe actuellement ?</p>
         <ChatCardSingle
           selected={qvt}
           onSelect={handleQvt}
           options={[
-            { id: 'bonne', label: 'Bonne', subtitle: 'Ambiance positive, equipe engagee', icon: <CheckCircle className="w-5 h-5" style={{ color: 'var(--dsfr-success)' }} /> },
+            { id: 'bonne', label: 'Bonne', subtitle: 'Ambiance positive, équipe engagée', icon: <CheckCircle className="w-5 h-5" style={{ color: 'var(--dsfr-success)' }} /> },
             { id: 'moyenne', label: 'Moyenne', subtitle: 'Quelques tensions mais rien de critique', icon: <AlertTriangle className="w-5 h-5" style={{ color: 'var(--dsfr-warning)' }} /> },
-            { id: 'difficile', label: 'Difficile', subtitle: 'Tensions fortes, climat degrade', icon: <AlertCircle className="w-5 h-5" style={{ color: 'var(--dsfr-red-marianne)' }} /> },
+            { id: 'difficile', label: 'Difficile', subtitle: 'Tensions fortes, climat dégradé', icon: <AlertCircle className="w-5 h-5" style={{ color: 'var(--dsfr-red-marianne)' }} /> },
           ]}
         />
       </div>
@@ -245,9 +245,9 @@ export function Step3Barometre() {
             selected={engagement}
             onSelect={handleEngagement}
             options={[
-              { id: 'bon', label: 'Bon', subtitle: 'Equipe motivee et impliquee', icon: <CheckCircle className="w-5 h-5" style={{ color: 'var(--dsfr-success)' }} /> },
+              { id: 'bon', label: 'Bon', subtitle: 'Équipe motivée et impliquée', icon: <CheckCircle className="w-5 h-5" style={{ color: 'var(--dsfr-success)' }} /> },
               { id: 'moyen', label: 'Moyen', subtitle: 'Implication variable selon les individus', icon: <AlertTriangle className="w-5 h-5" style={{ color: 'var(--dsfr-warning)' }} /> },
-              { id: 'faible', label: 'Faible', subtitle: 'Demotivation, absenteisme, retrait', icon: <AlertCircle className="w-5 h-5" style={{ color: 'var(--dsfr-red-marianne)' }} /> },
+              { id: 'faible', label: 'Faible', subtitle: 'Démotivation, absentéisme, retrait', icon: <AlertCircle className="w-5 h-5" style={{ color: 'var(--dsfr-red-marianne)' }} /> },
             ]}
           />
         </div>
@@ -268,17 +268,17 @@ export function Step4Experience() {
     <div className="space-y-6">
       <div className="text-center">
         <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>
-          Ton experience
+          Ton expérience
         </h3>
-        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Depuis combien de temps exerces-tu des fonctions manageriales ?</p>
+        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Depuis combien de temps exerces-tu des fonctions managériales ?</p>
       </div>
       <ChatCardSingle
         selected={experience}
         onSelect={handleSelect}
         options={[
-          { id: 'debutant', label: "Moins d'1 an", subtitle: 'Je debute dans la fonction', icon: <Sprout className="w-5 h-5" style={{ color: 'var(--dsfr-success)' }} /> },
-          { id: 'intermediaire', label: '1 a 3 ans', subtitle: "J'ai un peu d'experience", icon: <TreePine className="w-5 h-5" style={{ color: 'var(--dsfr-success)' }} /> },
-          { id: 'experimente', label: 'Plus de 3 ans', subtitle: 'Je suis experimente(e)', icon: <Award className="w-5 h-5" style={{ color: 'var(--dsfr-success)' }} /> },
+          { id: 'debutant', label: "Moins d'1 an", subtitle: 'Je débute dans la fonction', icon: <Sprout className="w-5 h-5" style={{ color: 'var(--dsfr-success)' }} /> },
+          { id: 'intermediaire', label: '1 à 3 ans', subtitle: "J'ai un peu d'expérience", icon: <TreePine className="w-5 h-5" style={{ color: 'var(--dsfr-success)' }} /> },
+          { id: 'experimente', label: 'Plus de 3 ans', subtitle: 'Je suis expérimenté(e)', icon: <Award className="w-5 h-5" style={{ color: 'var(--dsfr-success)' }} /> },
         ]}
       />
     </div>
@@ -304,17 +304,17 @@ export function Step5Objectifs() {
         <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>
           Tes objectifs
         </h3>
-        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Qu'est-ce qui t'amene a utiliser cet outil aujourd'hui ? Tu peux selectionner plusieurs reponses.</p>
+        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Qu'est-ce qui t'amène à utiliser cet outil aujourd'hui ? Tu peux sélectionner plusieurs réponses.</p>
       </div>
       <div className="space-y-3">
         <ChatCardMulti
           selected={selected}
           onToggle={handleToggle}
           options={[
-            { id: 'entrainer', label: "M'entrainer", subtitle: 'Pratiquer avant un entretien reel', icon: <Target className="w-5 h-5" /> },
-            { id: 'confiant', label: 'Etre plus confiant(e)', subtitle: 'Me rassurer sur mes pratiques', icon: <Shield className="w-5 h-5" /> },
-            { id: 'decouvrir', label: 'Decouvrir', subtitle: 'Explorer de nouvelles pratiques', icon: <Search className="w-5 h-5" /> },
-            { id: 'ameliorer', label: "M'ameliorer", subtitle: 'Identifier mes axes de progression', icon: <TrendingUp className="w-5 h-5" /> },
+            { id: 'entrainer', label: "M'entraîner", subtitle: 'Pratiquer avant un entretien réel', icon: <Target className="w-5 h-5" /> },
+            { id: 'confiant', label: 'Être plus confiant(e)', subtitle: 'Me rassurer sur mes pratiques', icon: <Shield className="w-5 h-5" /> },
+            { id: 'decouvrir', label: 'Découvrir', subtitle: 'Explorer de nouvelles pratiques', icon: <Search className="w-5 h-5" /> },
+            { id: 'ameliorer', label: "M'améliorer", subtitle: 'Identifier mes axes de progression', icon: <TrendingUp className="w-5 h-5" /> },
           ]}
         />
         {selected.length > 0 && (
@@ -344,20 +344,20 @@ export function Step6Difficultes() {
     <div className="space-y-6">
       <div className="text-center">
         <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>
-          Etape la plus delicate
+          Étape la plus délicate
         </h3>
-        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Quelle etape de l'entretien te semble la plus delicate ?</p>
+        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Quelle étape de l'entretien te semble la plus délicate ?</p>
       </div>
       <div className="space-y-3">
         <ChatCardMulti
           selected={selected}
           onToggle={handleToggle}
           options={[
-            { id: 'preparation', label: 'La preparation', subtitle: 'Structurer mon entretien en amont', icon: <FileEdit className="w-5 h-5" /> },
-            { id: 'conduite', label: 'La conduite', subtitle: "Mener l'echange en face-a-face", icon: <MessageSquare className="w-5 h-5" /> },
+            { id: 'preparation', label: 'La préparation', subtitle: 'Structurer mon entretien en amont', icon: <FileEdit className="w-5 h-5" /> },
+            { id: 'conduite', label: 'La conduite', subtitle: "Mener l'échange en face-à-face", icon: <MessageSquare className="w-5 h-5" /> },
             { id: 'feedback', label: 'Le feedback', subtitle: 'Formuler un retour clair et constructif', icon: <MessageCircle className="w-5 h-5" /> },
-            { id: 'formalisation', label: 'La formalisation', subtitle: 'Rediger le compte-rendu et les engagements', icon: <ClipboardList className="w-5 h-5" /> },
-            { id: 'suivi', label: 'Le suivi', subtitle: "Assurer la continuite apres l'entretien", icon: <RefreshCw className="w-5 h-5" /> },
+            { id: 'formalisation', label: 'La formalisation', subtitle: 'Rédiger le compte-rendu et les engagements', icon: <ClipboardList className="w-5 h-5" /> },
+            { id: 'suivi', label: 'Le suivi', subtitle: "Assurer la continuité après l'entretien", icon: <RefreshCw className="w-5 h-5" /> },
           ]}
         />
         {selected.length > 0 && (
@@ -391,8 +391,8 @@ export function Step7TypeCollab() {
         onSelect={handleSelect}
         options={[
           { id: 'agent', label: 'Un agent / collaborateur direct', subtitle: 'Conseiller, gestionnaire, agent d\'accueil...', icon: <User className="w-5 h-5" /> },
-          { id: 'manager', label: 'Un manager', subtitle: 'Manager de proximite, intermediaire, responsable adjoint...', icon: <Users className="w-5 h-5" /> },
-          { id: 'pairs', label: 'Un pair', subtitle: 'Collegue de meme niveau hierarchique, homologue...', icon: <Building2 className="w-5 h-5" /> },
+          { id: 'manager', label: 'Un manager', subtitle: 'Manager de proximité, intermédiaire, responsable adjoint...', icon: <Users className="w-5 h-5" /> },
+          { id: 'pairs', label: 'Un pair', subtitle: 'Collègue de même niveau hiérarchique, homologue...', icon: <Building2 className="w-5 h-5" /> },
         ]}
       />
     </div>
@@ -436,14 +436,14 @@ export function Step8Complement() {
     <div className="space-y-6">
       <div className="text-center">
         <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>
-          Informations complementaires
+          Informations complémentaires
         </h3>
-        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">As-tu d'autres elements a preciser ? Tu peux joindre une fiche de poste, un descriptif d'activite, ou tout autre document.</p>
+        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">As-tu d'autres éléments à préciser ? Tu peux joindre une fiche de poste, un descriptif d'activité, ou tout autre document.</p>
       </div>
       <div className="space-y-3">
         <Textarea
           data-testid="input-complement"
-          placeholder="Decrivez le contexte, la situation specifique..."
+          placeholder="Décris le contexte, la situation spécifique..."
           value={text}
           onChange={(e) => setText(e.target.value)}
           className="min-h-[100px] resize-none"
@@ -510,7 +510,7 @@ export function Step8Complement() {
             Continuer
           </Button>
           <Button data-testid="button-skip-step8" variant="outline" onClick={handleSkip}>
-            Passer cette etape
+            Passer cette étape
           </Button>
         </div>
       </div>

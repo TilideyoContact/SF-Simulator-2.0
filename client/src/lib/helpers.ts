@@ -20,9 +20,9 @@ export function getTypeCollabShortLabel(t: TypeCollab): string {
 
 export function getProfilLabel(profil: Profil): string {
   const labels: Record<string, string> = {
-    mp: 'Manager de proximite',
-    mi: 'Manager intermediaire',
-    ms: 'Manager superieur',
+    mp: 'Manager de proximité',
+    mi: 'Manager intermédiaire',
+    ms: 'Manager supérieur',
   };
   return profil ? labels[profil] ?? '' : '';
 }
@@ -30,7 +30,7 @@ export function getProfilLabel(profil: Profil): string {
 export function getExperienceLabel(exp: Experience): string {
   const labels: Record<string, string> = {
     debutant: "Moins d'1 an",
-    intermediaire: '1 a 3 ans',
+    intermediaire: '1 à 3 ans',
     experimente: 'Plus de 3 ans',
   };
   return exp ? labels[exp] ?? '' : '';
@@ -40,7 +40,7 @@ export function getScenarioLabel(scenario: Scenario): string {
   const labels: Record<string, string> = {
     feedback_recadrage: 'Faire un feedback ou un recadrage',
     feedback_positif: 'Donner un feedback positif et structurant',
-    decision_difficile: 'Annoncer une decision difficile',
+    decision_difficile: 'Annoncer une décision difficile',
   };
   return scenario ? labels[scenario] ?? '' : '';
 }
@@ -70,9 +70,9 @@ export function getRelationLabel(rel: Relation): string {
 export function getEtatEspritLabel(etat: EtatEsprit): string {
   const labels: Record<string, string> = {
     positif: 'Positif / Ouvert',
-    neutre: 'Neutre / Concentre',
-    stresse: 'Stresse / Preoccupe',
-    agace: 'Agace / Sur la defensive',
+    neutre: 'Neutre / Concentré',
+    stresse: 'Stressé / Préoccupé',
+    agace: 'Agacé / Sur la défensive',
   };
   return etat ? labels[etat] ?? '' : '';
 }
@@ -80,7 +80,7 @@ export function getEtatEspritLabel(etat: EtatEsprit): string {
 export function getDifficultyLabel(d: DifficultyLevel): string {
   const labels: Record<string, string> = {
     facile: 'Facile',
-    modere: 'Modere',
+    modere: 'Modéré',
     difficile: 'Difficile',
     expert: 'Expert',
   };
@@ -95,20 +95,20 @@ export function getDifficultyStars(d: DifficultyLevel): number {
 export function getPersonaDescription(disc: DiscProfil, relation: Relation, etatEsprit: EtatEsprit): string {
   const descriptions: Record<string, Record<string, string>> = {
     stable: {
-      default: 'un collaborateur cooperatif et a l\'ecoute, qui cherchera des solutions avec toi',
-      tendue: 'un collaborateur reserve mais loyal, qui aura besoin de temps pour s\'ouvrir',
+      default: 'un collaborateur coopératif et à l\'écoute, qui cherchera des solutions avec toi',
+      tendue: 'un collaborateur réservé mais loyal, qui aura besoin de temps pour s\'ouvrir',
     },
     dominant: {
-      default: 'un collaborateur direct et impatient, qui challengera tes arguments et demandera des actions concretes rapidement',
-      bonne: 'un collaborateur energique et oriente resultats, ouvert mais exigeant',
+      default: 'un collaborateur direct et impatient, qui challengera tes arguments et demandera des actions concrètes rapidement',
+      bonne: 'un collaborateur énergique et orienté résultats, ouvert mais exigeant',
     },
     consciencieux: {
-      default: 'un collaborateur methodique mais sous pression, qui demandera des preuves factuelles avant d\'adherer',
-      bonne: 'un collaborateur rigoureux et analytique, qui appreciera une approche structuree',
+      default: 'un collaborateur méthodique mais sous pression, qui demandera des preuves factuelles avant d\'adhérer',
+      bonne: 'un collaborateur rigoureux et analytique, qui appréciera une approche structurée',
     },
     influent: {
-      default: 'un collaborateur expressif mais mefiant, qui pourra digresser ou reagir emotionnellement',
-      bonne: 'un collaborateur enthousiaste et communicatif, qui appreciera les echanges ouverts',
+      default: 'un collaborateur expressif mais méfiant, qui pourra digresser ou réagir émotionnellement',
+      bonne: 'un collaborateur enthousiaste et communicatif, qui appréciera les échanges ouverts',
     },
   };
 
@@ -162,104 +162,104 @@ export interface TheoryContent {
 export function getTheoryContent(scenario: Scenario): TheoryContent {
   const content: Record<string, TheoryContent> = {
     feedback_recadrage: {
-      title: 'Preparer un feedback / recadrage',
-      introduction: 'Le feedback de recadrage vise a corriger un comportement ou une pratique tout en preservant la qualite de la relation. Il repose sur des faits observables, une posture de respect mutuel (OK+/OK+) et une co-construction de la solution.',
+      title: 'Préparer un feedback / recadrage',
+      introduction: 'Le feedback de recadrage vise à corriger un comportement ou une pratique tout en préservant la qualité de la relation. Il repose sur des faits observables, une posture de respect mutuel (OK+/OK+) et une co-construction de la solution.',
       method: {
         name: 'DESC',
         steps: [
-          { letter: 'D', title: 'Decrire les faits', description: 'Cite des faits precis, dates, observables. Pas de jugement, pas d\'interpretation. Ex: "Le 15 mars, lors de la reunion d\'equipe, j\'ai constate que le rapport n\'avait pas ete remis."' },
-          { letter: 'E', title: 'Exprimer le ressenti', description: 'Utilise le JE pour exprimer l\'impact. Ex: "Ce que ca genere pour moi, c\'est de l\'inquietude sur le suivi des dossiers."' },
-          { letter: 'S', title: 'Specifier les changements', description: 'Propose ou co-construis un plan d\'action concret. Ex: "Comment pourrait-on s\'organiser pour que ca ne se reproduise pas ?"' },
-          { letter: 'C', title: 'Consequences positives', description: 'Montre les benefices du changement pour tous. Ex: "Ca permettrait a toute l\'equipe de travailler plus sereinement."' },
+          { letter: 'D', title: 'Décrire les faits', description: 'Cite des faits précis, dates, observables. Pas de jugement, pas d\'interprétation. Ex: "Le 15 mars, lors de la réunion d\'équipe, j\'ai constaté que le rapport n\'avait pas été remis."' },
+          { letter: 'E', title: 'Exprimer le ressenti', description: 'Utilise le JE pour exprimer l\'impact. Ex: "Ce que ça génère pour moi, c\'est de l\'inquiétude sur le suivi des dossiers."' },
+          { letter: 'S', title: 'Spécifier les changements', description: 'Propose ou co-construis un plan d\'action concret. Ex: "Comment pourrait-on s\'organiser pour que ça ne se reproduise pas ?"' },
+          { letter: 'C', title: 'Conséquences positives', description: 'Montre les bénéfices du changement pour tous. Ex: "Ça permettrait à toute l\'équipe de travailler plus sereinement."' },
         ],
       },
       posture: [
         'Posture OK+/OK+ : respect mutuel, ni soumission ni domination',
-        'Ecoute active : reformuler avant de repondre',
+        'Écoute active : reformuler avant de répondre',
         'Utiliser le JE, jamais le TU accusateur',
         'Rester factuel : pas de "toujours", "jamais"',
         'Laisser des silences pour que le collaborateur s\'exprime',
-        'Verifier l\'adhesion : "Comment tu vois les choses ?"',
+        'Vérifier l\'adhésion : "Comment tu vois les choses ?"',
       ],
       erreurs: [
         'Commencer par un jugement ("Tu es toujours en retard")',
-        'Enchainer les reproches sans ecouter',
-        'Ne pas proposer de solution concrete',
+        'Enchaîner les reproches sans écouter',
+        'Ne pas proposer de solution concrète',
         'Minimiser le ressenti du collaborateur',
-        'Faire un monologue sans laisser de place a l\'echange',
+        'Faire un monologue sans laisser de place à l\'échange',
       ],
       exemple: {
-        situation: 'Un agent ne respecte pas les delais de traitement des dossiers depuis 3 semaines.',
-        bonneApproche: 'Thomas, j\'ai constate que les 3 dernieres semaines, 4 dossiers ont depasse le delai de traitement. Ce que ca genere, c\'est une surcharge pour tes collegues. Comment tu expliques ca ? Qu\'est-ce qu\'on peut mettre en place ensemble ?',
-        mauvaiseApproche: 'Tu es toujours en retard sur tes dossiers, ca ne peut plus durer, il faut que tu fasses un effort.',
+        situation: 'Un agent ne respecte pas les délais de traitement des dossiers depuis 3 semaines.',
+        bonneApproche: 'Thomas, j\'ai constaté que les 3 dernières semaines, 4 dossiers ont dépassé le délai de traitement. Ce que ça génère, c\'est une surcharge pour tes collègues. Comment tu expliques ça ? Qu\'est-ce qu\'on peut mettre en place ensemble ?',
+        mauvaiseApproche: 'Tu es toujours en retard sur tes dossiers, ça ne peut plus durer, il faut que tu fasses un effort.',
       },
     },
     feedback_positif: {
-      title: 'Preparer un feedback positif',
-      introduction: 'Le feedback positif vise a reconnaitre et valoriser une action concrete. Il doit etre specifique, sincere et relie a l\'impact collectif. Ce n\'est pas un simple "c\'est bien" — c\'est un acte managerial structure.',
+      title: 'Préparer un feedback positif',
+      introduction: 'Le feedback positif vise à reconnaître et valoriser une action concrète. Il doit être spécifique, sincère et relié à l\'impact collectif. Ce n\'est pas un simple "c\'est bien" — c\'est un acte managérial structuré.',
       method: {
         name: 'MERCI',
         steps: [
-          { letter: 'M', title: 'Mentionner l\'action', description: 'Cite un fait precis, date, observable. Ex: "Lors de l\'accueil du public mardi, j\'ai remarque que tu as pris le temps d\'expliquer la procedure."' },
-          { letter: 'E', title: 'Expliquer l\'impact', description: 'Relie a l\'impact concret sur l\'equipe ou les usagers. Ex: "L\'usager est reparti avec une solution claire, et ca a evite un rappel."' },
-          { letter: 'R', title: 'Relier aux valeurs', description: 'Connecte a une competence ou valeur collective. Ex: "C\'est exactement la qualite de service qu\'on vise."' },
+          { letter: 'M', title: 'Mentionner l\'action', description: 'Cite un fait précis, daté, observable. Ex: "Lors de l\'accueil du public mardi, j\'ai remarqué que tu as pris le temps d\'expliquer la procédure."' },
+          { letter: 'E', title: 'Expliquer l\'impact', description: 'Relie à l\'impact concret sur l\'équipe ou les usagers. Ex: "L\'usager est reparti avec une solution claire, et ça a évité un rappel."' },
+          { letter: 'R', title: 'Relier aux valeurs', description: 'Connecte à une compétence ou valeur collective. Ex: "C\'est exactement la qualité de service qu\'on vise."' },
           { letter: 'C', title: 'Conclure en projetant', description: 'Ouvre des perspectives. Ex: "J\'aimerais qu\'on capitalise sur cette approche pour les nouveaux arrivants."' },
-          { letter: 'I', title: 'Impliquer', description: 'Co-construis la suite. Ex: "Comment tu vois la suite ? Qu\'est-ce qui t\'aiderait a aller plus loin ?"' },
+          { letter: 'I', title: 'Impliquer', description: 'Co-construis la suite. Ex: "Comment tu vois la suite ? Qu\'est-ce qui t\'aiderait à aller plus loin ?"' },
         ],
       },
       posture: [
-        'Etre specifique : pas de "c\'est bien" vague',
-        'Etre sincere : le collaborateur detecte le feedback instrumentalise',
+        'Être spécifique : pas de "c\'est bien" vague',
+        'Être sincère : le collaborateur détecte le feedback instrumentalisé',
         'Ne jamais conditionner : pas de "c\'est bien MAIS..."',
-        'Relier a l\'impact collectif, pas juste individuel',
-        'Projeter vers l\'avenir, pas juste constater le passe',
+        'Relier à l\'impact collectif, pas juste individuel',
+        'Projeter vers l\'avenir, pas juste constater le passé',
         'Demander le ressenti du collaborateur',
       ],
       erreurs: [
         'Rester vague ("Bon travail, continue")',
         'Conditionner le positif ("C\'est bien, mais...")',
         'Instrumentaliser ("C\'est super, d\'ailleurs j\'aurais besoin que...")',
-        'Etre condescendant entre pairs',
-        'Ne pas relier a l\'impact collectif',
+        'Être condescendant entre pairs',
+        'Ne pas relier à l\'impact collectif',
       ],
       exemple: {
-        situation: 'Une agente a pris l\'initiative de reorganiser le planning d\'accueil pour fluidifier les pics.',
-        bonneApproche: 'Sophie, j\'ai vu que tu as reorganise le planning d\'accueil la semaine derniere. L\'attente moyenne est passee de 25 a 12 minutes. C\'est exactement ce type d\'initiative qui fait la difference pour les usagers. Comment tu vois la suite ?',
-        mauvaiseApproche: 'C\'est bien ce que tu as fait avec le planning. D\'ailleurs, j\'aurais besoin que tu geres aussi les reclamations.',
+        situation: 'Une agente a pris l\'initiative de réorganiser le planning d\'accueil pour fluidifier les pics.',
+        bonneApproche: 'Sophie, j\'ai vu que tu as réorganisé le planning d\'accueil la semaine dernière. L\'attente moyenne est passée de 25 à 12 minutes. C\'est exactement ce type d\'initiative qui fait la différence pour les usagers. Comment tu vois la suite ?',
+        mauvaiseApproche: 'C\'est bien ce que tu as fait avec le planning. D\'ailleurs, j\'aurais besoin que tu gères aussi les réclamations.',
       },
     },
     decision_difficile: {
-      title: 'Preparer l\'annonce d\'une decision difficile',
-      introduction: 'Annoncer une decision difficile demande de la clarte, de l\'empathie et de la fermete. La decision n\'est pas negociable, mais la facon de l\'annoncer et de l\'accompagner fait toute la difference.',
+      title: 'Préparer l\'annonce d\'une décision difficile',
+      introduction: 'Annoncer une décision difficile demande de la clarté, de l\'empathie et de la fermeté. La décision n\'est pas négociable, mais la façon de l\'annoncer et de l\'accompagner fait toute la différence.',
       method: {
-        name: 'Annonce structuree',
+        name: 'Annonce structurée',
         steps: [
-          { letter: '1', title: 'Cadrer', description: 'Poser le contexte serieux des le debut. Ex: "J\'ai demande cet entretien parce que j\'ai une decision importante a te communiquer."' },
-          { letter: '2', title: 'Annoncer', description: 'Nommer la decision clairement, sans tourner autour. Ex: "La decision qui a ete prise est [decision]. Voici les raisons..."' },
-          { letter: '3', title: 'Accueillir', description: 'Laisser le temps de la reaction. Ecouter sans minimiser. Ex: "Je comprends que ca puisse etre difficile. Comment tu reagis ?"' },
-          { letter: '4', title: 'Tenir', description: 'Rester ferme sur la decision tout en restant empathique. Distinguer le non-negociable du discutable.' },
-          { letter: '5', title: 'Accompagner', description: 'Proposer un accompagnement concret. Ex: "Voila ce que je te propose pour la suite. On se revoit le [date]."' },
+          { letter: '1', title: 'Cadrer', description: 'Poser le contexte sérieux dès le début. Ex: "J\'ai demandé cet entretien parce que j\'ai une décision importante à te communiquer."' },
+          { letter: '2', title: 'Annoncer', description: 'Nommer la décision clairement, sans tourner autour. Ex: "La décision qui a été prise est [décision]. Voici les raisons..."' },
+          { letter: '3', title: 'Accueillir', description: 'Laisser le temps de la réaction. Écouter sans minimiser. Ex: "Je comprends que ça puisse être difficile. Comment tu réagis ?"' },
+          { letter: '4', title: 'Tenir', description: 'Rester ferme sur la décision tout en restant empathique. Distinguer le non-négociable du discutable.' },
+          { letter: '5', title: 'Accompagner', description: 'Proposer un accompagnement concret. Ex: "Voilà ce que je te propose pour la suite. On se revoit le [date]."' },
         ],
       },
       posture: [
-        'Etre direct : ne pas tourner autour du pot',
-        'Etre empathique : accueillir l\'emotion sans la nier',
-        'Distinguer non-negociable (la decision) et discutable (les modalites)',
-        'Ne pas s\'excuser excessivement (ca decredibilise)',
+        'Être direct : ne pas tourner autour du pot',
+        'Être empathique : accueillir l\'émotion sans la nier',
+        'Distinguer non-négociable (la décision) et discutable (les modalités)',
+        'Ne pas s\'excuser excessivement (ça décrédibilise)',
         'Proposer un accompagnement concret',
         'Fixer un rendez-vous de suivi',
       ],
       erreurs: [
         'Tourner autour du pot pendant 10 minutes',
-        'S\'excuser tellement que la decision perd sa legitimite',
+        'S\'excuser tellement que la décision perd sa légitimité',
         'Minimiser l\'impact ("C\'est pas si grave")',
-        'Negocier le non-negociable',
+        'Négocier le non-négociable',
         'Ne pas proposer d\'accompagnement',
       ],
       exemple: {
-        situation: 'Un agent doit etre mute dans une autre agence suite a une reorganisation.',
-        bonneApproche: 'Thomas, j\'ai une decision importante a t\'annoncer. Suite a la reorganisation du reseau, ton poste est transfere a l\'agence de [lieu]. Je comprends que c\'est difficile. Voici ce qui est prevu pour t\'accompagner...',
-        mauvaiseApproche: 'Ecoute, il y a des changements... enfin, c\'est complique... disons que... bon, tu vas devoir changer d\'agence, mais c\'est pas si grave.',
+        situation: 'Un agent doit être muté dans une autre agence suite à une réorganisation.',
+        bonneApproche: 'Thomas, j\'ai une décision importante à t\'annoncer. Suite à la réorganisation du réseau, ton poste est transféré à l\'agence de [lieu]. Je comprends que c\'est difficile. Voici ce qui est prévu pour t\'accompagner...',
+        mauvaiseApproche: 'Écoute, il y a des changements... enfin, c\'est compliqué... disons que... bon, tu vas devoir changer d\'agence, mais c\'est pas si grave.',
       },
     },
   };

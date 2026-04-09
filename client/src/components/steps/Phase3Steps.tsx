@@ -13,9 +13,9 @@ const DISC_PROFILES = [
   {
     id: 'dominant',
     label: 'Dominant',
-    shortDesc: 'Direct, oriente resultats',
-    fullDesc: 'Direct, oriente resultats, impatient. Challenge, veut des solutions rapides.',
-    traits: ['Decide vite', 'Va droit au but', 'Aime le controle'],
+    shortDesc: 'Direct, orienté résultats',
+    fullDesc: 'Direct, orienté résultats, impatient. Challenge, veut des solutions rapides.',
+    traits: ['Décide vite', 'Va droit au but', 'Aime le contrôle'],
     color: '#E1000F',
     bgColor: '#FEF0F0',
     icon: ArrowUpCircle,
@@ -25,8 +25,8 @@ const DISC_PROFILES = [
     id: 'influent',
     label: 'Influent',
     shortDesc: 'Expressif, enthousiaste',
-    fullDesc: 'Expressif, enthousiaste, disperse. Parle beaucoup, reagit emotionnellement.',
-    traits: ['Communique avec entrain', 'Aime collaborer', 'Expressif et creatif'],
+    fullDesc: 'Expressif, enthousiaste, dispersé. Parle beaucoup, réagit émotionnellement.',
+    traits: ['Communique avec entrain', 'Aime collaborer', 'Expressif et créatif'],
     color: '#D58D00',
     bgColor: '#FFF8E5',
     icon: Sun,
@@ -36,8 +36,8 @@ const DISC_PROFILES = [
     id: 'stable',
     label: 'Stable',
     shortDesc: 'Patient, loyal, fiable',
-    fullDesc: 'Patient, loyal, resistant au changement. Ecoute mais interiorise, passif.',
-    traits: ['Ecoute attentivement', 'Fiable et constant', 'Prefere la stabilite'],
+    fullDesc: 'Patient, loyal, résistant au changement. Écoute mais intériorise, passif.',
+    traits: ['Écoute attentivement', 'Fiable et constant', 'Préfère la stabilité'],
     color: '#18753C',
     bgColor: '#F0FFF4',
     icon: ShieldCheck,
@@ -46,9 +46,9 @@ const DISC_PROFILES = [
   {
     id: 'consciencieux',
     label: 'Consciencieux',
-    shortDesc: 'Methodique, precis, exigeant',
-    fullDesc: 'Methodique, precis, exigeant. Demande des preuves, analyse tout.',
-    traits: ['Analyse les details', 'Suit les procedures', 'Recherche la precision'],
+    shortDesc: 'Méthodique, précis, exigeant',
+    fullDesc: 'Méthodique, précis, exigeant. Demande des preuves, analyse tout.',
+    traits: ['Analyse les détails', 'Suit les procédures', 'Recherche la précision'],
     color: '#0063CB',
     bgColor: '#F0F5FF',
     icon: FileSearch,
@@ -74,7 +74,7 @@ export function Step11Disc() {
           Profil du collaborateur
         </h3>
         <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">
-          Pour le scenario <strong>"{getScenarioLabel(scenarioChoisi)}"</strong>, choisis le type de personnalite de ton collaborateur.
+          Pour le scénario <strong>"{getScenarioLabel(scenarioChoisi)}"</strong>, choisis le type de personnalité de ton collaborateur.
         </p>
         <p className="text-xs text-[var(--dsfr-grey-425)] mt-1">
           Ton collaborateur s'appellera <strong className="text-foreground">{persona.prenomFictif}</strong>.
@@ -90,18 +90,18 @@ export function Step11Disc() {
               style={{ color: 'var(--dsfr-blue-france)', borderColor: 'var(--dsfr-blue-france)' }}
             >
               <Info className="w-3.5 h-3.5" />
-              En savoir plus sur la methode DISC
+              En savoir plus sur la méthode DISC
             </button>
           </DialogTrigger>
           <DialogContent className="max-w-lg">
             <DialogHeader>
               <DialogTitle className="text-base font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>
-                La methode DISC
+                La méthode DISC
               </DialogTitle>
             </DialogHeader>
             <div className="space-y-3 text-sm text-[var(--dsfr-grey-425)]">
               <p>
-                Le modele DISC est un outil d'analyse comportementale qui identifie <strong className="text-foreground">4 grands profils de communication</strong>. Chaque personne combine ces profils a des degres differents.
+                Le modèle DISC est un outil d'analyse comportementale qui identifie <strong className="text-foreground">4 grands profils de communication</strong>. Chaque personne combine ces profils à des degrés différents.
               </p>
               <div className="grid grid-cols-2 gap-2">
                 {DISC_PROFILES.map(p => (
@@ -115,7 +115,7 @@ export function Step11Disc() {
                 ))}
               </div>
               <p className="text-xs italic">
-                En choisissant un profil pour ton collaborateur virtuel, tu adaptes le niveau de difficulte et le realisme de la simulation.
+                En choisissant un profil pour ton collaborateur virtuel, tu adaptes le niveau de difficulté et le réalisme de la simulation.
               </p>
             </div>
           </DialogContent>
@@ -192,7 +192,7 @@ export function Step11Disc() {
           ) : (
             <div className="rounded-xl p-5 border-2 border-dashed border-[var(--dsfr-grey-850)] flex flex-col items-center justify-center min-h-[200px] text-center">
               <span className="text-3xl mb-2">👈</span>
-              <p className="text-sm text-[var(--dsfr-grey-425)]">Survolez ou selectionnez un profil pour decouvrir les caracteristiques de <strong>{persona.prenomFictif}</strong></p>
+              <p className="text-sm text-[var(--dsfr-grey-425)]">Survole ou sélectionne un profil pour découvrir les caractéristiques de <strong>{persona.prenomFictif}</strong></p>
             </div>
           )}
         </div>
@@ -278,18 +278,18 @@ export function Step13EtatEsprit() {
     <div className="space-y-6">
       <div className="text-center">
         <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>
-          Etat d'esprit du collaborateur
+          État d'esprit du collaborateur
         </h3>
-        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Dans quel etat d'esprit souhaites-tu que ton collaborateur se trouve au debut ?</p>
+        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Dans quel état d'esprit souhaites-tu que ton collaborateur se trouve au début ?</p>
       </div>
       <ChatCardSingle
         selected={persona.etatEsprit}
         onSelect={handleSelect}
         options={[
-          { id: 'positif', label: 'Positif / Ouvert', subtitle: 'Bonne journee, disponible - ecoute active', icon: <Smile className="w-5 h-5" style={{ color: 'var(--dsfr-success)' }} />, color: 'bg-[var(--dsfr-success-bg)]' },
-          { id: 'neutre', label: 'Neutre / Concentre', subtitle: 'Etat normal, professionnel - comportement calibre', icon: <Meh className="w-5 h-5" style={{ color: 'var(--dsfr-info)' }} />, color: 'bg-[var(--dsfr-info-light)]' },
-          { id: 'stresse', label: 'Stresse / Preoccupe', subtitle: 'Charge de travail, problemes - distrait, seuil bas', icon: <Frown className="w-5 h-5" style={{ color: 'var(--dsfr-warning)' }} />, color: 'bg-[var(--dsfr-warning-light)]' },
-          { id: 'agace', label: 'Agace / Sur la defensive', subtitle: 'Mauvaise journee, tensions - resistance immediate', icon: <Angry className="w-5 h-5" style={{ color: 'var(--dsfr-red-marianne)' }} />, color: 'bg-[var(--dsfr-red-marianne-light)]' },
+          { id: 'positif', label: 'Positif / Ouvert', subtitle: 'Bonne journée, disponible — écoute active', icon: <Smile className="w-5 h-5" style={{ color: 'var(--dsfr-success)' }} />, color: 'bg-[var(--dsfr-success-bg)]' },
+          { id: 'neutre', label: 'Neutre / Concentré', subtitle: 'État normal, professionnel — comportement calibré', icon: <Meh className="w-5 h-5" style={{ color: 'var(--dsfr-info)' }} />, color: 'bg-[var(--dsfr-info-light)]' },
+          { id: 'stresse', label: 'Stressé / Préoccupé', subtitle: 'Charge de travail, problèmes — distrait, seuil bas', icon: <Frown className="w-5 h-5" style={{ color: 'var(--dsfr-warning)' }} />, color: 'bg-[var(--dsfr-warning-light)]' },
+          { id: 'agace', label: 'Agacé / Sur la défensive', subtitle: 'Mauvaise journée, tensions — résistance immédiate', icon: <Angry className="w-5 h-5" style={{ color: 'var(--dsfr-red-marianne)' }} />, color: 'bg-[var(--dsfr-red-marianne-light)]' },
         ]}
       />
     </div>
@@ -305,9 +305,9 @@ export function Step14RecapPersona() {
     <div className="space-y-6">
       <div className="text-center">
         <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>
-          Recapitulatif avant simulation
+          Récapitulatif avant simulation
         </h3>
-        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Verifie ta configuration avant de demarrer</p>
+        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Vérifie ta configuration avant de démarrer</p>
       </div>
 
       {(profil || typeCollab || objectifs.length > 0) && (
@@ -315,31 +315,31 @@ export function Step14RecapPersona() {
           <p className="font-bold text-xs uppercase tracking-wider" style={{ color: 'var(--dsfr-blue-france)' }}>Ton profil :</p>
           <ul className="space-y-1 list-none pl-0 text-xs text-[var(--dsfr-grey-425)]">
             {profil && (
-              <li>Role : <strong className="text-foreground">{getProfilLabel(profil)}</strong>
-                {experience && <> — experience : <strong className="text-foreground">{getExperienceLabel(experience)}</strong></>}
+              <li>Rôle : <strong className="text-foreground">{getProfilLabel(profil)}</strong>
+                {experience && <> — expérience : <strong className="text-foreground">{getExperienceLabel(experience)}</strong></>}
               </li>
             )}
             {typeCollab && (
               <li>Type de collaborateur : <strong className="text-foreground">{getTypeCollabLabel(typeCollab)}</strong></li>
             )}
             {scenarioChoisi && (
-              <li>Scenario : <strong className="text-foreground">{getScenarioLabel(scenarioChoisi)}</strong></li>
+              <li>Scénario : <strong className="text-foreground">{getScenarioLabel(scenarioChoisi)}</strong></li>
             )}
             {objectifs.length > 0 && (
               <li>Objectifs : <strong className="text-foreground">{objectifs.join(', ')}</strong></li>
             )}
             {difficulte.length > 0 && (
-              <li>Etapes delicates : <strong className="text-foreground">{difficulte.join(', ')}</strong></li>
+              <li>Étapes délicates : <strong className="text-foreground">{difficulte.join(', ')}</strong></li>
             )}
             {complement && (
-              <li>Complement : <strong className="text-foreground">{complement.length > 80 ? complement.slice(0, 80) + '...' : complement}</strong></li>
+              <li>Complément : <strong className="text-foreground">{complement.length > 80 ? complement.slice(0, 80) + '...' : complement}</strong></li>
             )}
           </ul>
         </div>
       )}
 
       <div className="bg-[var(--dsfr-blue-france-light)] p-4 space-y-3 border-l-[3px]" style={{ borderLeftColor: 'var(--dsfr-blue-france)' }}>
-        <p className="font-bold text-xs uppercase tracking-wider" style={{ color: 'var(--dsfr-blue-france)' }}>Persona configure :</p>
+        <p className="font-bold text-xs uppercase tracking-wider" style={{ color: 'var(--dsfr-blue-france)' }}>Persona configuré :</p>
         <div className="grid grid-cols-2 gap-2 text-xs">
           <div>
             <span className="text-[var(--dsfr-grey-425)]">Profil DISC :</span>
@@ -358,7 +358,7 @@ export function Step14RecapPersona() {
         </div>
         <div className="pt-2 border-t border-[var(--dsfr-grey-925)]">
           <div className="flex items-center gap-2">
-            <span className="text-xs text-[var(--dsfr-grey-425)]">Niveau de difficulte :</span>
+            <span className="text-xs text-[var(--dsfr-grey-425)]">Niveau de difficulté :</span>
             <div className="flex items-center gap-0.5">
               {Array.from({ length: 4 }, (_, i) => (
                 <Star key={i} className={cn('w-4 h-4', i < difficultyStars ? 'text-[var(--dsfr-warning)] fill-[var(--dsfr-warning)]' : 'text-[var(--dsfr-grey-850)]')} />

@@ -20,7 +20,7 @@ export default function LandingPage() {
           <div className="h-8 w-px bg-[var(--dsfr-grey-925)]" />
           <div>
             <h1 className="font-bold text-sm text-[var(--dsfr-blue-france)] leading-tight">ChatFT SimuManager</h1>
-            <p className="text-[11px] text-[var(--dsfr-grey-425)] font-medium">Entrainement managerial</p>
+            <p className="text-[11px] text-[var(--dsfr-grey-425)] font-medium">Entraînement managérial</p>
           </div>
         </div>
       </header>
@@ -32,10 +32,10 @@ export default function LandingPage() {
           <div className="max-w-2xl mx-auto px-6 py-12 space-y-10">
             <div className="space-y-4">
               <h2 className="text-2xl font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>
-                Prepare tes entretiens manageriaux
+                Prépare tes entretiens managériaux
               </h2>
               <p className="text-sm text-[var(--dsfr-grey-425)] leading-relaxed">
-                Selectionne un scenario ci-dessous pour demarrer une simulation conversationnelle avec un collaborateur virtuel. Chaque scenario lance une conversation independante.
+                Sélectionne un scénario ci-dessous pour démarrer une simulation conversationnelle avec un collaborateur virtuel. Chaque scénario lance une conversation indépendante.
               </p>
             </div>
 

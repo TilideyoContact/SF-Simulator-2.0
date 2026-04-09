@@ -150,7 +150,7 @@ export function ChatInput({
         </button>
       </div>
       <p className="text-[10px] text-center text-[var(--dsfr-grey-425)] mt-1.5">
-        ChatFT peut faire des erreurs. Pensez a verifier les informations.
+        ChatFT peut faire des erreurs. Pense à vérifier les informations.
       </p>
     </div>
   );

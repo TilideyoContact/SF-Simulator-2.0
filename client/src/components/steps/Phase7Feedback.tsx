@@ -23,7 +23,7 @@ export function Step22Nps() {
     <div className="space-y-6">
       <div className="text-center">
         <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>Ton avis compte</h3>
-        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Sur une echelle de 0 a 10, quelle est la probabilite que tu recommandes ChatFT SimuManager a un collegue manager ?</p>
+        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Sur une échelle de 0 à 10, quelle est la probabilité que tu recommandes ChatFT SimuManager à un collègue manager ?</p>
       </div>
       <NpsCard selected={feedbackParcours.nps} onSelect={handleSelect} />
     </div>
@@ -38,30 +38,30 @@ export function Step23Ratings() {
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>Evaluations</h3>
-        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Comment evalues-tu...</p>
+        <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>Évaluations</h3>
+        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Comment évalues-tu...</p>
       </div>
       <div className="space-y-4">
         <RatingCard
-          label="La facilite d'utilisation de l'outil ?"
+          label="La facilité d'utilisation de l'outil ?"
           selected={feedbackParcours.facilite}
           onSelect={setFacilite}
-          minLabel="Tres difficile"
-          maxLabel="Tres facile"
+          minLabel="Très difficile"
+          maxLabel="Très facile"
         />
         <RatingCard
           label="La pertinence du parcours de profilage ?"
           selected={feedbackParcours.pertinence}
           onSelect={setPertinence}
           minLabel="Pas pertinent"
-          maxLabel="Tres pertinent"
+          maxLabel="Très pertinent"
         />
         <RatingCard
-          label="Le realisme de la simulation ?"
+          label="Le réalisme de la simulation ?"
           selected={feedbackParcours.realisme}
           onSelect={setRealisme}
-          minLabel="Pas realiste"
-          maxLabel="Tres realiste"
+          minLabel="Pas réaliste"
+          maxLabel="Très réaliste"
         />
         {allAnswered && (
           <Button data-testid="button-continue-ratings" onClick={() => nextStep()} className="w-full">
@@ -96,8 +96,8 @@ export function Step24Ameliorations() {
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>Ameliorations</h3>
-        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Qu'est-ce qui pourrait etre ameliore ?</p>
+        <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>Améliorations</h3>
+        <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Qu'est-ce qui pourrait être amélioré ?</p>
       </div>
       <div className="space-y-3">
         <ChatCardMulti
@@ -106,12 +106,12 @@ export function Step24Ameliorations() {
           exclusiveOptionId="rien"
           options={[
             { id: 'design', label: "Le design et l'ergonomie" },
-            { id: 'clarte', label: 'La clarte des questions de profilage' },
-            { id: 'etapes', label: "Le nombre d'etapes avant la simulation" },
-            { id: 'realisme', label: 'Le realisme du collaborateur simule' },
-            { id: 'feedback', label: 'La qualite du feedback post-simulation' },
+            { id: 'clarte', label: 'La clarté des questions de profilage' },
+            { id: 'etapes', label: "Le nombre d'étapes avant la simulation" },
+            { id: 'realisme', label: 'Le réalisme du collaborateur simulé' },
+            { id: 'feedback', label: 'La qualité du feedback post-simulation' },
             { id: 'mobile', label: "L'adaptation mobile" },
-            { id: 'rien', label: "Rien, c'est tres bien comme ca !" },
+            { id: 'rien', label: "Rien, c'est très bien comme ça !" },
           ]}
         />
         {selected.length > 0 && (
@@ -283,11 +283,11 @@ export function Step25Closing() {
       </div>
 
       <div className="bg-[var(--dsfr-blue-france-light)] p-4 space-y-2 text-xs border-l-[3px]" style={{ borderLeftColor: 'var(--dsfr-blue-france)' }}>
-        <p className="font-bold text-sm" style={{ color: 'var(--dsfr-blue-france)' }}>Recapitulatif de ta session :</p>
+        <p className="font-bold text-sm" style={{ color: 'var(--dsfr-blue-france)' }}>Récapitulatif de ta session :</p>
         <ul className="space-y-1 list-none pl-0">
-          <li>Scenario joue : <strong>{getScenarioLabel(scenarioChoisi)}</strong></li>
+          <li>Scénario joué : <strong>{getScenarioLabel(scenarioChoisi)}</strong></li>
           <li className="flex items-center gap-1 flex-wrap">
-            Collaborateur : {getTypeCollabShortLabel(typeCollab)}, profil {getDiscLabel(persona.disc)}, difficulte
+            Collaborateur : {getTypeCollabShortLabel(typeCollab)}, profil {getDiscLabel(persona.disc)}, difficulté
             {Array.from({ length: difficultyStars }, (_, i) => (
               <Star key={i} className="w-3 h-3 inline" style={{ color: 'var(--dsfr-warning)', fill: 'var(--dsfr-warning)' }} />
             ))}
@@ -296,7 +296,7 @@ export function Step25Closing() {
         </ul>
       </div>
 
-      <p className="text-sm text-center">A bientot sur ChatFT SimuManager !</p>
+      <p className="text-sm text-center">À bientôt sur ChatFT SimuManager !</p>
 
       <div className="space-y-2">
         <button
@@ -306,7 +306,7 @@ export function Step25Closing() {
         >
           <RefreshCw className="w-5 h-5" style={{ color: 'var(--dsfr-blue-france)' }} />
           <div>
-            <div className="font-bold">Rejouer ce scenario</div>
+            <div className="font-bold">Rejouer ce scénario</div>
             <div className="text-xs text-[var(--dsfr-grey-425)]">Reprendre avec comparaison de progression</div>
           </div>
         </button>
@@ -317,8 +317,8 @@ export function Step25Closing() {
         >
           <Shuffle className="w-5 h-5" style={{ color: 'var(--dsfr-blue-france)' }} />
           <div>
-            <div className="font-bold">Essayer un autre scenario</div>
-            <div className="text-xs text-[var(--dsfr-grey-425)]">Retour au menu des scenarios</div>
+            <div className="font-bold">Essayer un autre scénario</div>
+            <div className="text-xs text-[var(--dsfr-grey-425)]">Retour au menu des scénarios</div>
           </div>
         </button>
         <button
@@ -328,8 +328,8 @@ export function Step25Closing() {
         >
           <Home className="w-5 h-5" style={{ color: 'var(--dsfr-blue-france)' }} />
           <div>
-            <div className="font-bold">Retour a l'accueil</div>
-            <div className="text-xs text-[var(--dsfr-grey-425)]">Recommencer depuis le debut</div>
+            <div className="font-bold">Retour à l'accueil</div>
+            <div className="text-xs text-[var(--dsfr-grey-425)]">Recommencer depuis le début</div>
           </div>
         </button>
       </div>

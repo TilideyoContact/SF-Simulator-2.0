@@ -1,0 +1,49 @@
+## 4. Infobulles sur le slider "Qualité des échanges" + indicateur "recommandé"             
+  
+  Fichier : client/src/components/steps/Phase3Steps.tsx — Step12Relation                       
+                                                         
+  Le slider de qualité des échanges (1 à 5) doit avoir :                                       
+                                                         
+  **a) Un indicateur "recommandé" sur la valeur 3**                                            
+  - Sous le chiffre "3" du slider, affiche un petit label "(recommandé)" en bleu, discret
+  - La valeur 3 est recommandée car elle correspond à une relation neutre/professionnelle —    
+  c'est le meilleur terrain d'entraînement pour un entretien réaliste (ni trop facile, ni trop 
+  hostile)                                                                                     
+                                                                                               
+  **b) Des infobulles sur chaque valeur (1 à 5)**                                              
+  - Quand l'utilisateur survole ou sélectionne une valeur, un texte explicatif apparaît
+  (tooltip ou texte qui change dynamiquement sous le slider)                                   
+  - Le texte explique ce que chaque niveau signifie concrètement pour la simulation :
+                                                                                               
+    - **1 — Tendue** : "La relation est très dégradée. Le collaborateur sera méfiant, distant, 
+  avec des réponses courtes. Il faudra plusieurs échanges constructifs avant toute ouverture.  
+  Niveau de difficulté élevé."                                                                 
+                                                         
+    - **2 — Difficile** : "La relation est sous tension. Le collaborateur est sur la défensive,
+   pas hostile mais pas coopératif. L'ouverture est possible si tu es factuel et à l'écoute."
+                                                                                               
+    - **3 — Neutre (recommandé)** : "La relation est professionnelle, ni chaleureuse ni froide.
+   Le collaborateur attend de voir comment tu abordes le sujet. Bon équilibre pour
+  s'entraîner."                                                                                
+                                                         
+    - **4 — Bonne** : "Il y a une relation de confiance. Le collaborateur est ouvert et        
+  coopératif. La résistance n'apparaîtra que si tu es maladroit (jugement, TU accusateur)."
+                                                                                               
+    - **5 — Excellente** : "Complicité professionnelle forte. Le collaborateur s'exprime       
+  librement. Attention : le risque est de tomber dans la complaisance (pas de cadre, pas de
+  faits)."                                                                                     
+                                                         
+  **Implémentation suggérée :** Le plus simple est d'afficher le texte descriptif dynamiquement
+   sous le slider, à côté du label actuel (qui affiche déjà "Tendue" / "Excellente" / etc.).
+  Remplace le simple label par le texte complet correspondant à la valeur sélectionnée. Pas    
+  besoin de tooltip au hover — le texte change en temps réel quand on bouge le slider.
+
+  ---
+
+  ### Test global                                                                              
+  - Vérifie que le step 13 n'apparaît plus dans le parcours (ni rapide ni avancé)
+  - Vérifie que l'état d'esprit est "neutre" par défaut dans le récap                          
+  - Vérifie l'icône dictaphone dans le champ de saisie pendant la simulation                   
+  - Fais une passe visuelle sur les accents dans chaque étape du parcours                      
+  - Vérifie les infobulles du slider en bougeant la valeur de 1 à 5                            
+  - Vérifie que "(recommandé)" apparaît sous la valeur 3               

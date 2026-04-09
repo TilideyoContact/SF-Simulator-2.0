@@ -4,7 +4,7 @@ import { useParcoursStore } from '@/lib/store';
 const PHASES = [
   { label: 'Profilage', steps: [1, 2, 7, 5, 6, 8] },
   { label: 'Persona', steps: [11, 12, 13, 14] },
-  { label: 'Preparation', steps: [15] },
+  { label: 'Préparation', steps: [15] },
   { label: 'Simulation', steps: [16, 17, 18] },
   { label: 'Analyse', steps: [19, 20, 21] },
   { label: 'Feedback', steps: [22, 23, 24, 26, 25] },

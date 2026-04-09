@@ -166,15 +166,15 @@ export function SimulationView() {
   const getDefaultFirstMessage = (): string => {
     const name = persona.prenomFictif;
     if (persona.disc === 'dominant' && persona.etatEsprit === 'agace') {
-      return `*[${name} entre, pose ses documents sur la table sans s'asseoir.]*\n\nBon, tu voulais me voir. Je te previens, j'ai un comite dans 30 minutes. De quoi s'agit-il ?`;
+      return `*[${name} entre, pose ses documents sur la table sans s'asseoir.]*\n\nBon, tu voulais me voir. Je te préviens, j'ai un comité dans 30 minutes. De quoi s'agit-il ?`;
     }
     if (persona.disc === 'stable') {
-      return `*[${name} entre dans le bureau et s'assoit calmement.]*\n\nBonjour. Tu m'as demande de passer te voir, j'espere que ce ne sera pas trop long, j'ai beaucoup de dossiers en attente. Je t'ecoute.`;
+      return `*[${name} entre dans le bureau et s'assoit calmement.]*\n\nBonjour. Tu m'as demandé de passer te voir, j'espère que ce ne sera pas trop long, j'ai beaucoup de dossiers en attente. Je t'écoute.`;
     }
     if (persona.disc === 'influent') {
-      return `*[${name} entre avec enthousiasme.]*\n\nBonjour ! Ca va bien ? J'ai eu une matinee chargee mais bon, ca fait du bien de changer d'air. Tu avais quelque chose a me dire ?`;
+      return `*[${name} entre avec enthousiasme.]*\n\nBonjour ! Ça va bien ? J'ai eu une matinée chargée mais bon, ça fait du bien de changer d'air. Tu avais quelque chose à me dire ?`;
     }
-    return `*[${name} entre et s'installe.]*\n\nBonjour. J'ai recu ton invitation pour cet entretien. Qu'as-tu a me dire ?`;
+    return `*[${name} entre et s'installe.]*\n\nBonjour. J'ai reçu ton invitation pour cet entretien. Qu'as-tu à me dire ?`;
   };
 
   const startRecording = async () => {
@@ -300,7 +300,7 @@ export function SimulationView() {
     } catch {
       addSimulationMessage({
         role: 'collaborateur',
-        content: "Je comprends ce que tu dis. Peux-tu developper ta pensee ?",
+        content: "Je comprends ce que tu dis. Peux-tu développer ta pensée ?",
         timestamp: new Date().toISOString(),
       });
     } finally {
@@ -336,7 +336,7 @@ export function SimulationView() {
           )}
         >
           {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
-          {soundEnabled ? "Son active" : "Son coupe"}
+          {soundEnabled ? "Son activé" : "Son coupé"}
         </Button>
       </div>
 
@@ -370,14 +370,14 @@ export function SimulationView() {
                 "shrink-0",
                 isRecording && "animate-pulse"
               )}
-              title={isRecording ? "Arreter l'enregistrement" : "Enregistrer un message vocal"}
+              title={isRecording ? "Arrêter l'enregistrement" : "Enregistrer un message vocal"}
             >
               {isRecording ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
             </Button>
             <Textarea
               ref={textareaRef}
               data-testid="input-simulation"
-              placeholder={isTranscribing ? "Transcription en cours..." : "Ecris ton message en tant que manager..."}
+              placeholder={isTranscribing ? "Transcription en cours..." : "Écris ton message en tant que manager..."}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
@@ -401,7 +401,7 @@ export function SimulationView() {
           )}
           {isRecording && (
             <p data-testid="text-recording" className="text-xs text-destructive mt-1 px-1 animate-pulse">
-              Enregistrement en cours... Cliquez pour arreter
+              Enregistrement en cours... Clique pour arrêter
             </p>
           )}
         </div>
@@ -427,8 +427,8 @@ export function Step18EndSimulation() {
       <ChatBubble role="bot">
         <div className="space-y-2">
           <p className="font-semibold text-center">--- FIN DE LA SIMULATION ---</p>
-          <p>Bravo d'avoir mene cet entretien jusqu'au bout !</p>
-          <p>Je vais maintenant analyser notre echange. Un instant...</p>
+          <p>Bravo d'avoir mené cet entretien jusqu'au bout !</p>
+          <p>Je vais maintenant analyser notre échange. Un instant...</p>
         </div>
       </ChatBubble>
       {showLoading && <TypingIndicator />}

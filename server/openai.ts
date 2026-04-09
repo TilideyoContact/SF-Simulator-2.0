@@ -365,7 +365,7 @@ export async function generateFirstMessageAI(
       { role: "system", content: systemPrompt },
       {
         role: "user",
-        content: `Le manager t'a convoque(e) pour un entretien. Tu entres dans son bureau. Genere ton entree (avec une didascalie decrivant ton attitude en entrant) suivie de ta premiere phrase de salutation. Adapte ton attitude a ton profil DISC, ton etat d'esprit et la relation avec le manager. Ne dis rien d'autre que ton entree et ta salutation.`,
+        content: `Le manager t'a convoqué(e) pour un entretien. Tu entres dans son bureau. Génère ton entrée (avec une didascalie décrivant ton attitude en entrant) suivie de ta première phrase de salutation. Adapte ton attitude à ton profil DISC, ton état d'esprit et la relation avec le manager. Ne dis rien d'autre que ton entrée et ta salutation.`,
       },
     ],
     temperature: 0.8,
@@ -404,7 +404,7 @@ export async function generateResponseAI(
   let additionalInstruction = "";
   if (isNearEnd) {
     additionalInstruction =
-      "\n\nIMPORTANT : C'est la fin de l'entretien. Conclus la conversation de maniere naturelle en faisant un bref bilan de l'echange (positif ou mitige selon comment ca s'est passe). Dis au revoir.";
+      "\n\nIMPORTANT : C'est la fin de l'entretien. Conclus la conversation de manière naturelle en faisant un bref bilan de l'échange (positif ou mitigé selon comment ça s'est passé). Dis au revoir.";
   }
 
   const chatMessages: Array<{ role: "system" | "user" | "assistant"; content: string }> = [

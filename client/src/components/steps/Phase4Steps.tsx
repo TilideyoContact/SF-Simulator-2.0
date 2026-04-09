@@ -25,17 +25,17 @@ export function Step15PreSimulation() {
     <div className="space-y-6">
       <div className="text-center">
         <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>
-          Pret(e) a commencer ?
+          Prêt(e) à commencer ?
         </h3>
         <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">
-          Pour le scenario <strong>"{getScenarioLabel(scenarioChoisi)}"</strong> avec {desc ? desc : 'ton collaborateur'}, que preferes-tu ?
+          Pour le scénario <strong>"{getScenarioLabel(scenarioChoisi)}"</strong> avec {desc ? desc : 'ton collaborateur'}, que préfères-tu ?
         </p>
       </div>
       <div className="flex items-start gap-2.5 p-3 rounded-lg bg-[var(--dsfr-success-bg,#f6fef9)] border border-[var(--dsfr-success,#18753C)]20">
         <ShieldCheck className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: 'var(--dsfr-success, #18753C)' }} />
         <div className="text-xs text-[var(--dsfr-grey-425)]">
-          <p className="font-bold text-[var(--dsfr-success, #18753C)] mb-0.5">Cadre securise et anonyme</p>
-          <p>Cet exercice est strictement confidentiel. Tes resultats ne sont visibles que par toi et ne constituent en aucun cas une evaluation hierarchique. Installe-toi dans un endroit calme pour profiter pleinement de la simulation.</p>
+          <p className="font-bold text-[var(--dsfr-success, #18753C)] mb-0.5">Cadre sécurisé et anonyme</p>
+          <p>Cet exercice est strictement confidentiel. Tes résultats ne sont visibles que par toi et ne constituent en aucun cas une évaluation hiérarchique. Installe-toi dans un endroit calme pour profiter pleinement de la simulation.</p>
         </div>
       </div>
 
@@ -43,8 +43,8 @@ export function Step15PreSimulation() {
         selected={choixPreSimulation}
         onSelect={handleSelect}
         options={[
-          { id: 'simulation', label: 'Passer a la simulation', subtitle: "Je veux m'entrainer directement", icon: <Play className="w-5 h-5" /> },
-          { id: 'theorie', label: "D'abord des conseils theoriques", subtitle: 'Revoir les methodes avant de pratiquer', icon: <BookOpen className="w-5 h-5" /> },
+          { id: 'simulation', label: 'Passer à la simulation', subtitle: "Je veux m'entraîner directement", icon: <Play className="w-5 h-5" /> },
+          { id: 'theorie', label: "D'abord des conseils théoriques", subtitle: 'Revoir les méthodes avant de pratiquer', icon: <BookOpen className="w-5 h-5" /> },
         ]}
       />
     </div>
@@ -66,7 +66,7 @@ export function Step15bTheory() {
 
       <div className="space-y-2">
         <h4 className="text-sm font-bold uppercase tracking-wider" style={{ color: 'var(--dsfr-blue-france)' }}>
-          Methode {theory.method.name}
+          Méthode {theory.method.name}
         </h4>
         <div className="space-y-2">
           {theory.method.steps.map((step, i) => (
@@ -85,7 +85,7 @@ export function Step15bTheory() {
 
       <div className="space-y-2">
         <h4 className="text-sm font-bold uppercase tracking-wider" style={{ color: 'var(--dsfr-success, #18753C)' }}>
-          Posture a adopter
+          Posture à adopter
         </h4>
         <ul className="space-y-1 text-sm">
           {theory.posture.map((p, i) => (
@@ -99,7 +99,7 @@ export function Step15bTheory() {
 
       <div className="space-y-2">
         <h4 className="text-sm font-bold uppercase tracking-wider" style={{ color: 'var(--dsfr-red-marianne)' }}>
-          Erreurs a eviter
+          Erreurs à éviter
         </h4>
         <ul className="space-y-1 text-sm">
           {theory.erreurs.map((e, i) => (
@@ -127,7 +127,7 @@ export function Step15bTheory() {
       </div>
 
       <Button data-testid="button-launch-simulation" onClick={() => useParcoursStore.setState({ currentStep: 16 })} className="w-full">
-        Je suis pret(e), lancer la simulation
+        Je suis prêt(e), lancer la simulation
       </Button>
     </div>
   );
@@ -146,20 +146,20 @@ export function Step15c() {
         <div className="space-y-2 text-xs">
           <p><strong>Rappel du contexte :</strong></p>
           <ul className="space-y-1 list-none pl-0">
-            <li>Scenario : <strong>{getScenarioLabel(scenarioChoisi)}</strong></li>
+            <li>Scénario : <strong>{getScenarioLabel(scenarioChoisi)}</strong></li>
             <li>Collaborateur : <strong>{persona.prenomFictif}</strong>, {getTypeCollabShortLabel(typeCollab)}, profil <strong>{getDiscLabel(persona.disc)}</strong></li>
-            <li>Relation : <strong>{getRelationLabel(persona.relation)}</strong> / Etat d'esprit : <strong>{getEtatEspritLabel(persona.etatEsprit)}</strong></li>
+            <li>Relation : <strong>{getRelationLabel(persona.relation)}</strong> / État d'esprit : <strong>{getEtatEspritLabel(persona.etatEsprit)}</strong></li>
             <li className="flex items-center gap-1">
-              Difficulte :
+              Difficulté :
               {Array.from({ length: difficultyStars }, (_, i) => (
                 <Star key={i} className="w-3 h-3 text-[var(--dsfr-warning)] fill-[var(--dsfr-warning)]" />
               ))}
             </li>
           </ul>
         </div>
-        <p className="text-sm"><strong>Tu joues le role du manager. L'IA joue le role du collaborateur.</strong></p>
-        <p className="text-sm">Ecris ta premiere intervention comme si tu commencais l'entretien. L'echange durera environ <strong>{tourMax * 2} minutes</strong>.</p>
-        <p className="text-xs text-[var(--dsfr-grey-425)] italic">A tout moment, tape "/fin" pour terminer la simulation.</p>
+        <p className="text-sm"><strong>Tu joues le rôle du manager. L'IA joue le rôle du collaborateur.</strong></p>
+        <p className="text-sm">Écris ta première intervention comme si tu commençais l'entretien. L'échange durera environ <strong>{tourMax * 2} minutes</strong>.</p>
+        <p className="text-xs text-[var(--dsfr-grey-425)] italic">À tout moment, tape "/fin" pour terminer la simulation.</p>
       </div>
     </div>
   );
