@@ -14,8 +14,6 @@ export function Step15PreSimulation() {
       setTimeout(() => {
         useParcoursStore.setState({ currentStep: 16 });
       }, 400);
-    } else {
-      setTimeout(() => nextStep(), 400);
     }
   };
 
