@@ -153,9 +153,9 @@ export function calculateDifficulty(disc: DiscProfil, relation: Relation, etatEs
 
 function getStepsForMode(mode: Mode): number[] {
   if (mode === 'rapide') {
-    return [1, 2, 7, 5, 6, 11, 12, 13, 8, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 25];
+    return [1, 2, 7, 5, 6, 11, 12, 8, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 25];
   }
-  return [1, 2, 7, 5, 6, 11, 12, 8, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 25];
+  return [1, 2, 7, 5, 6, 11, 12, 8, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 25];
 }
 
 function getNextStepForMode(currentStep: number, mode: Mode): number {
@@ -187,7 +187,7 @@ const initialState = {
   persona: {
     disc: null as DiscProfil,
     relation: null as Relation,
-    etatEsprit: null as EtatEsprit,
+    etatEsprit: 'neutre' as EtatEsprit,
     niveauDifficulte: 'modere' as DifficultyLevel,
     prenomFictif: getRandomPrenom(),
   },
@@ -300,7 +300,7 @@ export const useParcoursStore = create<ParcoursState>((set, get) => ({
   resetToScenario: () => set({
     currentStep: 10,
     scenarioChoisi: null,
-    persona: { disc: null, relation: null, etatEsprit: null, niveauDifficulte: 'modere', prenomFictif: getRandomPrenom() },
+    persona: { disc: null, relation: null, etatEsprit: 'neutre', niveauDifficulte: 'modere', prenomFictif: getRandomPrenom() },
     choixPreSimulation: null,
     simulation: { tourActuel: 0, tourMax: 7, messages: [], isSimulating: false, isFinished: false },
     analyse: null,
@@ -314,7 +314,7 @@ export const useParcoursStore = create<ParcoursState>((set, get) => ({
       persona: {
         disc: isRapide ? 'stable' : null,
         relation: isRapide ? 3 : null,
-        etatEsprit: isRapide ? 'neutre' : null,
+        etatEsprit: 'neutre',
         niveauDifficulte: 'modere',
         prenomFictif: getRandomPrenom(),
       },

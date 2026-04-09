@@ -352,10 +352,6 @@ export function Step14RecapPersona() {
             <span className="ml-1 font-medium">{getRelationLabel(persona.relation)}</span>
           </div>
           <div>
-            <span className="text-[var(--dsfr-grey-425)]">Etat d'esprit :</span>
-            <span className="ml-1 font-medium">{getEtatEspritLabel(persona.etatEsprit)}</span>
-          </div>
-          <div>
             <span className="text-[var(--dsfr-grey-425)]">Type :</span>
             <span className="ml-1 font-medium capitalize">{typeCollab ?? '—'}</span>
           </div>
