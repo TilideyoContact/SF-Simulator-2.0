@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { getScoreLabel } from '@/lib/helpers';
 import { apiRequest } from '@/lib/queryClient';
 import { cn } from '@/lib/utils';
-import { BarChart3, CheckCircle, TrendingUp, Lightbulb, BookOpen, RefreshCw, MessageCircle, AlertTriangle, ArrowRight, Download } from 'lucide-react';
+import { BarChart3, CheckCircle, TrendingUp, Lightbulb, BookOpen, RefreshCw, MessageCircle, AlertTriangle, ArrowRight, Download, ChevronDown, ChevronUp } from 'lucide-react';
 import { generateSessionReport } from '@/lib/generateReportPdf';
 
 export function Step19Scores() {
@@ -205,15 +205,173 @@ export function Step20Feedback() {
   );
 }
 
+const RESOURCE_CONTENT: Record<string, string[]> = {
+  desc: [
+    "La méthode DESC permet de structurer un feedback en 4 temps :",
+    "D — Décrire les faits objectivement, sans jugement ni interprétation.",
+    "E — Exprimer ton ressenti avec le « JE » (« je suis préoccupé » plutôt que « tu es négligent »).",
+    "S — Spécifier ce que tu attends concrètement, avec un objectif mesurable.",
+    "C — Conclure sur les conséquences positives si le changement est adopté.",
+    "",
+    "La méthode DEPAR complète DESC pour les situations plus complexes :",
+    "DE — Décrire + Exprimer (identique à DESC).",
+    "P — Proposer une solution ou une piste d'amélioration.",
+    "A — Obtenir l'Accord du collaborateur sur le plan d'action.",
+    "R — Renforcer en valorisant l'engagement pris.",
+  ],
+  ecoute: [
+    "L'écoute active repose sur 4 piliers :",
+    "1. Silence attentif — Laisse l'autre finir avant de répondre. Compte 2 secondes après qu'il a terminé.",
+    "2. Reformulation — Reprends l'essentiel avec tes mots : « Si je comprends bien, tu dis que... »",
+    "3. Questions ouvertes — Privilégie « Comment vois-tu les choses ? » plutôt que « Tu es d'accord ? »",
+    "4. Validation émotionnelle — Nomme ce que tu perçois : « Je sens que c'est important pour toi. »",
+    "",
+    "Astuce : la reformulation montre que tu as écouté AVANT de donner ton avis. C'est ce qui crée la confiance.",
+  ],
+  influence: [
+    "Entre pairs, il n'y a pas de levier hiérarchique. L'influence repose sur :",
+    "",
+    "Méthode « Écouter puis JE » :",
+    "1. Écouter sincèrement la position de l'autre sans l'interrompre.",
+    "2. Reformuler pour montrer que tu as compris.",
+    "3. Exprimer ta position avec le « JE » : « De mon côté, je constate que... »",
+    "",
+    "Principes PPC (Position, Proposition, Conséquence) :",
+    "P — Énonce ta position clairement.",
+    "P — Fais une proposition concrète (gagnant-gagnant).",
+    "C — Décris les conséquences positives pour les deux parties.",
+    "",
+    "Clé : ne cherche pas à « gagner » mais à trouver un accord bilatéral.",
+  ],
+  assert: [
+    "La posture assertive se situe entre passivité et agressivité :",
+    "",
+    "Grille OK+/OK+ (Analyse Transactionnelle) :",
+    "• OK+/OK+ = « Je suis OK, tu es OK » → posture idéale, respect mutuel.",
+    "• OK+/OK- = « J'ai raison, tu as tort » → dominance, à éviter.",
+    "• OK-/OK+ = « Tu as raison, je m'écrase » → soumission, inefficace.",
+    "• OK-/OK- = « On n'y arrivera pas » → résignation, toxique.",
+    "",
+    "La règle du JE :",
+    "Remplace chaque « TU » accusateur par un « JE » descriptif :",
+    "❌ « Tu ne fais jamais attention » → ✅ « Je constate que le dossier contenait des erreurs »",
+    "❌ « Tu es toujours en retard » → ✅ « J'ai besoin que les délais soient respectés »",
+  ],
+  merci: [
+    "La méthode MERCI structure un feedback positif impactant :",
+    "M — Mentionner le fait précis (pas une généralité).",
+    "E — Exprimer l'Émotion que ça a suscité chez toi.",
+    "R — Relier à un Résultat concret ou un impact collectif.",
+    "C — Conclure sur la Compétence démontrée.",
+    "I — Inviter à continuer (encouragement vers l'avenir).",
+    "",
+    "Complément ASAP+D :",
+    "A — Aussi vite que possible (ne pas attendre l'entretien annuel).",
+    "S — Sincère (pas de compliment générique).",
+    "A — Adapté au profil (certains préfèrent le privé, d'autres le collectif).",
+    "P — Précis (un fait, une date, un livrable).",
+    "D — Dosé (ni trop rare, ni inflationniste).",
+  ],
+  signes: [
+    "Les signes de reconnaissance conditionnels valorisent un COMPORTEMENT, pas la personne :",
+    "",
+    "✅ Conditionnel positif : « Ton analyse du dossier X était très pertinente » → encourage la répétition.",
+    "❌ Inconditionnel vague : « Tu es génial » → ne dit rien sur ce qu'il faut reproduire.",
+    "",
+    "Pour valoriser l'impact collectif :",
+    "1. Nomme la contribution individuelle ET son effet sur l'équipe.",
+    "2. Exemple : « Grâce à ta préparation, toute l'équipe a pu avancer plus vite sur le projet. »",
+    "3. Encourage le partage de bonnes pratiques entre collègues.",
+    "",
+    "Piège à éviter : ne comparer jamais avec un autre collaborateur (« Pourquoi les autres ne font pas comme toi ? »).",
+  ],
+  projection: [
+    "Le feedback constructif selon Cegos suit 3 temps :",
+    "",
+    "1. Ancrer dans le passé — « Voici ce que j'ai observé de positif... » (faits précis).",
+    "2. Valoriser le présent — « Ce que ça apporte concrètement... » (impact mesurable).",
+    "3. Projeter vers l'avenir — « Comment tu pourrais aller encore plus loin... » (développement).",
+    "",
+    "L'objectif est de transformer le feedback positif en levier de progression :",
+    "• Propose un nouveau défi ou une responsabilité élargie.",
+    "• Demande au collaborateur comment IL veut progresser.",
+    "• Fixe un point de suivi pour accompagner la montée en compétence.",
+  ],
+  annonce: [
+    "Annoncer une décision difficile suit un protocole précis :",
+    "",
+    "1. Nommer la décision dès les premières phrases — pas de « small talk » excessif.",
+    "   Exemple : « Je te reçois pour t'informer que... »",
+    "2. Donner le cadre — « Cette décision vient de... » (direction, réglementation, arbitrage).",
+    "3. Utiliser le « JE » pour assumer — « J'assume cette décision » plutôt que « on m'a demandé de... »",
+    "",
+    "Méthode Écouter puis JE après l'annonce :",
+    "• Laisse le collaborateur réagir SANS l'interrompre.",
+    "• Reformule son émotion : « Je comprends que c'est difficile à entendre. »",
+    "• Réaffirme la décision calmement : « La décision est prise, et je suis là pour t'accompagner. »",
+  ],
+  emotion: [
+    "Face à une émotion forte après une annonce difficile :",
+    "",
+    "Vocabulaire du ressenti (à utiliser) :",
+    "• « Je perçois que tu es déçu / en colère / inquiet. »",
+    "• « C'est normal de ressentir ça. »",
+    "• « Prends le temps dont tu as besoin. »",
+    "",
+    "Vocabulaire à éviter :",
+    "• « Calme-toi » → invalide l'émotion.",
+    "• « C'est pas si grave » → minimise.",
+    "• « Je comprends » (sans reformulation) → sonne creux.",
+    "",
+    "Positions de vie face à l'émotion :",
+    "Reste en OK+/OK+ : « Ta réaction est légitime ET la décision est maintenue. »",
+    "Ne négocie JAMAIS le non-négociable, mais accompagne l'acceptation.",
+  ],
+  suivi: [
+    "Après une annonce difficile, le suivi est essentiel :",
+    "",
+    "1. Point de suivi rapide (48-72h) :",
+    "   • « Comment tu te sens depuis notre échange ? »",
+    "   • Vérifie que le collaborateur a les informations nécessaires.",
+    "",
+    "2. Plan d'accompagnement :",
+    "   • Identifie les besoins concrets (formation, réorganisation, soutien RH).",
+    "   • Propose un calendrier de points réguliers.",
+    "",
+    "3. Perspectives :",
+    "   • Même dans une décision difficile, ouvre des perspectives positives.",
+    "   • « Voici ce sur quoi on peut travailler ensemble désormais. »",
+    "   • Maintiens le lien professionnel et la confiance.",
+  ],
+  complex: [
+    "Tu as obtenu un excellent score ! Pour continuer à progresser :",
+    "",
+    "• Augmente la difficulté du persona : profil DISC « Dominant », relation tendue, état d'esprit « agacé ».",
+    "• Teste un scénario différent pour sortir de ta zone de confort.",
+    "• Essaie avec un type de collaborateur différent (pairs, N+1).",
+    "",
+    "Les managers expérimentés gagnent à s'entraîner sur les cas limites — c'est là que les vrais réflexes se construisent.",
+  ],
+  replay: [
+    "Rejouer le même scénario te permet de :",
+    "",
+    "• Comparer tes scores d'une session à l'autre.",
+    "• Tester des approches différentes (plus directe, plus empathique, etc.).",
+    "• Identifier tes réflexes récurrents et les ajuster.",
+    "",
+    "Conseil : avant de rejouer, relis les axes de progression identifiés dans ton analyse.",
+  ],
+};
+
 export function Step21Ressources() {
-  const { analyse, nextStep, scenarioChoisi, typeCollab } = useParcoursStore();
+  const { analyse, nextStep, scenarioChoisi, typeCollab, resetToPersona } = useParcoursStore();
+  const [expandedId, setExpandedId] = useState<string | null>(null);
   if (!analyse) return null;
 
   const resources: Array<{ id: string; label: string; subtitle: string; icon: React.ReactNode }> = [];
   const sc = scenarioChoisi || 'feedback_recadrage';
   const tc = typeCollab || 'agent';
 
-  // Ressources conditionnelles croisées axe×scénario (BLOC D2 section 7)
   if (sc === 'feedback_recadrage') {
     if (analyse.clarte <= 3) resources.push({ id: 'desc', label: 'Fiche DESC + DEPAR', subtitle: 'Structurer un feedback factuel sans jugement (Smartpocket Cegos)', icon: <BookOpen className="w-5 h-5" /> });
     if (analyse.ecoute <= 3) resources.push({ id: 'ecoute', label: 'Tuto écoute active + reformulation', subtitle: 'Techniques pour montrer que tu comprends avant de proposer', icon: <BookOpen className="w-5 h-5" /> });
@@ -232,6 +390,18 @@ export function Step21Ressources() {
   if (analyse.global >= 4) resources.push({ id: 'complex', label: 'Scénario plus complexe', subtitle: 'Teste-toi avec un profil plus exigeant', icon: <TrendingUp className="w-5 h-5" /> });
   resources.push({ id: 'replay', label: 'Rejouer ce scénario', subtitle: 'Comparer ta progression', icon: <RefreshCw className="w-5 h-5" /> });
 
+  const handleResourceClick = (id: string) => {
+    if (id === 'replay') {
+      resetToPersona();
+      return;
+    }
+    if (id === 'complex') {
+      resetToPersona();
+      return;
+    }
+    setExpandedId(expandedId === id ? null : id);
+  };
+
   return (
     <div className="space-y-6">
       <div className="text-center">
@@ -239,20 +409,47 @@ export function Step21Ressources() {
       </div>
 
       <div className="space-y-2">
-        {resources.map((r) => (
-          <div
-            key={r.id}
-            className="flex items-center gap-3 px-4 py-3 bg-card border border-[var(--dsfr-grey-925)] rounded-lg text-sm hover:border-[var(--dsfr-blue-france)] hover:bg-[var(--dsfr-blue-france-light)] transition-colors cursor-pointer"
-          >
-            <div className="flex-shrink-0 w-10 h-10 rounded flex items-center justify-center bg-[var(--dsfr-blue-france-medium)] text-[var(--dsfr-blue-france)]">
-              {r.icon}
+        {resources.map((r) => {
+          const isExpanded = expandedId === r.id;
+          const content = RESOURCE_CONTENT[r.id];
+          const isAction = r.id === 'replay' || r.id === 'complex';
+
+          return (
+            <div key={r.id} className="border border-[var(--dsfr-grey-925)] rounded-lg overflow-hidden transition-colors hover:border-[var(--dsfr-blue-france)]">
+              <button
+                onClick={() => handleResourceClick(r.id)}
+                className="w-full flex items-center gap-3 px-4 py-3 bg-card text-sm text-left hover:bg-[var(--dsfr-blue-france-light)] transition-colors cursor-pointer"
+              >
+                <div className="flex-shrink-0 w-10 h-10 rounded flex items-center justify-center bg-[var(--dsfr-blue-france-medium)] text-[var(--dsfr-blue-france)]">
+                  {r.icon}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="font-bold text-sm">{r.label}</div>
+                  <div className="text-xs text-[var(--dsfr-grey-425)]">{r.subtitle}</div>
+                </div>
+                {!isAction && (
+                  <div className="flex-shrink-0 text-[var(--dsfr-grey-425)]">
+                    {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                  </div>
+                )}
+                {isAction && (
+                  <div className="flex-shrink-0 text-[var(--dsfr-blue-france)]">
+                    <ArrowRight className="w-4 h-4" />
+                  </div>
+                )}
+              </button>
+              {isExpanded && content && (
+                <div className="px-4 py-4 bg-[var(--dsfr-blue-france-light)] border-t border-[var(--dsfr-grey-925)]">
+                  <div className="space-y-1.5 text-sm text-foreground leading-relaxed">
+                    {content.map((line, i) => (
+                      <p key={i} className={line === '' ? 'h-2' : ''}>{line}</p>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
-            <div>
-              <div className="font-bold text-sm">{r.label}</div>
-              <div className="text-xs text-[var(--dsfr-grey-425)]">{r.subtitle}</div>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       <Button data-testid="button-continue-feedback" onClick={() => nextStep()} className="w-full">
