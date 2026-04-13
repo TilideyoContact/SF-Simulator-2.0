@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
 
 export type Mode = 'avance' | 'rapide' | null;
 export type Profil = 'mp' | 'mi' | 'ms' | null;
@@ -221,7 +222,9 @@ const initialState = {
   pendingMessage: null as string | null,
 };
 
-export const useParcoursStore = create<ParcoursState>((set, get) => ({
+export const useParcoursStore = create<ParcoursState>()(
+  persist(
+    (set, get) => ({
   ...initialState,
 
   setMode: (mode) => {
@@ -333,4 +336,43 @@ export const useParcoursStore = create<ParcoursState>((set, get) => ({
       feedbackParcours: { nps: null, facilite: null, pertinence: null, realisme: null, ameliorations: [], commentaire: '' },
     });
   },
-}));
+}),
+    {
+      name: 'chatft-parcours',
+      storage: createJSONStorage(() => sessionStorage),
+      partialize: (state) => ({
+        currentStep: state.currentStep,
+        mode: state.mode,
+        profil: state.profil,
+        barometre: state.barometre,
+        experience: state.experience,
+        objectifs: state.objectifs,
+        difficulte: state.difficulte,
+        typeCollab: state.typeCollab,
+        complement: state.complement,
+        scenarioRecommande: state.scenarioRecommande,
+        scenarioChoisi: state.scenarioChoisi,
+        persona: state.persona,
+        choixPreSimulation: state.choixPreSimulation,
+        simulation: {
+          tourActuel: state.simulation.tourActuel,
+          tourMax: state.simulation.tourMax,
+          messages: state.simulation.messages,
+          isFinished: state.simulation.isFinished,
+          isSimulating: false,
+        },
+        analyse: state.analyse,
+        feedbackParcours: state.feedbackParcours,
+        sessionId: state.sessionId,
+      }),
+      onRehydrateStorage: () => (state) => {
+        if (state) {
+          state.isLoading = false;
+          state.pendingMessage = null;
+          state.simulation.isSimulating = false;
+        }
+      },
+      version: 1,
+    }
+  )
+);

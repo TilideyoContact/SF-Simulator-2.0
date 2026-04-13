@@ -11,7 +11,7 @@ Preferred communication style: Simple, everyday language.
 ### Frontend Architecture
 - **Framework**: React 18 with TypeScript, bundled via Vite
 - **Routing**: Wouter (lightweight client-side router) — `/ → LandingPage`, `/scenario/:slug → ScenarioPage` (wraps ChatPage with pre-injected scenario)
-- **State Management**: Zustand (`client/src/lib/store.ts`) — a single `useParcoursStore` manages the entire multi-step user journey state including profile data, scenario selection, persona configuration, simulation messages, analysis results, and feedback
+- **State Management**: Zustand (`client/src/lib/store.ts`) with `persist` middleware — a single `useParcoursStore` manages the entire multi-step user journey state including profile data, scenario selection, persona configuration, simulation messages, analysis results, and feedback. State is persisted to `sessionStorage` (key: `chatft-parcours`) so it survives page reloads but clears when the tab is closed. Transient flags (`isLoading`, `pendingMessage`, `isSimulating`) are excluded from persistence and reset on rehydration.
 - **UI Components**: shadcn/ui (new-york style) with Radix UI primitives, styled with Tailwind CSS and CSS variables for theming (light/dark mode support)
 - **Data Fetching**: TanStack React Query with a custom `apiRequest` helper for API calls
 - **Design System**: French government (DSFR) inspired — Marianne font, blue/red semantic colors, clean borders
