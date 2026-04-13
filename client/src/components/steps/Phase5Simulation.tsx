@@ -305,6 +305,7 @@ export function SimulationView() {
       });
     } finally {
       setIsTyping(false);
+      setTimeout(() => textareaRef.current?.focus(), 50);
     }
   };
 
@@ -381,6 +382,7 @@ export function SimulationView() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
+              autoFocus
               className="min-h-[60px] max-h-[120px] resize-none flex-1"
               disabled={isTyping || isTranscribing}
             />
