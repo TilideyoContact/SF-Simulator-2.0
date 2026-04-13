@@ -14,18 +14,18 @@ import { cn } from '@/lib/utils';
 export function Step22Nps() {
   const { feedbackParcours, setNps, nextStep } = useParcoursStore();
 
-  const handleSelect = (n: number) => {
-    setNps(n);
-    setTimeout(() => nextStep(), 500);
-  };
-
   return (
     <div className="space-y-6">
       <div className="text-center">
         <h3 className="text-lg font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>Ton avis compte</h3>
         <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Sur une échelle de 0 à 10, quelle est la probabilité que tu recommandes ChatFT SimuManager à un collègue manager ?</p>
       </div>
-      <NpsCard selected={feedbackParcours.nps} onSelect={handleSelect} />
+      <NpsCard selected={feedbackParcours.nps} onSelect={setNps} />
+      {feedbackParcours.nps !== null && (
+        <Button data-testid="button-continue-nps" onClick={() => nextStep()} className="w-full">
+          Continuer
+        </Button>
+      )}
     </div>
   );
 }
