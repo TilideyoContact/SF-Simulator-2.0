@@ -723,6 +723,43 @@ export async function transcribeAudio(filePath: string): Promise<string> {
   return result.text;
 }
 
+export async function generateInfoResponse(
+  question: string,
+  context?: { scenario?: string; currentStep?: number }
+): Promise<string> {
+  try {
+    const systemPrompt = `Tu es l'assistant intégré de ChatFT SimuManager, un outil d'entraînement conversationnel pour les managers de France Travail.
+
+Ton rôle : répondre aux questions de l'utilisateur sur l'outil, le management, les scénarios disponibles ou les bonnes pratiques managériales.
+
+Règles :
+- Tutoie toujours l'utilisateur (jamais "vous/votre/vos", sauf le mot "rendez-vous")
+- Réponds en français, de manière concise et utile (3-5 phrases maximum)
+- Si la question porte sur l'outil : explique le fonctionnement (profilage → configuration persona → simulation → analyse → feedback)
+- Si la question porte sur le management : donne des conseils pratiques et concrets
+- Si la question est hors sujet : recentre poliment vers le management ou l'outil
+- Ne génère jamais de simulation ici — c'est réservé à la phase de simulation
+- Ton ton est professionnel, bienveillant et encourageant
+
+${context?.scenario ? `Scénario actif : ${context.scenario}` : ''}`;
+
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: question },
+      ],
+      max_tokens: 300,
+      temperature: 0.7,
+    });
+
+    return response.choices?.[0]?.message?.content || "Je n'ai pas pu traiter ta question. Réessaie dans un instant.";
+  } catch (error) {
+    console.error("Info chat error:", error);
+    return "Désolé, une erreur est survenue. Réessaie dans un instant.";
+  }
+}
+
 const ELEVENLABS_VOICE_ID = "QbsdzCokdlo98elkq4Pc";
 
 export async function synthesizeSpeech(text: string, disc?: string): Promise<Buffer> {

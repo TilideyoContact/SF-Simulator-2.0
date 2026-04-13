@@ -14,6 +14,7 @@ interface ChatInputProps {
   onSkip?: () => void;
   showFileUpload?: boolean;
   onFileUpload?: (files: FileList) => void;
+  muted?: boolean;
 }
 
 export function ChatInput({
@@ -28,6 +29,7 @@ export function ChatInput({
   onSkip,
   showFileUpload = false,
   onFileUpload,
+  muted = false,
 }: ChatInputProps) {
   const [value, setValue] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
@@ -100,7 +102,7 @@ export function ChatInput({
           </div>
         )}
 
-        <div className="flex-1 flex items-center border border-[var(--dsfr-grey-850)] bg-white dark:bg-[var(--dsfr-grey-950)] rounded-lg overflow-hidden">
+        <div className={`flex-1 flex items-center border rounded-lg overflow-hidden ${muted ? 'border-[var(--dsfr-grey-900)] bg-[var(--dsfr-grey-975)] dark:bg-[var(--dsfr-grey-975)]' : 'border-[var(--dsfr-grey-850)] bg-white dark:bg-[var(--dsfr-grey-950)]'}`}>
           <input
             ref={inputRef}
             data-testid="input-chat"

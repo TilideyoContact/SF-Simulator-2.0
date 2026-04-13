@@ -11,6 +11,7 @@ import {
   generateAnalysisAI,
   transcribeAudio,
   synthesizeSpeech,
+  generateInfoResponse,
 } from "./openai";
 
 const upload = multer({
@@ -253,6 +254,23 @@ export async function registerRoutes(
     } catch (error) {
       console.error('Error synthesizing:', error);
       res.status(500).json({ error: 'Failed to synthesize speech' });
+    }
+  });
+
+  app.post('/api/info/chat', async (req, res) => {
+    try {
+      const { question, scenario, currentStep } = req.body;
+      if (!question || typeof question !== 'string' || question.trim().length === 0) {
+        return res.status(400).json({ error: 'Question is required' });
+      }
+      if (question.length > 500) {
+        return res.status(400).json({ error: 'Question too long (500 characters max)' });
+      }
+      const response = await generateInfoResponse(question, { scenario, currentStep });
+      res.json({ response });
+    } catch (error) {
+      console.error('Error in info chat:', error);
+      res.status(500).json({ error: 'Failed to generate response' });
     }
   });
 
