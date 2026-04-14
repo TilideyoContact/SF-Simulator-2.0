@@ -12,6 +12,7 @@ import {
   transcribeAudio,
   synthesizeSpeech,
   generateInfoResponse,
+  generateDurationRecommendation,
 } from "./openai";
 
 const upload = multer({
@@ -288,6 +289,19 @@ export async function registerRoutes(
     } catch (error) {
       console.error('Error saving session:', error);
       res.status(500).json({ error: 'Failed to save session' });
+    }
+  });
+
+  app.post('/api/recommend-duration', async (req, res) => {
+    try {
+      const { scenario, profil, experience, objectifs, difficulte, typeCollab, disc, mode } = req.body;
+      const recommendation = await generateDurationRecommendation({
+        scenario, profil, experience, objectifs, difficulte, typeCollab, disc, mode,
+      });
+      res.json(recommendation);
+    } catch (error) {
+      console.error('Error recommending duration:', error);
+      res.json({ recommended: 'intermediaire', explanation: 'Durée standard recommandée.' });
     }
   });
 

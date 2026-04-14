@@ -827,3 +827,63 @@ export async function synthesizeSpeech(text: string, disc?: string): Promise<Buf
   const arrayBuffer = await response.arrayBuffer();
   return Buffer.from(arrayBuffer);
 }
+
+export async function generateDurationRecommendation(context: {
+  scenario?: string;
+  profil?: string;
+  experience?: string;
+  objectifs?: string[];
+  difficulte?: string[];
+  typeCollab?: string;
+  disc?: string;
+  mode?: string;
+}): Promise<{ recommended: string; explanation: string }> {
+  try {
+    const systemPrompt = `Tu es un conseiller pédagogique expert en formation managériale. Tu dois recommander la durée idéale d'un entretien simulé.
+
+3 options possibles :
+- "courte" (5-10 min, 4 tours) : pour s'échauffer, tester un point précis, ou un manager expérimenté qui veut aller vite.
+- "intermediaire" (10-20 min, 7 tours) : durée standard recommandée, équilibre entre pratique et profondeur.
+- "longue" (20-30 min, 12 tours) : pour explorer en profondeur, un manager débutant, un scénario complexe, ou plusieurs objectifs.
+
+Analyse le profil et réponds UNIQUEMENT en JSON valide (sans markdown) :
+{"recommended": "courte|intermediaire|longue", "explanation": "1-2 phrases en français expliquant pourquoi, en tutoyant l'utilisateur"}
+
+Critères de décision :
+- Débutant → longue (besoin de plus de pratique)
+- Expérimenté + mode rapide → courte
+- Décision difficile → intermediaire ou longue
+- Feedback positif → courte ou intermediaire
+- Plusieurs objectifs ou difficultés → longue
+- Par défaut → intermediaire`;
+
+    const userPrompt = `Profil : ${context.profil || 'non renseigné'}
+Expérience : ${context.experience || 'non renseignée'}
+Scénario : ${context.scenario || 'non choisi'}
+Type de collaborateur : ${context.typeCollab || 'agent'}
+Profil DISC du collaborateur : ${context.disc || 'stable'}
+Objectifs : ${context.objectifs?.join(', ') || 'aucun'}
+Difficultés : ${context.difficulte?.join(', ') || 'aucune'}
+Mode : ${context.mode || 'avancé'}`;
+
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userPrompt },
+      ],
+      temperature: 0.3,
+      max_tokens: 200,
+    });
+
+    const raw = response.choices[0]?.message?.content?.trim() || '';
+    const parsed = JSON.parse(raw);
+    if (parsed.recommended && parsed.explanation) {
+      return parsed;
+    }
+    return { recommended: 'intermediaire', explanation: 'Durée standard recommandée pour un bon équilibre entre pratique et profondeur.' };
+  } catch (error) {
+    console.error('Duration recommendation error:', error);
+    return { recommended: 'intermediaire', explanation: 'Durée standard recommandée pour un bon équilibre entre pratique et profondeur.' };
+  }
+}

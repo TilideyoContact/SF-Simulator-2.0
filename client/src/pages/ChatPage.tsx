@@ -7,7 +7,7 @@ import { BackButton } from '@/components/BackButton';
 import franceTravailLogo from '@assets/image_1771580674143.png';
 import { Step1Welcome, Step2Profil, Step4Experience, Step5Objectifs, Step6Difficultes, Step7TypeCollab, Step8Complement } from '@/components/steps/Phase1Steps';
 import { Step11Disc, Step12Relation, Step13EtatEsprit, Step14RecapPersona } from '@/components/steps/Phase3Steps';
-import { Step15PreSimulation, Step15bTheory, Step15c } from '@/components/steps/Phase4Steps';
+import { Step15PreSimulation, Step15bTheory, Step15c, Step27DureeEntretien } from '@/components/steps/Phase4Steps';
 import { SimulationView, Step18EndSimulation } from '@/components/steps/Phase5Simulation';
 import { Step19Scores, Step20Feedback, Step21Ressources } from '@/components/steps/Phase6Analysis';
 import { Step22Nps, Step23Ratings, Step24Ameliorations, Step25Closing, Step26GrilleEntretien } from '@/components/steps/Phase7Feedback';
@@ -42,6 +42,7 @@ function StepRenderer({ step }: { step: number }) {
     case 24: return <Step24Ameliorations />;
     case 25: return <Step25Closing />;
     case 26: return <Step26GrilleEntretien />;
+    case 27: return <Step27DureeEntretien />;
     default: return <Step1Welcome />;
   }
 }

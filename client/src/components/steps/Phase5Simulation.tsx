@@ -25,7 +25,7 @@ export function SimulationView() {
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const currentAudioRef = useRef<HTMLAudioElement | null>(null);
-  const tourMax = getTourMax(scenarioChoisi, typeCollab);
+  const tourMax = simulation.tourMax || getTourMax(scenarioChoisi, typeCollab);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });

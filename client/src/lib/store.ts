@@ -14,6 +14,7 @@ export type Relation = number | null;
 export type EtatEsprit = 'positif' | 'neutre' | 'stresse' | 'agace' | null;
 export type DifficultyLevel = 'facile' | 'modere' | 'difficile' | 'expert';
 export type ChoixPreSimulation = 'simulation' | 'theorie' | null;
+export type DureeEntretien = 'courte' | 'intermediaire' | 'longue' | null;
 
 export interface SimulationMessage {
   role: 'manager' | 'collaborateur';
@@ -58,6 +59,7 @@ export interface ParcoursState {
     prenomFictif: string;
   };
   choixPreSimulation: ChoixPreSimulation;
+  dureeEntretien: DureeEntretien;
   simulation: {
     tourActuel: number;
     tourMax: number;
@@ -90,6 +92,7 @@ export interface ParcoursState {
   setPersonaRelation: (r: Relation) => void;
   setPersonaEtatEsprit: (e: EtatEsprit) => void;
   setChoixPreSimulation: (c: ChoixPreSimulation) => void;
+  setDureeEntretien: (d: DureeEntretien) => void;
   addSimulationMessage: (msg: SimulationMessage) => void;
   setSimulationFinished: () => void;
   setAnalyse: (a: AnalyseResult) => void;
@@ -154,9 +157,18 @@ export function calculateDifficulty(disc: DiscProfil, relation: Relation, etatEs
 
 function getStepsForMode(mode: Mode): number[] {
   if (mode === 'rapide') {
-    return [1, 2, 4, 5, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 25];
+    return [1, 2, 4, 5, 14, 27, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 25];
   }
-  return [1, 2, 7, 5, 6, 11, 12, 8, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 25];
+  return [1, 2, 7, 5, 6, 11, 12, 8, 14, 27, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 25];
+}
+
+export function getTourMaxFromDuree(duree: DureeEntretien): number {
+  switch (duree) {
+    case 'courte': return 4;
+    case 'intermediaire': return 7;
+    case 'longue': return 12;
+    default: return 7;
+  }
 }
 
 function getNextStepForMode(currentStep: number, mode: Mode): number {
@@ -201,6 +213,7 @@ const initialState = {
     prenomFictif: getRandomPrenom(),
   },
   choixPreSimulation: null as ChoixPreSimulation,
+  dureeEntretien: null as DureeEntretien,
   simulation: {
     tourActuel: 0,
     tourMax: 7,
@@ -268,6 +281,7 @@ export const useParcoursStore = create<ParcoursState>()(
     set({ persona: { ...state.persona, etatEsprit, niveauDifficulte } });
   },
   setChoixPreSimulation: (choixPreSimulation) => set({ choixPreSimulation }),
+  setDureeEntretien: (dureeEntretien) => set({ dureeEntretien }),
   addSimulationMessage: (msg) => {
     const state = get();
     const messages = [...state.simulation.messages, msg];
@@ -317,6 +331,7 @@ export const useParcoursStore = create<ParcoursState>()(
     scenarioChoisi: null,
     persona: { disc: null, relation: null, etatEsprit: 'neutre', niveauDifficulte: 'modere', prenomFictif: getRandomPrenom() },
     choixPreSimulation: null,
+    dureeEntretien: null,
     simulation: { tourActuel: 0, tourMax: 7, messages: [], isSimulating: false, isFinished: false },
     analyse: null,
     feedbackParcours: { nps: null, facilite: null, pertinence: null, realisme: null, ameliorations: [], commentaire: '' },
@@ -334,6 +349,7 @@ export const useParcoursStore = create<ParcoursState>()(
         prenomFictif: getRandomPrenom(),
       },
       choixPreSimulation: null,
+      dureeEntretien: null,
       simulation: { tourActuel: 0, tourMax: 7, messages: [], isSimulating: false, isFinished: false },
       analyse: null,
       feedbackParcours: { nps: null, facilite: null, pertinence: null, realisme: null, ameliorations: [], commentaire: '' },
