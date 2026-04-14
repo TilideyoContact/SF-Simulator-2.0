@@ -36,7 +36,7 @@ export function ChatCardSingle({ options, selected, onSelect, orientation = 'ver
         <button
           key={opt.id}
           data-testid={`card-option-${opt.id}`}
-          disabled={disabled || (selected !== null && selected !== opt.id)}
+          disabled={disabled}
           onClick={() => handleSelect(opt)}
           className={cn(
             'relative flex items-start gap-3 px-4 py-3 text-left transition-all duration-200 border',
@@ -44,7 +44,7 @@ export function ChatCardSingle({ options, selected, onSelect, orientation = 'ver
             selected === opt.id
               ? 'bg-[var(--dsfr-blue-france-light)] border-[var(--dsfr-blue-france)] shadow-sm'
               : 'bg-card border-[var(--dsfr-grey-925)] hover:border-[var(--dsfr-blue-france)] hover:bg-[var(--dsfr-blue-france-light)]',
-            disabled || (selected !== null && selected !== opt.id)
+            disabled
               ? 'opacity-40 cursor-not-allowed'
               : 'cursor-pointer',
             'animate-in fade-in slide-in-from-bottom-1',
