@@ -12,7 +12,6 @@ import {
   transcribeAudio,
   synthesizeSpeech,
   generateInfoResponse,
-  generateDurationRecommendation,
 } from "./openai";
 
 const upload = multer({
@@ -34,6 +33,8 @@ const simulationStartSchema = z.object({
   barometre: z.any().optional().nullable(),
   objectifs: z.union([z.string(), z.array(z.string())]).optional().nullable(),
   complement: z.string().optional().nullable(),
+  dureeEntretien: z.string().optional().nullable(),
+  tourMax: z.number().optional().nullable(),
 });
 
 const simulationRespondSchema = z.object({
@@ -52,6 +53,7 @@ const simulationRespondSchema = z.object({
   objectifs: z.union([z.string(), z.array(z.string())]).optional().nullable(),
   complement: z.string().optional().nullable(),
   mode: z.string().optional().nullable(),
+  dureeEntretien: z.string().optional().nullable(),
 });
 
 const analyzeSchema = z.object({
@@ -77,7 +79,7 @@ export async function registerRoutes(
       if (!parsed.success) {
         return res.status(400).json({ error: 'Invalid request body', details: parsed.error.issues });
       }
-      const { scenario, typeCollab, disc, relation, etatEsprit, niveauDifficulte, prenomFictif, profil, experience, barometre, objectifs, complement } = parsed.data;
+      const { scenario, typeCollab, disc, relation, etatEsprit, niveauDifficulte, prenomFictif, profil, experience, barometre, objectifs, complement, dureeEntretien, tourMax: parsedTourMax } = parsed.data;
 
       const session = await storage.createSession({
         mode: req.body.mode || 'avance',
@@ -109,7 +111,9 @@ export async function registerRoutes(
           profil,
           objectifsStr,
           complement,
-          req.body.mode || 'avance'
+          req.body.mode || 'avance',
+          dureeEntretien,
+          parsedTourMax,
         );
       } catch (err) {
         console.error('OpenAI first message error, using fallback:', err);
@@ -133,7 +137,7 @@ export async function registerRoutes(
       if (!parsed.success) {
         return res.status(400).json({ error: 'Invalid request body', details: parsed.error.issues });
       }
-      const { sessionId, message, tourActuel, tourMax, scenario, disc, relation, etatEsprit, typeCollab, prenomFictif, messages, profil, objectifs, complement, mode } = parsed.data;
+      const { sessionId, message, tourActuel, tourMax, scenario, disc, relation, etatEsprit, typeCollab, prenomFictif, messages, profil, objectifs, complement, mode, dureeEntretien } = parsed.data;
 
       const relationStr = relation != null ? String(relation) : 'neutre';
       const objectifsStr = Array.isArray(objectifs) ? objectifs.join(', ') : objectifs || null;
@@ -153,7 +157,8 @@ export async function registerRoutes(
           profil,
           objectifsStr,
           complement,
-          mode
+          mode,
+          dureeEntretien,
         );
       } catch (err) {
         console.error('OpenAI respond error, using fallback:', err);
@@ -289,19 +294,6 @@ export async function registerRoutes(
     } catch (error) {
       console.error('Error saving session:', error);
       res.status(500).json({ error: 'Failed to save session' });
-    }
-  });
-
-  app.post('/api/recommend-duration', async (req, res) => {
-    try {
-      const { scenario, profil, experience, objectifs, difficulte, typeCollab, disc, mode } = req.body;
-      const recommendation = await generateDurationRecommendation({
-        scenario, profil, experience, objectifs, difficulte, typeCollab, disc, mode,
-      });
-      res.json(recommendation);
-    } catch (error) {
-      console.error('Error recommending duration:', error);
-      res.json({ recommended: 'intermediaire', explanation: 'Durée standard recommandée.' });
     }
   });
 

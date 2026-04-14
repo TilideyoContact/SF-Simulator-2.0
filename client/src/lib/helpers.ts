@@ -1,4 +1,4 @@
-import type { Profil, Experience, Scenario, DiscProfil, Relation, EtatEsprit, DifficultyLevel, TypeCollab } from './store';
+import type { Profil, Experience, Scenario, DiscProfil, Relation, EtatEsprit, DifficultyLevel, TypeCollab, DureeEntretien } from './store';
 
 export function getTypeCollabLabel(t: TypeCollab): string {
   const labels: Record<string, string> = {
@@ -264,4 +264,47 @@ export function getTheoryContent(scenario: Scenario): TheoryContent {
     },
   };
   return scenario ? content[scenario] ?? content.feedback_recadrage : content.feedback_recadrage;
+}
+
+export function getRecommendedDuree(state: {
+  experience?: string | null;
+  objectifs?: string[] | null;
+  scenarioChoisi?: string | null;
+  difficulte?: string[] | null;
+  profil?: string | null;
+}): { duree: DureeEntretien; message: string } {
+  const { experience, objectifs, scenarioChoisi, difficulte } = state;
+
+  if (scenarioChoisi === 'decision_difficile') {
+    return {
+      duree: 'longue',
+      message: "L'annonce d'une décision difficile demande du temps pour l'accueil émotionnel et l'accompagnement.",
+    };
+  }
+
+  if (experience === 'debutant') {
+    return {
+      duree: 'intermediaire',
+      message: "Pour débuter, une session intermédiaire te laisse le temps d'explorer les phases clés sans pression.",
+    };
+  }
+
+  if (experience === 'experimente' && objectifs?.includes('ameliorer')) {
+    return {
+      duree: 'longue',
+      message: "Avec ton expérience et ton objectif d'amélioration, une session longue permet un travail approfondi.",
+    };
+  }
+
+  if (experience === 'experimente' && objectifs?.includes('decouvrir')) {
+    return {
+      duree: 'courte',
+      message: "Tu veux découvrir l'outil : une session courte te permet de tester rapidement.",
+    };
+  }
+
+  return {
+    duree: 'intermediaire',
+    message: "Une session intermédiaire est le bon équilibre pour ton profil.",
+  };
 }

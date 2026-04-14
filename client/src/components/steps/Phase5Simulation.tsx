@@ -128,6 +128,8 @@ export function SimulationView() {
         objectifs: store.objectifs,
         complement: store.complement,
         mode: store.mode,
+        dureeEntretien: store.dureeEntretien,
+        tourMax,
       });
       const data = await res.json();
       addSimulationMessage({
@@ -281,6 +283,7 @@ export function SimulationView() {
         objectifs: store.objectifs,
         complement: store.complement,
         mode: store.mode,
+        dureeEntretien: store.dureeEntretien,
       });
       const data = await res.json();
       addSimulationMessage({

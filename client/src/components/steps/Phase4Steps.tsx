@@ -1,12 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useParcoursStore, getTourMaxFromDuree } from '@/lib/store';
 import type { DureeEntretien } from '@/lib/store';
 import { ChatCardSingle } from '@/components/ChatCard';
 import { Button } from '@/components/ui/button';
-import { getScenarioLabel, getDiscLabel, getRelationLabel, getDifficultyStars, getTheoryContent, getPersonaDescription, getTourMax, getTypeCollabShortLabel } from '@/lib/helpers';
-import { Play, BookOpen, Star, ShieldCheck, Clock, Zap, Timer, Hourglass, Sparkles, Loader2 } from 'lucide-react';
+import { getScenarioLabel, getDiscLabel, getRelationLabel, getDifficultyStars, getTheoryContent, getPersonaDescription, getTourMax, getTypeCollabShortLabel, getRecommendedDuree } from '@/lib/helpers';
+import { Play, BookOpen, Star, ShieldCheck, Clock, Zap, Timer, Hourglass, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { apiRequest } from '@/lib/queryClient';
 
 export function Step15PreSimulation() {
   const { choixPreSimulation, setChoixPreSimulation, nextStep, persona, scenarioChoisi } = useParcoursStore();
@@ -181,36 +180,9 @@ const DUREE_OPTIONS: { id: DureeEntretien; label: string; range: string; tours: 
 ];
 
 export function Step27DureeEntretien() {
-  const { dureeEntretien, setDureeEntretien, nextStep, profil, experience, objectifs, difficulte, scenarioChoisi, typeCollab, persona, mode } = useParcoursStore();
-  const [recommendation, setRecommendation] = useState<{ recommended: string; explanation: string } | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [selected, setSelected] = useState<DureeEntretien>(dureeEntretien);
-
-  useEffect(() => {
-    setLoading(true);
-    apiRequest('POST', '/api/recommend-duration', {
-      scenario: scenarioChoisi,
-      profil,
-      experience,
-      objectifs,
-      difficulte,
-      typeCollab,
-      disc: persona.disc,
-      mode,
-    })
-      .then(res => res.json())
-      .then(data => {
-        setRecommendation(data);
-        if (!selected) {
-          setSelected(data.recommended as DureeEntretien);
-        }
-      })
-      .catch(() => {
-        setRecommendation({ recommended: 'intermediaire', explanation: 'Durée standard recommandée.' });
-        if (!selected) setSelected('intermediaire');
-      })
-      .finally(() => setLoading(false));
-  }, []);
+  const { dureeEntretien, setDureeEntretien, nextStep, profil, experience, objectifs, difficulte, scenarioChoisi } = useParcoursStore();
+  const recommendation = getRecommendedDuree({ experience, objectifs, scenarioChoisi, difficulte, profil });
+  const [selected, setSelected] = useState<DureeEntretien>(dureeEntretien || recommendation.duree);
 
   const handleConfirm = () => {
     if (!selected) return;
@@ -235,25 +207,18 @@ export function Step27DureeEntretien() {
         </p>
       </div>
 
-      {loading ? (
-        <div className="flex items-center justify-center gap-2 py-6 text-sm text-[var(--dsfr-grey-425)]">
-          <Loader2 className="w-4 h-4 animate-spin" />
-          Analyse de ton profil en cours…
+      <div className="flex items-start gap-2.5 p-3 rounded-lg border" style={{
+        backgroundColor: 'rgba(0, 0, 145, 0.04)',
+        borderColor: 'var(--dsfr-blue-france)',
+      }}>
+        <Sparkles className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: 'var(--dsfr-blue-france)' }} />
+        <div className="text-xs">
+          <p className="font-bold mb-0.5" style={{ color: 'var(--dsfr-blue-france)' }}>
+            Recommandation : {DUREE_OPTIONS.find(o => o.id === recommendation.duree)?.label}
+          </p>
+          <p className="text-[var(--dsfr-grey-425)]">{recommendation.message}</p>
         </div>
-      ) : recommendation && (
-        <div className="flex items-start gap-2.5 p-3 rounded-lg border" style={{
-          backgroundColor: 'rgba(0, 0, 145, 0.04)',
-          borderColor: 'var(--dsfr-blue-france)',
-        }}>
-          <Sparkles className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: 'var(--dsfr-blue-france)' }} />
-          <div className="text-xs">
-            <p className="font-bold mb-0.5" style={{ color: 'var(--dsfr-blue-france)' }}>
-              Recommandation IA : {DUREE_OPTIONS.find(o => o.id === recommendation.recommended)?.label}
-            </p>
-            <p className="text-[var(--dsfr-grey-425)]">{recommendation.explanation}</p>
-          </div>
-        </div>
-      )}
+      </div>
 
       <div className="px-2">
         <input
@@ -292,7 +257,7 @@ export function Step27DureeEntretien() {
       {selected && (
         <div className={cn(
           'p-4 rounded-xl border-2 transition-all',
-          recommendation?.recommended === selected ? 'border-[var(--dsfr-blue-france)] bg-[rgba(0,0,145,0.04)]' : 'border-[var(--dsfr-grey-850)] bg-white'
+          recommendation.duree === selected ? 'border-[var(--dsfr-blue-france)] bg-[rgba(0,0,145,0.04)]' : 'border-[var(--dsfr-grey-850)] bg-white'
         )}>
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{
@@ -307,7 +272,7 @@ export function Step27DureeEntretien() {
                 {DUREE_OPTIONS.find(o => o.id === selected)?.range} — {DUREE_OPTIONS.find(o => o.id === selected)?.tours} échanges
               </p>
             </div>
-            {recommendation?.recommended === selected && (
+            {recommendation.duree === selected && (
               <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full" style={{
                 backgroundColor: 'rgba(0, 0, 145, 0.1)',
                 color: 'var(--dsfr-blue-france)',

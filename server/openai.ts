@@ -17,10 +17,12 @@ interface PromptParams {
   objectifs?: string | null;
   complement?: string | null;
   mode?: string | null;
+  dureeEntretien?: string | null;
+  tourMax?: number | null;
 }
 
 function buildSystemPrompt(params: PromptParams): string {
-  const { scenario, disc, relation, etatEsprit, typeCollab, prenomFictif, profil, objectifs, complement, mode } = params;
+  const { scenario, disc, relation, etatEsprit, typeCollab, prenomFictif, profil, objectifs, complement, mode, dureeEntretien, tourMax } = params;
 
   // --- BLOC IDENTITÉ ---
   const scenarioLabels: Record<string, string> = {
@@ -268,6 +270,40 @@ VARIABLES DE CONFIGURATION
   if (mode) {
     prompt += `\n- MODE : ${mode}`;
   }
+  if (dureeEntretien && tourMax) {
+    const dureeLabels: Record<string, string> = {
+      courte: 'courte',
+      intermediaire: 'intermédiaire',
+      longue: 'longue',
+    };
+    prompt += `\n- DURÉE SESSION : ${dureeLabels[dureeEntretien] || dureeEntretien} (${tourMax} tours maximum)`;
+  }
+
+  if (dureeEntretien && tourMax) {
+    const cadenceConsignes: Record<string, string> = {
+      courte: `SESSION COURTE (${tourMax} tours max) — Compresse les phases :
+- Accueil rapide (1 tour max).
+- Fais confluer expression/écoute et solution sur 2 tours.
+- Conclusion courte.
+- Vise l'essentiel de la méthode, pas de digressions.
+- Adapte les numéros de tours des phases ci-dessous proportionnellement.`,
+      intermediaire: `SESSION INTERMÉDIAIRE (${tourMax} tours max) — Cadence standard :
+- Déroule les phases normalement sans les étirer.
+- Respecte la progression naturelle de la cadence ci-dessous.`,
+      longue: `SESSION LONGUE (${tourMax} tours max) — Prends le temps :
+- Développe chaque phase en profondeur.
+- Laisse émerger les nuances émotionnelles.
+- Approfondis la co-construction de la solution.
+- Permets plus de tours pour l'expression et l'écoute.
+- Adapte les numéros de tours des phases ci-dessous proportionnellement.`,
+    };
+    prompt += `
+
+══════════════════════════════════════
+CONSIGNE CADENCE
+══════════════════════════════════════
+${cadenceConsignes[dureeEntretien] || cadenceConsignes.intermediaire}`;
+  }
 
   prompt += `
 
@@ -353,10 +389,12 @@ export async function generateFirstMessageAI(
   objectifs?: string | null,
   complement?: string | null,
   mode?: string | null,
+  dureeEntretien?: string | null,
+  tourMax?: number | null,
 ): Promise<string> {
   const systemPrompt = buildSystemPrompt({
     scenario, disc, relation, etatEsprit, typeCollab, prenomFictif,
-    profil, objectifs, complement, mode,
+    profil, objectifs, complement, mode, dureeEntretien, tourMax,
   });
 
   const response = await openai.chat.completions.create({
@@ -393,12 +431,13 @@ export async function generateResponseAI(
   objectifs?: string | null,
   complement?: string | null,
   mode?: string | null,
+  dureeEntretien?: string | null,
 ): Promise<{ message: string; isFinished: boolean }> {
   const isNearEnd = tourActuel >= tourMax - 1;
 
   const systemPrompt = buildSystemPrompt({
     scenario, disc, relation, etatEsprit, typeCollab, prenomFictif,
-    profil, objectifs, complement, mode,
+    profil, objectifs, complement, mode, dureeEntretien, tourMax,
   });
 
   let additionalInstruction = "";
@@ -828,62 +867,3 @@ export async function synthesizeSpeech(text: string, disc?: string): Promise<Buf
   return Buffer.from(arrayBuffer);
 }
 
-export async function generateDurationRecommendation(context: {
-  scenario?: string;
-  profil?: string;
-  experience?: string;
-  objectifs?: string[];
-  difficulte?: string[];
-  typeCollab?: string;
-  disc?: string;
-  mode?: string;
-}): Promise<{ recommended: string; explanation: string }> {
-  try {
-    const systemPrompt = `Tu es un conseiller pédagogique expert en formation managériale. Tu dois recommander la durée idéale d'un entretien simulé.
-
-3 options possibles :
-- "courte" (5-10 min, 4 tours) : pour s'échauffer, tester un point précis, ou un manager expérimenté qui veut aller vite.
-- "intermediaire" (10-20 min, 7 tours) : durée standard recommandée, équilibre entre pratique et profondeur.
-- "longue" (20-30 min, 12 tours) : pour explorer en profondeur, un manager débutant, un scénario complexe, ou plusieurs objectifs.
-
-Analyse le profil et réponds UNIQUEMENT en JSON valide (sans markdown) :
-{"recommended": "courte|intermediaire|longue", "explanation": "1-2 phrases en français expliquant pourquoi, en tutoyant l'utilisateur"}
-
-Critères de décision :
-- Débutant → longue (besoin de plus de pratique)
-- Expérimenté + mode rapide → courte
-- Décision difficile → intermediaire ou longue
-- Feedback positif → courte ou intermediaire
-- Plusieurs objectifs ou difficultés → longue
-- Par défaut → intermediaire`;
-
-    const userPrompt = `Profil : ${context.profil || 'non renseigné'}
-Expérience : ${context.experience || 'non renseignée'}
-Scénario : ${context.scenario || 'non choisi'}
-Type de collaborateur : ${context.typeCollab || 'agent'}
-Profil DISC du collaborateur : ${context.disc || 'stable'}
-Objectifs : ${context.objectifs?.join(', ') || 'aucun'}
-Difficultés : ${context.difficulte?.join(', ') || 'aucune'}
-Mode : ${context.mode || 'avancé'}`;
-
-    const response = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: userPrompt },
-      ],
-      temperature: 0.3,
-      max_tokens: 200,
-    });
-
-    const raw = response.choices[0]?.message?.content?.trim() || '';
-    const parsed = JSON.parse(raw);
-    if (parsed.recommended && parsed.explanation) {
-      return parsed;
-    }
-    return { recommended: 'intermediaire', explanation: 'Durée standard recommandée pour un bon équilibre entre pratique et profondeur.' };
-  } catch (error) {
-    console.error('Duration recommendation error:', error);
-    return { recommended: 'intermediaire', explanation: 'Durée standard recommandée pour un bon équilibre entre pratique et profondeur.' };
-  }
-}
