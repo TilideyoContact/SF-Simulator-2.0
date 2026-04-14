@@ -5,7 +5,7 @@ import { ChatInput } from '@/components/ChatInput';
 import { SideMenu } from '@/components/SideMenu';
 import { BackButton } from '@/components/BackButton';
 import franceTravailLogo from '@assets/image_1771580674143.png';
-import { Step1Welcome, Step2Profil, Step5Objectifs, Step6Difficultes, Step7TypeCollab, Step8Complement } from '@/components/steps/Phase1Steps';
+import { Step1Welcome, Step2Profil, Step4Experience, Step5Objectifs, Step6Difficultes, Step7TypeCollab, Step8Complement } from '@/components/steps/Phase1Steps';
 import { Step11Disc, Step12Relation, Step13EtatEsprit, Step14RecapPersona } from '@/components/steps/Phase3Steps';
 import { Step15PreSimulation, Step15bTheory, Step15c } from '@/components/steps/Phase4Steps';
 import { SimulationView, Step18EndSimulation } from '@/components/steps/Phase5Simulation';
@@ -19,6 +19,7 @@ function StepRenderer({ step }: { step: number }) {
   switch (step) {
     case 1: return <Step1Welcome />;
     case 2: return <Step2Profil />;
+    case 4: return <Step4Experience />;
     case 5: return <Step5Objectifs />;
     case 6: return <Step6Difficultes />;
     case 7: return <Step7TypeCollab />;
