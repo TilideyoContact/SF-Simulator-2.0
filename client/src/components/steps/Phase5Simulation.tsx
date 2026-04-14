@@ -353,8 +353,7 @@ export function SimulationView() {
 
       {!simulation.isFinished && (
         <div className="sticky bottom-0 bg-background pt-3 pb-1 border-t border-[var(--dsfr-grey-925)]">
-          <div className="flex items-center justify-between text-xs text-[var(--dsfr-grey-425)] mb-1 px-1 font-medium">
-            <span>Tour {simulation.tourActuel} / {tourMax}</span>
+          <div className="flex items-center justify-end text-xs text-[var(--dsfr-grey-425)] mb-1 px-1 font-medium">
             <span className="flex items-center gap-1">
               <Clock className="w-3.5 h-3.5" />
               {Math.floor(elapsedSeconds / 60)}:{(elapsedSeconds % 60).toString().padStart(2, '0')}
