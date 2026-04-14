@@ -2,6 +2,8 @@ import { useLocation } from 'wouter';
 import franceTravailLogo from '@assets/image_1771580674143.png';
 import { SideMenu, SCENARIOS } from '@/components/SideMenu';
 import { MessageSquare, TrendingUp, AlertTriangle, ArrowRight } from 'lucide-react';
+import { useParcoursStore } from '@/lib/store';
+import type { Scenario } from '@/lib/store';
 
 const ICON_MAP: Record<string, React.ComponentType<{ className?: string; style?: React.CSSProperties }>> = {
   'feedback-recadrage': MessageSquare,
@@ -11,6 +13,14 @@ const ICON_MAP: Record<string, React.ComponentType<{ className?: string; style?:
 
 export default function LandingPage() {
   const [, navigate] = useLocation();
+  const resetParcours = useParcoursStore((s) => s.resetParcours);
+  const setScenarioChoisi = useParcoursStore((s) => s.setScenarioChoisi);
+
+  const handleScenarioClick = (slug: string, id: Scenario) => {
+    resetParcours();
+    setScenarioChoisi(id);
+    navigate(`/scenario/${slug}`);
+  };
 
   return (
     <div className="flex flex-col h-screen bg-background" data-testid="landing-page">
@@ -46,7 +56,7 @@ export default function LandingPage() {
                   <button
                     key={s.slug}
                     data-testid={`landing-scenario-${s.slug}`}
-                    onClick={() => navigate(`/scenario/${s.slug}`)}
+                    onClick={() => handleScenarioClick(s.slug, s.id as Scenario)}
                     className="w-full text-left px-5 py-4 border border-[var(--dsfr-grey-850)] rounded-xl bg-white dark:bg-[var(--dsfr-grey-950)] hover:shadow-sm transition-all group flex items-center gap-4"
                     style={{ '--hover-color': s.accent } as React.CSSProperties}
                     onMouseEnter={(e) => {

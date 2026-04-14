@@ -1,5 +1,7 @@
 import { useLocation } from 'wouter';
 import { MessageSquare, TrendingUp, AlertTriangle, ChevronRight } from 'lucide-react';
+import { useParcoursStore } from '@/lib/store';
+import type { Scenario } from '@/lib/store';
 
 const SCENARIOS = [
   {
@@ -37,6 +39,14 @@ interface SideMenuProps {
 
 export function SideMenu({ activeSlug }: SideMenuProps) {
   const [, navigate] = useLocation();
+  const resetParcours = useParcoursStore((s) => s.resetParcours);
+  const setScenarioChoisi = useParcoursStore((s) => s.setScenarioChoisi);
+
+  const handleScenarioClick = (slug: string, id: Scenario) => {
+    resetParcours();
+    setScenarioChoisi(id);
+    navigate(`/scenario/${slug}`);
+  };
 
   return (
     <nav
@@ -57,7 +67,7 @@ export function SideMenu({ activeSlug }: SideMenuProps) {
             <button
               key={s.slug}
               data-testid={`sidemenu-${s.slug}`}
-              onClick={() => navigate(`/scenario/${s.slug}`)}
+              onClick={() => handleScenarioClick(s.slug, s.id as Scenario)}
               className="w-full text-left rounded-lg px-3 py-3 transition-all group"
               style={{
                 backgroundColor: isActive ? s.bg : 'transparent',
