@@ -1,7 +1,7 @@
 import { useParcoursStore } from '@/lib/store';
 import { ChatCardSingle } from '@/components/ChatCard';
 import { Button } from '@/components/ui/button';
-import { getScenarioLabel, getDiscLabel, getRelationLabel, getEtatEspritLabel, getDifficultyStars, getTheoryContent, getPersonaDescription, getTourMax, getTypeCollabShortLabel } from '@/lib/helpers';
+import { getScenarioLabel, getDiscLabel, getRelationLabel, getDifficultyStars, getTheoryContent, getPersonaDescription, getTourMax, getTypeCollabShortLabel } from '@/lib/helpers';
 import { Play, BookOpen, Star, ShieldCheck } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -154,7 +154,7 @@ export function Step15c() {
           <ul className="space-y-1 list-none pl-0">
             <li>Scénario : <strong>{getScenarioLabel(scenarioChoisi)}</strong></li>
             <li>Collaborateur : <strong>{persona.prenomFictif}</strong>, {getTypeCollabShortLabel(typeCollab)}, profil <strong>{getDiscLabel(persona.disc)}</strong></li>
-            <li>Relation : <strong>{getRelationLabel(persona.relation)}</strong> / État d'esprit : <strong>{getEtatEspritLabel(persona.etatEsprit)}</strong></li>
+            <li>Relation : <strong>{getRelationLabel(persona.relation)}</strong></li>
             <li className="flex items-center gap-1">
               Difficulté :
               {Array.from({ length: difficultyStars }, (_, i) => (
