@@ -15,6 +15,7 @@ interface ChatInputProps {
   showFileUpload?: boolean;
   onFileUpload?: (files: FileList) => void;
   muted?: boolean;
+  ignorePendingMessage?: boolean;
 }
 
 export function ChatInput({
@@ -30,6 +31,7 @@ export function ChatInput({
   showFileUpload = false,
   onFileUpload,
   muted = false,
+  ignorePendingMessage = false,
 }: ChatInputProps) {
   const [value, setValue] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
@@ -38,7 +40,7 @@ export function ChatInput({
   const setPendingMessage = useParcoursStore((s) => s.setPendingMessage);
 
   useEffect(() => {
-    if (pendingMessage) {
+    if (pendingMessage && !ignorePendingMessage) {
       setValue(pendingMessage);
       setPendingMessage(null);
       setTimeout(() => {
@@ -46,7 +48,7 @@ export function ChatInput({
         setValue('');
       }, 350);
     }
-  }, [pendingMessage, onSend, setPendingMessage]);
+  }, [pendingMessage, onSend, setPendingMessage, ignorePendingMessage]);
 
   const handleSend = () => {
     const trimmed = value.trim();

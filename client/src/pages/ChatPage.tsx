@@ -205,6 +205,7 @@ export default function ChatPage({ activeSlug }: ChatPageProps) {
                   onSkip={skipStep}
                   disabled={infoLoading}
                   muted={true}
+                  ignorePendingMessage={true}
                 />
               </div>
             </div>
