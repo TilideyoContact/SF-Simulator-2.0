@@ -1,6 +1,5 @@
 import { cn } from '@/lib/utils';
 import { Check } from 'lucide-react';
-import { useParcoursStore } from '@/lib/store';
 
 interface CardOption {
   id: string;
@@ -20,13 +19,8 @@ interface ChatCardSingleProps {
   autoFillInput?: boolean;
 }
 
-export function ChatCardSingle({ options, selected, onSelect, orientation = 'vertical', disabled, autoFillInput = true }: ChatCardSingleProps) {
-  const setPendingMessage = useParcoursStore((s) => s.setPendingMessage);
-
+export function ChatCardSingle({ options, selected, onSelect, orientation = 'vertical', disabled }: ChatCardSingleProps) {
   const handleSelect = (opt: CardOption) => {
-    if (autoFillInput) {
-      setPendingMessage(opt.label);
-    }
     onSelect(opt.id);
   };
 
@@ -157,10 +151,7 @@ interface NpsCardProps {
 }
 
 export function NpsCard({ selected, onSelect, disabled }: NpsCardProps) {
-  const setPendingMessage = useParcoursStore((s) => s.setPendingMessage);
-
   const handleSelect = (n: number) => {
-    setPendingMessage(`${n}/10`);
     onSelect(n);
   };
 
@@ -175,14 +166,14 @@ export function NpsCard({ selected, onSelect, disabled }: NpsCardProps) {
           <button
             key={i}
             data-testid={`nps-${i}`}
-            disabled={disabled || (selected !== null && selected !== i)}
+            disabled={disabled}
             onClick={() => handleSelect(i)}
             className={cn(
               'flex-1 h-10 text-sm font-medium transition-all duration-200',
               selected === i
                 ? 'ring-2 ring-offset-1 scale-105'
                 : '',
-              disabled || (selected !== null && selected !== i)
+              disabled
                 ? 'opacity-30 cursor-not-allowed'
                 : 'cursor-pointer hover:opacity-80',
               i <= 6
@@ -216,10 +207,7 @@ interface RatingCardProps {
 }
 
 export function RatingCard({ label, selected, onSelect, minLabel, maxLabel, disabled }: RatingCardProps) {
-  const setPendingMessage = useParcoursStore((s) => s.setPendingMessage);
-
   const handleSelect = (n: number) => {
-    setPendingMessage(`${n}/5`);
     onSelect(n);
   };
 
@@ -235,14 +223,14 @@ export function RatingCard({ label, selected, onSelect, minLabel, maxLabel, disa
           <button
             key={n}
             data-testid={`rating-${n}`}
-            disabled={disabled || (selected !== null && selected !== n)}
+            disabled={disabled}
             onClick={() => handleSelect(n)}
             className={cn(
               'flex-1 h-10 text-sm font-medium transition-all duration-200',
               selected === n
                 ? 'bg-[var(--dsfr-blue-france)] text-white ring-2 ring-offset-1 ring-[var(--dsfr-blue-france)]'
                 : 'bg-card border border-[var(--dsfr-grey-925)] hover:border-[var(--dsfr-blue-france)] hover:bg-[var(--dsfr-blue-france-light)]',
-              disabled || (selected !== null && selected !== n)
+              disabled
                 ? 'opacity-30 cursor-not-allowed'
                 : 'cursor-pointer',
             )}

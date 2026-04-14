@@ -23,10 +23,9 @@ const SCENARIO_CONTEXT: Record<string, { title: string; desc: string }> = {
 };
 
 export function Step1Welcome() {
-  const { setMode, nextStep, mode, setPendingMessage, scenarioChoisi } = useParcoursStore();
+  const { setMode, nextStep, mode, scenarioChoisi } = useParcoursStore();
 
-  const handleSelect = (id: string, label: string) => {
-    setPendingMessage(label);
+  const handleSelect = (id: string, _label: string) => {
     setMode(id as 'avance' | 'rapide');
     setTimeout(() => nextStep(), 400);
   };
