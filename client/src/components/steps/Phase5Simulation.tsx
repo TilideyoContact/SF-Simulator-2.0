@@ -353,12 +353,25 @@ export function SimulationView() {
 
       {!simulation.isFinished && (
         <div className="sticky bottom-0 bg-background pt-3 pb-1 border-t border-[var(--dsfr-grey-925)]">
-          <div className="flex items-center justify-between text-xs text-[var(--dsfr-grey-425)] mb-2 px-1 font-medium">
+          <div className="flex items-center justify-between text-xs text-[var(--dsfr-grey-425)] mb-1 px-1 font-medium">
             <span>Tour {simulation.tourActuel} / {tourMax}</span>
             <span className="flex items-center gap-1">
               <Clock className="w-3.5 h-3.5" />
               {Math.floor(elapsedSeconds / 60)}:{(elapsedSeconds % 60).toString().padStart(2, '0')}
             </span>
+          </div>
+          <div className="w-full h-2 bg-[var(--dsfr-grey-925)] rounded-full overflow-hidden mb-2">
+            <div
+              className="h-full rounded-full transition-all duration-500 ease-out"
+              style={{
+                width: `${Math.min((simulation.tourActuel / tourMax) * 100, 100)}%`,
+                background: simulation.tourActuel / tourMax < 0.5
+                  ? 'var(--dsfr-blue-france)'
+                  : simulation.tourActuel / tourMax < 0.8
+                    ? 'var(--dsfr-warning)'
+                    : 'var(--dsfr-error)',
+              }}
+            />
           </div>
           <div className="flex gap-2 items-end">
             <Button
