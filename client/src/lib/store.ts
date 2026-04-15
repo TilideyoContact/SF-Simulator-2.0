@@ -336,13 +336,11 @@ export const useParcoursStore = create<ParcoursState>()(
     feedbackParcours: { nps: null, facilite: null, pertinence: null, realisme: null, ameliorations: [], commentaire: '' },
   }),
   resetToPersona: () => {
-    const { mode } = get();
-    const isRapide = mode === 'rapide';
     set({
-      currentStep: isRapide ? 14 : 11,
+      currentStep: 11,
       persona: {
-        disc: isRapide ? 'stable' : null,
-        relation: isRapide ? 3 : null,
+        disc: null,
+        relation: null,
         etatEsprit: 'neutre',
         niveauDifficulte: 'modere',
         prenomFictif: getRandomPrenom(),

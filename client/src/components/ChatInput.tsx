@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Send, Paperclip, ChevronLeft, SkipForward, Mic } from 'lucide-react';
+import { Send, Paperclip, ChevronLeft, SkipForward } from 'lucide-react';
 import { useParcoursStore } from '@/lib/store';
 
 interface ChatInputProps {
@@ -124,24 +124,18 @@ export function ChatInput({
             onChange={handleFileChange}
             accept=".pdf,.doc,.docx,.txt,.odt,.rtf,.xls,.xlsx,.csv,.png,.jpg,.jpeg"
           />
-          <button
-            data-testid="button-attach"
-            className="flex items-center gap-1.5 px-3 py-2 mr-1 text-xs font-medium rounded-md transition-colors hover:bg-[var(--dsfr-blue-france-light)]"
-            style={{ color: 'var(--dsfr-blue-france)' }}
-            onClick={handleFileClick}
-            type="button"
-          >
-            <Paperclip className="w-4 h-4" />
-            <span className="hidden sm:inline">Ajouter un fichier</span>
-          </button>
-          <button
-            data-testid="button-mic"
-            className="flex items-center justify-center w-9 h-9 mr-1 rounded-md text-[var(--dsfr-grey-425)] hover:text-[var(--dsfr-blue-france)] hover:bg-[var(--dsfr-blue-france-light)] transition-colors"
-            type="button"
-            title="Saisie vocale disponible en simulation"
-          >
-            <Mic className="w-4 h-4" />
-          </button>
+          {showFileUpload && (
+            <button
+              data-testid="button-attach"
+              className="flex items-center gap-1.5 px-3 py-2 mr-1 text-xs font-medium rounded-md transition-colors hover:bg-[var(--dsfr-blue-france-light)]"
+              style={{ color: 'var(--dsfr-blue-france)' }}
+              onClick={handleFileClick}
+              type="button"
+            >
+              <Paperclip className="w-4 h-4" />
+              <span className="hidden sm:inline">Ajouter un fichier</span>
+            </button>
+          )}
         </div>
         <button
           data-testid="button-send-chat"
