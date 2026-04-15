@@ -159,7 +159,7 @@ export function NpsCard({ selected, onSelect, disabled }: NpsCardProps) {
     <div data-testid="nps-card" className="space-y-2 animate-in fade-in slide-in-from-bottom-2 duration-300">
       <div className="flex justify-between text-xs text-[var(--dsfr-grey-425)] px-1 font-medium">
         <span>Pas du tout probable</span>
-        <span>Tres probable</span>
+        <span>Très probable</span>
       </div>
       <div className="flex gap-1">
         {Array.from({ length: 11 }, (_, i) => (

@@ -376,7 +376,7 @@ export function Step14RecapPersona() {
           </div>
           <div>
             <span className="text-[var(--dsfr-grey-425)]">Type :</span>
-            <span className="ml-1 font-medium capitalize">{typeCollab ?? '—'}</span>
+            <span className="ml-1 font-medium">{typeCollab ? getTypeCollabLabel(typeCollab) : '—'}</span>
           </div>
         </div>
         <div className="pt-2 border-t border-[var(--dsfr-grey-925)]">
