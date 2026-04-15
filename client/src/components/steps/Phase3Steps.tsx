@@ -326,7 +326,7 @@ export function Step14RecapPersona() {
         <p className="text-sm text-[var(--dsfr-grey-425)] mt-1">Vérifie ta configuration avant de démarrer</p>
       </div>
 
-      {(profil || typeCollab || objectifs.length > 0) && (
+      {!isRapide && (profil || typeCollab || objectifs.length > 0) && (
         <div className="bg-[var(--dsfr-blue-france-light)] p-4 space-y-2 border-l-[3px]" style={{ borderLeftColor: 'var(--dsfr-blue-france)' }}>
           <p className="font-bold text-xs uppercase tracking-wider" style={{ color: 'var(--dsfr-blue-france)' }}>Ton profil :</p>
           <ul className="space-y-1 list-none pl-0 text-xs text-[var(--dsfr-grey-425)]">
@@ -335,7 +335,7 @@ export function Step14RecapPersona() {
                 {experience && <> — expérience : <strong className="text-foreground">{getExperienceLabel(experience)}</strong></>}
               </li>
             )}
-            {!isRapide && typeCollab && (
+            {typeCollab && (
               <li>Type de collaborateur : <strong className="text-foreground">{getTypeCollabLabel(typeCollab)}</strong></li>
             )}
             {scenarioChoisi && (
@@ -344,65 +344,58 @@ export function Step14RecapPersona() {
             {objectifs.length > 0 && (
               <li>Objectifs : <strong className="text-foreground">{objectifs.join(', ')}</strong></li>
             )}
-            {!isRapide && difficulte.length > 0 && (
+            {difficulte.length > 0 && (
               <li>Étapes délicates : <strong className="text-foreground">{difficulte.join(', ')}</strong></li>
             )}
-            {!isRapide && complement && (
+            {complement && (
               <li>Complément : <strong className="text-foreground">{complement.length > 80 ? complement.slice(0, 80) + '...' : complement}</strong></li>
             )}
           </ul>
         </div>
       )}
 
-      {isRapide ? (
+      {isRapide && scenarioChoisi && (
         <div className="bg-[var(--dsfr-blue-france-light)] p-4 space-y-2 border-l-[3px]" style={{ borderLeftColor: 'var(--dsfr-blue-france)' }}>
-          <p className="font-bold text-xs uppercase tracking-wider" style={{ color: 'var(--dsfr-blue-france)' }}>Collaborateur par défaut :</p>
-          <p className="text-xs text-[var(--dsfr-grey-425)]">
-            Agent, profil DISC <strong className="text-foreground">Stable</strong>, relation <strong className="text-foreground">neutre</strong>, difficulté <strong className="text-foreground">modérée</strong>.
-          </p>
-          {description && (
-            <p className="text-xs italic text-[var(--dsfr-grey-425)] pt-1">
-              Ce collaborateur sera {description}.
-            </p>
-          )}
-        </div>
-      ) : (
-        <div className="bg-[var(--dsfr-blue-france-light)] p-4 space-y-3 border-l-[3px]" style={{ borderLeftColor: 'var(--dsfr-blue-france)' }}>
-          <p className="font-bold text-xs uppercase tracking-wider" style={{ color: 'var(--dsfr-blue-france)' }}>Persona configuré :</p>
-          <div className="grid grid-cols-2 gap-2 text-xs">
-            <div>
-              <span className="text-[var(--dsfr-grey-425)]">Profil DISC :</span>
-              <span className={cn('ml-1 px-2 py-0.5 text-xs font-bold border', getDiscColor(persona.disc))}>
-                {getDiscLabel(persona.disc)}
-              </span>
-            </div>
-            <div>
-              <span className="text-[var(--dsfr-grey-425)]">Relation :</span>
-              <span className="ml-1 font-medium">{getRelationLabel(persona.relation)}</span>
-            </div>
-            <div>
-              <span className="text-[var(--dsfr-grey-425)]">Type :</span>
-              <span className="ml-1 font-medium capitalize">{typeCollab ?? '—'}</span>
-            </div>
-          </div>
-          <div className="pt-2 border-t border-[var(--dsfr-grey-925)]">
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-[var(--dsfr-grey-425)]">Niveau de difficulté :</span>
-              <div className="flex items-center gap-0.5">
-                {Array.from({ length: 4 }, (_, i) => (
-                  <Star key={i} className={cn('w-4 h-4', i < difficultyStars ? 'text-[var(--dsfr-warning)] fill-[var(--dsfr-warning)]' : 'text-[var(--dsfr-grey-850)]')} />
-                ))}
-              </div>
-              <span className="text-xs font-bold">{getDifficultyLabel(persona.niveauDifficulte)}</span>
-            </div>
-          </div>
-          {description && (
-            <p className="text-xs italic text-[var(--dsfr-grey-425)] pt-1">
-              Ce collaborateur sera {description}.
-            </p>
-          )}
+          <p className="font-bold text-xs uppercase tracking-wider" style={{ color: 'var(--dsfr-blue-france)' }}>Scénario :</p>
+          <p className="text-xs"><strong className="text-foreground">{getScenarioLabel(scenarioChoisi)}</strong></p>
         </div>
       )}
+
+      <div className="bg-[var(--dsfr-blue-france-light)] p-4 space-y-3 border-l-[3px]" style={{ borderLeftColor: 'var(--dsfr-blue-france)' }}>
+        <p className="font-bold text-xs uppercase tracking-wider" style={{ color: 'var(--dsfr-blue-france)' }}>{isRapide ? 'Collaborateur configuré :' : 'Persona configuré :'}</p>
+        <div className="grid grid-cols-2 gap-2 text-xs">
+          <div>
+            <span className="text-[var(--dsfr-grey-425)]">Profil DISC :</span>
+            <span className={cn('ml-1 px-2 py-0.5 text-xs font-bold border', getDiscColor(persona.disc))}>
+              {getDiscLabel(persona.disc)}
+            </span>
+          </div>
+          <div>
+            <span className="text-[var(--dsfr-grey-425)]">Relation :</span>
+            <span className="ml-1 font-medium">{getRelationLabel(persona.relation)}</span>
+          </div>
+          <div>
+            <span className="text-[var(--dsfr-grey-425)]">Type :</span>
+            <span className="ml-1 font-medium capitalize">{typeCollab ?? '—'}</span>
+          </div>
+        </div>
+        <div className="pt-2 border-t border-[var(--dsfr-grey-925)]">
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-[var(--dsfr-grey-425)]">Niveau de difficulté :</span>
+            <div className="flex items-center gap-0.5">
+              {Array.from({ length: 4 }, (_, i) => (
+                <Star key={i} className={cn('w-4 h-4', i < difficultyStars ? 'text-[var(--dsfr-warning)] fill-[var(--dsfr-warning)]' : 'text-[var(--dsfr-grey-850)]')} />
+              ))}
+            </div>
+            <span className="text-xs font-bold">{getDifficultyLabel(persona.niveauDifficulte)}</span>
+          </div>
+        </div>
+        {description && (
+          <p className="text-xs italic text-[var(--dsfr-grey-425)] pt-1">
+            Ce collaborateur sera {description}.
+          </p>
+        )}
+      </div>
 
       <Button data-testid="button-continue-persona" onClick={() => nextStep()} className="w-full">
         Continuer

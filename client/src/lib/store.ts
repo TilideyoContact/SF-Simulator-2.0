@@ -157,7 +157,7 @@ export function calculateDifficulty(disc: DiscProfil, relation: Relation, etatEs
 
 function getStepsForMode(mode: Mode): number[] {
   if (mode === 'rapide') {
-    return [1, 2, 4, 5, 14, 27, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 25];
+    return [1, 7, 11, 12, 14, 27, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 25];
   }
   return [1, 2, 7, 5, 6, 11, 12, 8, 14, 27, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 25];
 }
@@ -244,15 +244,14 @@ export const useParcoursStore = create<ParcoursState>()(
     set({ mode });
     if (mode === 'rapide') {
       set({
-        typeCollab: 'agent',
+        profil: 'mp',
+        experience: 'intermediaire',
+        objectifs: [],
         difficulte: [],
         complement: '',
         persona: {
           ...get().persona,
-          disc: 'stable',
-          relation: 3,
           etatEsprit: 'neutre',
-          niveauDifficulte: 'modere',
         }
       });
     }
