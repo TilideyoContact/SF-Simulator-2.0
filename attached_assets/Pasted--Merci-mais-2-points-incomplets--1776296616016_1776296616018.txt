@@ -1,0 +1,41 @@
+ Merci, mais 2 points incomplets :                                                                                
+                                                            
+  ### 1. Bug TypeCollab — cause racine non traitée
+  Tu as fix l'affichage (raw → label formaté) mais pas la cause du bug. Si c'était vraiment du stale localStorage,
+  il faut ajouter un reset propre :                                                                                
+                                                                                                                   
+  Dans SideMenu.tsx, quand l'utilisateur clique sur un scénario, appeler resetParcours() AVANT la navigation.      
+                                                                                                                   
+  Alternative : dans store.ts setScenarioChoisi(), déclencher un reset partiel (vider typeCollab, objectifs,
+  difficulte, persona.disc, persona.relation) pour éviter que les choix d'un parcours précédent contaminent le     
+  nouveau.                                                  
+                                                                                                                   
+  Test : faire un parcours en cliquant "Un agent", revenir sur la landing, cliquer sur un autre scénario, vérifier
+  que typeCollab est bien null/reset au début du nouveau parcours.                                                 
+                                                            
+  ### 2. Séquence Mode Rapide jamais appliquée                                                                     
+  J'avais validé que Mode Rapide doit être [1, 7, 11, 12, 14, 27, 15, ...] — c'est-à-dire : Welcome → Type
+  collaborateur → DISC → Qualité des échanges → Récap → Durée → Pre-sim → Simulation.                              
+                                                                                                                   
+  Le code actuel dans store.ts getStepsForMode est encore :
+  rapide: [1, 2, 4, 5, 14, 27, 15, ...]                                                                            
+                                                            
+  C'est-à-dire : Welcome → Profil manager → Expérience → Objectifs → Récap. Ce sont des questions sur le MANAGER,  
+  pas sur le COLLABORATEUR.                                 
+                                                                                                                   
+  Applique le changement :                                                                                         
+  rapide: [1, 7, 11, 12, 14, 27, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 25]
+  avance: inchangé                                                                                                 
+                                                                                                                   
+  Ajuste setMode('rapide') pour auto-fill les champs des steps skippés :
+  - profil = 'mp' (Manager de proximité par défaut)                                                                
+  - experience = 'intermediaire'                            
+  - objectifs = []                                                                                                 
+  - difficulte = []                                         
+  - complement = ''                                                                                                
+  - persona.etatEsprit = 'neutre'                                                                                  
+                                                                                                                   
+  Ne PAS forcer persona.disc ni persona.relation — ces 2 champs sont saisis par l'utilisateur aux steps 11 et 12.  
+                                                                                                                   
+  Vérifie aussi que ton fix resetToPersona() reste cohérent avec cette nouvelle séquence (step 11 est bien
+  atteignable en rapide puisqu'il est dans la séquence).  

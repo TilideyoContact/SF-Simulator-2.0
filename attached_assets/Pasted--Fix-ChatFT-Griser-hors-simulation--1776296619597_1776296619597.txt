@@ -1,0 +1,19 @@
+## Fix ChatFT — Griser hors simulation                                                                           
+                                                                                                                   
+  Le ChatInput en bas de page doit rester visible partout (contrainte) mais désactivé sauf en simulation.          
+                                                                                                                   
+  ### Actif                                                                                                        
+  - currentStep === 16 ou 17 (simulation)                                                                          
+                                                                                                                   
+  ### Grisé + disabled + pointer-events-none                                                                       
+  - Tous les autres steps (1 à 15, 18 à 26)                 
+  - Textarea disabled, placeholder : "Le chat est disponible uniquement pendant la simulation"                     
+  - Boutons send, mic, attach disabled                                                                             
+  - opacity-50, cursor-not-allowed        
+  - Aucun onClick, aucune interception d'événements depuis les autres composants de la page                        
+  - Le popup Assistant ChatFT ne s'ouvre jamais hors simulation (fermer automatiquement via useEffect si           
+  currentStep sort de 16/17)                                                                                       
+                                                                                                                   
+  ### Dans ChatInput.tsx                                                                                           
+  Lire currentStep du store. `const isEnabled = currentStep === 16 || currentStep === 17;` puis appliquer          
+  `disabled={!isEnabled}` partout et wrapper avec `!isEnabled && "opacity-50 pointer-events-none"`. 

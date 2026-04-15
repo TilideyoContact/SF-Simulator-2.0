@@ -263,7 +263,25 @@ export const useParcoursStore = create<ParcoursState>()(
   setDifficulte: (difficulte) => set({ difficulte }),
   setTypeCollab: (typeCollab) => set({ typeCollab }),
   setComplement: (complement) => set({ complement }),
-  setScenarioChoisi: (scenarioChoisi) => set({ scenarioChoisi }),
+  setScenarioChoisi: (scenarioChoisi) => set({
+    scenarioChoisi,
+    typeCollab: null,
+    objectifs: [],
+    difficulte: [],
+    complement: '',
+    persona: {
+      disc: null,
+      relation: null,
+      etatEsprit: 'neutre',
+      niveauDifficulte: 'modere',
+      prenomFictif: getRandomPrenom(),
+    },
+    choixPreSimulation: null,
+    dureeEntretien: null,
+    simulation: { tourActuel: 0, tourMax: 7, messages: [], isSimulating: false, isFinished: false },
+    analyse: null,
+    feedbackParcours: { nps: null, facilite: null, pertinence: null, realisme: null, ameliorations: [], commentaire: '' },
+  }),
   setPersonaDisc: (disc) => {
     const state = get();
     const niveauDifficulte = calculateDifficulty(disc, state.persona.relation, state.persona.etatEsprit, state.typeCollab);
