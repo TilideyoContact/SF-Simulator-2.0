@@ -176,17 +176,21 @@ export function NpsCard({ selected, onSelect, disabled }: NpsCardProps) {
               disabled
                 ? 'opacity-30 cursor-not-allowed'
                 : 'cursor-pointer hover:opacity-80',
-              i <= 6
+              i <= 3
                 ? selected === i
-                  ? 'bg-[var(--dsfr-red-marianne)] text-white ring-[var(--dsfr-red-marianne)]'
-                  : 'bg-[var(--dsfr-red-marianne-light)] text-[var(--dsfr-red-marianne)]'
+                  ? 'bg-[var(--dsfr-blue-france)] text-white ring-[var(--dsfr-blue-france)]'
+                  : 'bg-[var(--dsfr-grey-925)] text-[var(--dsfr-grey-425)]'
+                : i <= 6
+                ? selected === i
+                  ? 'bg-[var(--dsfr-blue-france)] text-white ring-[var(--dsfr-blue-france)]'
+                  : 'bg-[var(--dsfr-grey-850)] text-[var(--dsfr-grey-200)]'
                 : i <= 8
                 ? selected === i
-                  ? 'bg-[var(--dsfr-warning)] text-white ring-[var(--dsfr-warning)]'
-                  : 'bg-[var(--dsfr-warning-light)] text-[var(--dsfr-warning)]'
+                  ? 'bg-[var(--dsfr-blue-france)] text-white ring-[var(--dsfr-blue-france)]'
+                  : 'bg-[#E3E3FD] text-[var(--dsfr-blue-france)]'
                 : selected === i
-                ? 'bg-[var(--dsfr-success)] text-white ring-[var(--dsfr-success)]'
-                : 'bg-[var(--dsfr-success-bg)] text-[var(--dsfr-success)]',
+                ? 'bg-[var(--dsfr-blue-france)] text-white ring-[var(--dsfr-blue-france)]'
+                : 'bg-[var(--dsfr-blue-france)] text-white opacity-80',
             )}
           >
             {i}
