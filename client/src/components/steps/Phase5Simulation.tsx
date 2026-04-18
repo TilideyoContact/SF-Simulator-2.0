@@ -402,44 +402,39 @@ export function SimulationView() {
 
       {!simulation.isFinished && (
         <div className="sticky bottom-0 bg-background pt-3 pb-1 border-t border-[var(--dsfr-grey-925)]">
-          <div className="flex items-center justify-between gap-2 mb-2 px-1 flex-wrap">
-            <div className="flex items-center gap-2 text-xs font-medium text-[var(--dsfr-grey-425)]">
-              <span data-testid="text-tour-counter" className="tabular-nums font-bold text-foreground">
-                Tour {Math.min(simulation.tourActuel, tourMax)}/{tourMax}
-              </span>
-              <Button
-                data-testid="button-pause-toggle"
-                size="icon"
-                onClick={handleTogglePause}
-                className={cn(
-                  "h-8 w-8 shrink-0",
-                  isPaused
-                    ? "bg-[var(--dsfr-warning)] hover:bg-[var(--dsfr-warning)]/90 text-white"
-                    : "bg-[var(--dsfr-blue-france)] hover:bg-[var(--dsfr-blue-france)]/90 text-white"
-                )}
-                title={isPaused ? 'Reprendre' : 'Mettre en pause'}
-              >
-                {isPaused ? <Play className="w-4 h-4" /> : <Pause className="w-4 h-4" />}
-              </Button>
-              <Button
-                data-testid="button-stop-simulation"
-                size="icon"
-                onClick={() => setShowStopConfirm(true)}
-                className="h-8 w-8 shrink-0 bg-[var(--dsfr-red-marianne)] hover:bg-[var(--dsfr-red-marianne)]/90 text-white"
-                title="Terminer la simulation"
-              >
-                <Square className="w-4 h-4 fill-current" />
-              </Button>
-              <span className="flex items-center gap-1 tabular-nums ml-1">
-                <Clock className="w-3.5 h-3.5" />
-                {Math.floor(elapsedSeconds / 60)}:{(elapsedSeconds % 60).toString().padStart(2, '0')}
-                {isPaused && (
-                  <span data-testid="text-paused" className="ml-1 italic text-[var(--dsfr-warning)] font-semibold">
-                    — En pause
-                  </span>
-                )}
-              </span>
-            </div>
+          <div className="flex items-center gap-1.5 mb-2 px-1">
+            <Button
+              data-testid="button-pause-toggle"
+              size="icon"
+              onClick={handleTogglePause}
+              className={cn(
+                "h-6 w-6 shrink-0 rounded",
+                isPaused
+                  ? "bg-[var(--dsfr-warning)] hover:bg-[var(--dsfr-warning)]/90 text-white"
+                  : "bg-[var(--dsfr-blue-france)] hover:bg-[var(--dsfr-blue-france)]/90 text-white"
+              )}
+              title={isPaused ? 'Reprendre' : 'Mettre en pause'}
+            >
+              {isPaused ? <Play className="w-3 h-3" /> : <Pause className="w-3 h-3" />}
+            </Button>
+            <Button
+              data-testid="button-stop-simulation"
+              size="icon"
+              onClick={() => setShowStopConfirm(true)}
+              className="h-6 w-6 shrink-0 rounded bg-[var(--dsfr-red-marianne)] hover:bg-[var(--dsfr-red-marianne)]/90 text-white"
+              title="Terminer la simulation"
+            >
+              <Square className="w-3 h-3 fill-current" />
+            </Button>
+            <span className="flex items-center gap-1 tabular-nums text-xs text-[var(--dsfr-grey-425)] ml-1">
+              <Clock className="w-3.5 h-3.5" />
+              {Math.floor(elapsedSeconds / 60)}:{(elapsedSeconds % 60).toString().padStart(2, '0')}
+              {isPaused && (
+                <span data-testid="text-paused" className="ml-1 italic text-[var(--dsfr-warning)] font-semibold">
+                  — En pause
+                </span>
+              )}
+            </span>
           </div>
           <div className="w-full h-2 bg-[var(--dsfr-grey-925)] rounded-full overflow-hidden mb-2">
             <div
