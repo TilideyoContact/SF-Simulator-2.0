@@ -1,0 +1,60 @@
+ User Story 2 — Boutons pause/play/arrêt en simulation
+
+  En tant que manager en simulation,
+  je veux pouvoir mettre en pause et arrêter la conversation,
+  pour réfléchir sans pression et terminer proprement quand je veux.
+
+  ## Ajouter boutons pause/play/arrêt pendant la simulation
+
+  ### Problème
+  Pendant la simulation, le timer tourne en continu sans possibilité
+  de le mettre en pause. Et pour arrêter la simulation, il faut taper
+  "/fin" dans le chat, ce qui n'est pas intuitif.
+
+  ### Ce qu'il faut ajouter
+  3 boutons d'action dans la zone de simulation, placés dans la barre
+  du haut à côté du compteur "Tour X/Y" et du timer mm:ss :
+
+  **Bouton Pause** (icône ⏸) :
+  - Met le timer en pause — le compteur mm:ss s'arrête
+  - Le champ de saisie reste actif (le manager peut relire les
+  messages tranquillement)
+  - Quand on clique, le bouton se transforme en bouton Play (icône ▶)
+
+  **Bouton Play** (icône ▶) :
+  - Apparaît uniquement quand le timer est en pause
+  - Relance le compteur mm:ss là où il s'était arrêté
+
+  **Bouton Arrêt** (icône ⏹) :
+  - Clic → affiche un petit message de confirmation : "Terminer la
+  simulation ? Tu seras redirigé vers le débrief."
+  - 2 boutons dans la confirmation : "Oui, terminer" / "Continuer la
+  simulation"
+  - Si "Oui" → même effet que /fin : la simulation se termine et on
+  passe au débrief
+  - Si "Continuer" → on ferme la confirmation et on reste dans la
+  simulation
+
+  ### Placement exact
+  Sur la même ligne que "Tour X/Y" (à gauche) et "⏱ mm:ss" (à droite).
+  Insérer les 3 boutons entre le compteur de tours et le timer.
+  Aspect : petites icônes sans label texte, couleur grise par défaut,
+  bleu France au hover. Taille similaire au timer (discret, pas
+  imposant).
+
+  ### Interaction visuelle
+  État normal   : [Tour 1/8]  [⏸] [⏹]  [⏱ 3:47]
+  État en pause  : [Tour 1/8]  [▶] [⏹]  [⏱ 3:47 — En pause]
+  Le texte "En pause" apparaît à côté du timer quand il est en pause,
+  en gris italique.
+
+  ### Test
+  1. Lancer une simulation → voir les boutons ⏸ et ⏹ apparaître
+  2. Cliquer ⏸ → timer s'arrête, bouton devient ▶, texte "En pause"
+  visible
+  3. Écrire un message pendant la pause → ça doit fonctionner
+  normalement (seul le timer est pausé)
+  4. Cliquer ▶ → timer reprend, "En pause" disparaît
+  5. Cliquer ⏹ → confirmation → "Oui, terminer" → débrief se lance
+  6. Les boutons ⏸ ⏹ ne doivent PAS apparaître en dehors de la
+  simulation (steps 1-15 et 18-26)
