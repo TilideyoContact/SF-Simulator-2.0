@@ -7,6 +7,13 @@ import { apiRequest } from '@/lib/queryClient';
 import { cn } from '@/lib/utils';
 import { BarChart3, CheckCircle, TrendingUp, Lightbulb, BookOpen, RefreshCw, MessageCircle, AlertTriangle, ArrowRight, Download, ChevronDown, ChevronUp } from 'lucide-react';
 import { generateSessionReport } from '@/lib/generateReportPdf';
+import { useHistoryStore, type HistoryScenarioId } from '@/lib/historyStore';
+
+const SCENARIO_LABELS: Record<string, string> = {
+  feedback_recadrage: 'Feedback / Recadrage',
+  feedback_positif: 'Feedback positif',
+  decision_difficile: 'Décision difficile',
+};
 
 export function Step19Scores() {
   const store = useParcoursStore();
@@ -19,6 +26,7 @@ export function Step19Scores() {
   }, []);
 
   const fetchAnalysis = async () => {
+    let finalGlobal = 3;
     try {
       const res = await apiRequest('POST', '/api/simulation/analyze', {
         sessionId: store.sessionId,
@@ -29,6 +37,7 @@ export function Step19Scores() {
       });
       const data = await res.json();
       setAnalyse(data);
+      finalGlobal = typeof data.global === 'number' ? data.global : 3;
     } catch {
       setAnalyse({
         clarte: 3,
@@ -46,6 +55,13 @@ export function Step19Scores() {
       });
     } finally {
       setLoading(false);
+      const sid = (scenarioChoisi || 'feedback_recadrage') as HistoryScenarioId;
+      useHistoryStore.getState().addEntry({
+        scenarioId: sid,
+        scenarioLabel: SCENARIO_LABELS[sid] ?? sid,
+        timestamp: Date.now(),
+        globalScore: finalGlobal,
+      });
     }
   };
 

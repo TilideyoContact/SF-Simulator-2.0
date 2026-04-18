@@ -2,6 +2,7 @@ import { useLocation } from 'wouter';
 import { MessageSquare, TrendingUp, AlertTriangle, ChevronRight } from 'lucide-react';
 import { useParcoursStore } from '@/lib/store';
 import type { Scenario } from '@/lib/store';
+import { useHistoryStore, formatHistoryDate } from '@/lib/historyStore';
 
 const SCENARIOS = [
   {
@@ -99,12 +100,72 @@ export function SideMenu({ activeSlug }: SideMenuProps) {
         })}
       </div>
 
+      <HistorySection />
+
       <div className="mt-auto p-4 border-t border-[var(--dsfr-grey-925)]">
         <p className="text-[10px] text-[var(--dsfr-grey-425)] leading-relaxed">
           Chaque scénario lance une nouvelle conversation indépendante.
         </p>
       </div>
     </nav>
+  );
+}
+
+function HistorySection() {
+  const entries = useHistoryStore((s) => s.entries);
+
+  return (
+    <div className="border-t border-[var(--dsfr-grey-925)] mt-2 pt-2">
+      <div className="px-4 pt-2 pb-1">
+        <p className="text-[11px] font-bold uppercase tracking-widest text-[var(--dsfr-grey-425)]">
+          Tes simulations
+        </p>
+      </div>
+
+      {entries.length === 0 ? (
+        <p
+          data-testid="history-empty"
+          className="px-4 pb-3 text-[10px] italic text-[var(--dsfr-grey-425)]"
+        >
+          Aucune simulation terminée
+        </p>
+      ) : (
+        <ul className="flex flex-col gap-1 p-2" data-testid="history-list">
+          {entries.map((e) => {
+            const meta = SCENARIOS.find((s) => s.id === e.scenarioId);
+            const Icon = meta?.icon ?? MessageSquare;
+            const accent = meta?.accent ?? '#000091';
+            return (
+              <li
+                key={e.id}
+                data-testid={`history-entry-${e.id}`}
+                className="rounded-lg px-3 py-2 cursor-default"
+              >
+                <div className="flex items-start gap-2">
+                  <Icon className="w-4 h-4 mt-0.5 shrink-0" style={{ color: accent }} />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-bold leading-tight truncate" title={e.scenarioLabel}>
+                      {e.scenarioLabel}
+                    </p>
+                    <p className="text-[10px] text-[var(--dsfr-grey-425)] mt-0.5 leading-tight">
+                      {formatHistoryDate(e.timestamp)}
+                    </p>
+                    <div className="flex items-center gap-1.5 mt-1">
+                      <span className="text-[10px] font-bold" style={{ color: accent }}>
+                        {e.globalScore.toFixed(1)}/5
+                      </span>
+                      <span className="text-[9px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-[var(--dsfr-grey-925)] text-[var(--dsfr-grey-425)] font-medium">
+                        Terminé
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </div>
   );
 }
 
