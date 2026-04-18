@@ -189,13 +189,25 @@ export async function registerRoutes(
       }
       const { sessionId, messages, scenario, typeCollab, profil } = parsed.data;
 
-      let analysis;
-      try {
-        analysis = await generateAnalysisAI(messages || [], scenario, typeCollab, profil);
-      } catch (err) {
-        console.error('OpenAI analysis error, using fallback:', err);
-        analysis = generateFallbackAnalysis(messages || []);
+      // DEBUG: Log analyze request summary to diagnose constant 1/5 scores bug
+      const msgs = messages || [];
+      const managerMsgCount = msgs.filter(m => m.role === 'manager').length;
+      const collabMsgCount = msgs.filter(m => m.role === 'collaborateur').length;
+      console.log(`[ANALYZE] sessionId=${sessionId} scenario=${scenario} typeCollab=${typeCollab} profil=${profil} msgs=${msgs.length} (manager=${managerMsgCount}, collaborateur=${collabMsgCount})`);
+      if (msgs.length === 0) {
+        console.warn('[ANALYZE] WARNING: no messages received — analysis will use defaults');
       }
+
+      let analysis;
+      let usedFallback = false;
+      try {
+        analysis = await generateAnalysisAI(msgs, scenario, typeCollab, profil);
+      } catch (err) {
+        console.error('[ANALYZE] OpenAI analysis error, using fallback:', err);
+        analysis = generateFallbackAnalysis(msgs);
+        usedFallback = true;
+      }
+      console.log(`[ANALYZE] result fallback=${usedFallback} clarte=${analysis.clarte} ecoute=${analysis.ecoute} assertivite=${analysis.assertivite} global=${analysis.global}`);
 
       if (sessionId) {
         try {

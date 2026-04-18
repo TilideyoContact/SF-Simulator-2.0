@@ -676,13 +676,21 @@ Retourne UNIQUEMENT le JSON, sans texte avant ou après.`,
 
   const content = response.choices[0]?.message?.content || "";
 
+  // DEBUG: Log raw LLM response (first 500 chars) to diagnose constant 1/5 scores bug
+  console.log(`[ANALYZE-AI] raw response (${content.length} chars): ${content.slice(0, 500)}${content.length > 500 ? '...[truncated]' : ''}`);
+  console.log(`[ANALYZE-AI] conversation length: ${conversation.length} chars, message count: ${messages.length}`);
+
   try {
-    const jsonMatch = content.match(/\{[\s\S]*\}/);
-    if (jsonMatch) {
-      const parsed = JSON.parse(jsonMatch[0]);
-      const clarte = Math.min(5, Math.max(1, parsed.clarte || 3));
-      const ecoute = Math.min(5, Math.max(1, parsed.ecoute || 3));
-      const assertivite = Math.min(5, Math.max(1, parsed.assertivite || 3));
+    // Strip markdown code fences if the LLM wrapped the JSON in ```json ... ```
+    const fenced = content.match(/```(?:json)?\s*(\{[\s\S]*?\})\s*```/i);
+    const jsonText = fenced ? fenced[1] : (content.match(/\{[\s\S]*\}/)?.[0] || "");
+    if (jsonText) {
+      const parsed = JSON.parse(jsonText);
+      console.log(`[ANALYZE-AI] parsed scores: clarte=${parsed.clarte} ecoute=${parsed.ecoute} assertivite=${parsed.assertivite}`);
+      // Use ?? so a legitimate score of 0 (rare) isn't silently bumped to 3.
+      const clarte = Math.min(5, Math.max(1, Number(parsed.clarte) || 3));
+      const ecoute = Math.min(5, Math.max(1, Number(parsed.ecoute) || 3));
+      const assertivite = Math.min(5, Math.max(1, Number(parsed.assertivite) || 3));
 
       // Normalize axesProgression to string array for backwards compatibility
       let axesProgression: string[] = [];
