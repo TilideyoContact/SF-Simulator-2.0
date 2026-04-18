@@ -1,0 +1,50 @@
+User Story 1 — Supprimer le double chat
+
+  En tant que manager en simulation,
+  je veux voir un seul champ de saisie,
+  pour ne pas être confus par deux barres de chat superposées.
+
+  ## Supprimer la barre de chat globale
+
+  ### Problème
+  En simulation, il y a 2 barres de chat superposées :
+  - En haut : le chat de simulation (avec le mic, le compteur de
+  tours, le timer) → c'est le bon, à garder
+  - En bas : un ChatInput global avec "Écris ton message..." et le
+  disclaimer "ChatFT peut faire des erreurs" → c'est le parasite, à
+  supprimer
+
+  Ce ChatInput du bas est visible sur TOUTES les pages du parcours
+  (pas juste en simulation) et provoque des envois de messages
+  parasites au LLM.
+
+  ### Ce qu'il faut faire
+  Supprimer complètement le rendu du ChatInput global. Il ne doit plus
+   apparaître sur aucune page, à aucun step (1 à 26). Le composant
+  peut rester dans le code, il suffit de retirer son appel dans le
+  layout ou dans la page principale.
+
+  Le seul champ de saisie visible dans toute l'app doit être celui qui
+   est à l'intérieur de la vue simulation (celui avec le mic à gauche,
+   le compteur "Tour X/Y" et le timer en haut).
+
+  ### Où chercher
+  Le ChatInput global est probablement appelé dans le layout principal
+   de la page chat (ChatPage ou un wrapper). C'est le composant qui
+  affiche en permanence :
+  - Le texte "Pose ta question ... Win+H pour la dicter"
+  - Le placeholder "Pose une question sur l'outil ou le management"
+  - Les boutons "Ajouter un fichier" et mic
+  - Le disclaimer "ChatFT peut faire des erreurs"
+
+  ### Ce qu'il NE faut PAS toucher
+  Le chat de simulation dans la vue simulation (Phase5Simulation).
+  Celui-là doit rester identique : champ de saisie "Écris ton message
+  en tant que manager...", mic à gauche, bouton envoi à droite,
+  compteur Tour X/Y et timer au-dessus.
+
+  ### Test
+  Parcours complet du Step1 au Step26 : aucune barre de chat "Pose une
+   question..." ne doit apparaître en bas de page. Sur aucun écran. Le
+   seul moment où un champ de saisie apparaît c'est pendant la
+  simulation (step 16-17) et c'est celui de la simulation.   
