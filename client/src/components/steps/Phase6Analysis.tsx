@@ -56,6 +56,7 @@ export function Step19Scores() {
     } finally {
       setLoading(false);
       const sid = (scenarioChoisi || 'feedback_recadrage') as HistoryScenarioId;
+      const finalAnalyse = useParcoursStore.getState().analyse;
       useHistoryStore.getState().addEntry({
         scenarioId: sid,
         scenarioLabel: SCENARIO_LABELS[sid] ?? sid,
@@ -72,6 +73,7 @@ export function Step19Scores() {
           relation: persona.relation,
           etatEsprit: persona.etatEsprit,
         },
+        analyse: finalAnalyse,
       });
     }
   };

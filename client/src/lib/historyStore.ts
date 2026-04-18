@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
+import type { AnalyseResult } from './store';
 
 export type HistoryScenarioId = 'feedback_recadrage' | 'feedback_positif' | 'decision_difficile';
 
@@ -24,6 +25,7 @@ export interface HistoryEntry {
   globalScore: number;
   messages: HistoryMessage[];
   persona: HistoryPersonaSnapshot;
+  analyse?: AnalyseResult | null;
 }
 
 interface HistoryState {
@@ -49,7 +51,7 @@ export const useHistoryStore = create<HistoryState>()(
     {
       name: 'chatft-simulation-history',
       storage: createJSONStorage(() => localStorage),
-      version: 2,
+      version: 3,
     }
   )
 );
