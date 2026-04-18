@@ -1,0 +1,54 @@
+User Story 4 — Bug scores du débrief toujours identiques
+
+  En tant que manager,
+  je veux que mes scores reflètent ma vraie performance,
+  pour que le débrief ait une valeur pédagogique réelle.
+
+  ## Bug — Les scores du débrief ne varient pas
+
+  ### Problème
+  Les barres de progression du débrief (page "Résultats de ta
+  simulation") affichent toujours les mêmes scores (1/5 — Confus sur
+  les 3 axes). Elles ne changent jamais quel que soit le contenu de la
+   conversation.
+
+  ### Ce qu'il faut investiguer
+
+  Ce bug peut venir de plusieurs endroits dans la chaîne :
+
+  1. L'appel API vers /api/simulation/analyze échoue-t-il
+  silencieusement ? Si oui, le code utilise les scores par défaut
+  (fallback). Ajoute un log temporaire dans le handler de la route
+  analyze pour afficher la réponse brute de l'IA avant le parsing.
+
+  2. Le LLM retourne-t-il un JSON valide ? La fonction d'analyse
+  demande au LLM de retourner un JSON avec les champs clarte, ecoute,
+  assertivite. Si le LLM retourne du texte au lieu du JSON, le parsing
+   échoue et les scores tombent sur le fallback. Ajoute un log du raw
+  content avant le JSON.parse.
+
+  3. Les scores reçus sont-ils bien passés à l'écran ? Vérifie que
+  l'appel fetch dans la page des résultats reçoit des scores variés du
+   serveur et les passe correctement à l'affichage des barres.
+
+  4. La conversation est-elle bien envoyée dans la requête d'analyse ?
+   Si le tableau des messages envoyé est vide ou incomplet, l'IA n'a
+  rien à analyser et donne des scores par défaut.
+
+  ### Résultat attendu
+  Après un entretien bien mené (méthode DESC appliquée, écoute active,
+   faits précis) → les scores doivent être 3-4/5 minimum.
+  Après un entretien bâclé (1 seul message, pas de structure) → les
+  scores doivent être 1-2/5.
+  Les 3 axes doivent pouvoir avoir des scores DIFFÉRENTS les uns des
+  autres (pas tous à 1/5 ou tous à 3/5).
+
+  ### Test
+  1. Faire une simulation courte (1 message, puis /fin) → scores bas
+  attendus (1-2/5)
+  2. Faire une simulation complète (5+ messages, méthode DESC visible)
+   → scores plus hauts (3-4/5)
+  3. Comparer les scores entre les 2 simulations → ils doivent être
+  différents
+  4. Vérifier que les 3 barres ont des longueurs différentes entre
+  elles

@@ -1,7 +1,6 @@
-import { useRef, useEffect, useCallback } from 'react';
-import { useParcoursStore, canGoBackFromStep } from '@/lib/store';
+import { useRef, useEffect } from 'react';
+import { useParcoursStore } from '@/lib/store';
 import { ProgressBar } from '@/components/ProgressBar';
-import { ChatInput } from '@/components/ChatInput';
 import { SideMenu } from '@/components/SideMenu';
 import { BackButton } from '@/components/BackButton';
 import franceTravailLogo from '@assets/image_1771580674143.png';
@@ -46,16 +45,12 @@ function StepRenderer({ step }: { step: number }) {
   }
 }
 
-const SKIPPABLE_STEPS = [5, 6, 8, 11, 12, 13, 24];
-
 interface ChatPageProps {
   activeSlug?: string;
 }
 
 export default function ChatPage({ activeSlug }: ChatPageProps) {
   const currentStep = useParcoursStore((s) => s.currentStep);
-  const prevStep = useParcoursStore((s) => s.prevStep);
-  const skipStep = useParcoursStore((s) => s.skipStep);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -65,13 +60,6 @@ export default function ChatPage({ activeSlug }: ChatPageProps) {
       }
     }, 100);
   }, [currentStep]);
-
-  const handleSend = useCallback((_message: string) => {
-  }, []);
-
-  const canGoBack = canGoBackFromStep(currentStep);
-  const canSkip = SKIPPABLE_STEPS.includes(currentStep);
-  const isSimulationStep = currentStep === 16 || currentStep === 17;
 
   return (
     <div className="flex flex-col h-screen bg-background" data-testid="chat-page">
@@ -104,23 +92,6 @@ export default function ChatPage({ activeSlug }: ChatPageProps) {
               <StepRenderer step={currentStep} />
             </div>
           </div>
-
-          {!isSimulationStep && (
-          <div className="border-t border-[var(--dsfr-grey-925)] bg-[var(--dsfr-grey-975)]">
-            <div className="max-w-3xl mx-auto px-4 sm:px-6 py-3">
-              <ChatInput
-                onSend={handleSend}
-                placeholder="Le chat est disponible uniquement pendant la simulation"
-                showNav={currentStep > 1}
-                canGoBack={canGoBack}
-                canSkip={canSkip}
-                onBack={prevStep}
-                onSkip={skipStep}
-                ignorePendingMessage={true}
-              />
-            </div>
-          </div>
-          )}
         </div>
       </div>
     </div>
