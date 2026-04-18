@@ -1,0 +1,59 @@
+User Story 3 — Personnages fixes pour les profils DISC
+
+  En tant que manager,
+  je veux voir un personnage fixe avec un prénom unique pour chaque
+  profil DISC,
+  pour mieux me projeter et retrouver le même collaborateur d'une
+  simulation à l'autre.
+
+  ## Personnages fixes par profil DISC
+
+  ### Problème
+  Actuellement le prénom du collaborateur est tiré au hasard dans une
+  liste (Thomas, Marie, Alexandre, Sophie...). Le client veut 1
+  personnage fixe par profil DISC, toujours le même, reconnaissable.
+
+  ### Les 4 personnages (à valider avec le client — Désiré)
+  - Dominant → "Pierre" — Direct, orienté résultats, impatient
+  - Influent → "Sophie" — Expressive, enthousiaste, bavarde
+  - Stable → "Thomas" — Patient, loyal, réservé, résistant au
+  changement
+  - Consciencieux → "Claire" — Méthodique, précise, exigeante
+
+  ### Comportement attendu
+  1. Quand l'utilisateur sélectionne un profil DISC au Step11, le
+  prénom du collaborateur se met automatiquement à jour :
+     - Clic sur "Dominant" → le collaborateur s'appelle "Pierre"
+     - Clic sur "Influent" → "Sophie"
+     - Clic sur "Stable" → "Thomas"
+     - Clic sur "Consciencieux" → "Claire"
+
+  2. Ce prénom fixe doit apparaître partout dans l'app :
+     - Sur la page de sélection DISC (Step11) : "Pierre — Dominant"
+  dans le panneau latéral
+     - Dans le message "Ton collaborateur s'appellera Pierre."
+     - Sur les cards de sélection DISC : ajouter le prénom, ex :
+  "Dominant — Pierre"
+     - Dans le récapitulatif avant simulation (Step14 et Step15c) :
+  "Collaborateur : Pierre, agent, profil Dominant"
+     - Dans la simulation : le premier message commence par "*[Pierre
+  entre dans le bureau...]*"
+     - Dans le débrief : "Ce que Pierre a ressenti..."
+
+  3. Supprimer le tirage aléatoire de prénom. Le prénom ne doit plus
+  changer aléatoirement — il est déterminé par le profil DISC choisi.
+
+  ### Ce qu'il NE faut PAS changer
+  Le mécanisme de la liste de prénoms peut rester dans le code comme
+  fallback. Mais dès qu'un profil DISC est sélectionné, le prénom fixe
+   du profil écrase le prénom aléatoire.
+
+  ### Test
+  1. Choisir Dominant → voir "Pierre" partout (Step11, récap,
+  simulation, débrief)
+  2. Revenir en arrière, choisir Influent → voir "Sophie" partout
+  3. Faire 2 simulations avec le même profil DISC → le même prénom les
+   2 fois
+  4. Mode Rapide (DISC auto = stable par défaut) → "Thomas" par défaut
+   partout
+
