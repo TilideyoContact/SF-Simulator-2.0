@@ -406,7 +406,7 @@ export const useParcoursStore = create<ParcoursState>()(
           state.simulation.isSimulating = false;
         }
       },
-      version: 1,
+      version: 2,
     }
   )
 );
