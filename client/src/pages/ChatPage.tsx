@@ -71,6 +71,7 @@ export default function ChatPage({ activeSlug }: ChatPageProps) {
 
   const canGoBack = canGoBackFromStep(currentStep);
   const canSkip = SKIPPABLE_STEPS.includes(currentStep);
+  const isSimulationStep = currentStep === 16 || currentStep === 17;
 
   return (
     <div className="flex flex-col h-screen bg-background" data-testid="chat-page">
@@ -104,6 +105,7 @@ export default function ChatPage({ activeSlug }: ChatPageProps) {
             </div>
           </div>
 
+          {!isSimulationStep && (
           <div className="border-t border-[var(--dsfr-grey-925)] bg-[var(--dsfr-grey-975)]">
             <div className="max-w-3xl mx-auto px-4 sm:px-6 py-3">
               <ChatInput
@@ -118,6 +120,7 @@ export default function ChatPage({ activeSlug }: ChatPageProps) {
               />
             </div>
           </div>
+          )}
         </div>
       </div>
     </div>
