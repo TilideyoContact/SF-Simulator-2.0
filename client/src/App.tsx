@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import LandingPage from "@/pages/LandingPage";
 import ScenarioPage from "@/pages/ScenarioPage";
+import HistoryPage from "@/pages/HistoryPage";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -13,6 +14,9 @@ function Router() {
       <Route path="/" component={LandingPage} />
       <Route path="/scenario/:slug">
         {(params) => <ScenarioPage slug={params.slug} />}
+      </Route>
+      <Route path="/historique/:id">
+        {(params) => <HistoryPage id={params.id} />}
       </Route>
       <Route component={NotFound} />
     </Switch>

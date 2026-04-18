@@ -61,6 +61,17 @@ export function Step19Scores() {
         scenarioLabel: SCENARIO_LABELS[sid] ?? sid,
         timestamp: Date.now(),
         globalScore: finalGlobal,
+        messages: simulation.messages.map((m) => ({
+          role: m.role,
+          content: m.content,
+          timestamp: m.timestamp,
+        })),
+        persona: {
+          disc: persona.disc,
+          prenomFictif: persona.prenomFictif,
+          relation: persona.relation,
+          etatEsprit: persona.etatEsprit,
+        },
       });
     }
   };

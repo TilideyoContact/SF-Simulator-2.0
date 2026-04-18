@@ -112,6 +112,7 @@ export function SideMenu({ activeSlug }: SideMenuProps) {
 }
 
 function HistorySection() {
+  const [location, navigate] = useLocation();
   const entries = useHistoryStore((s) => s.entries);
 
   return (
@@ -135,31 +136,44 @@ function HistorySection() {
             const meta = SCENARIOS.find((s) => s.id === e.scenarioId);
             const Icon = meta?.icon ?? MessageSquare;
             const accent = meta?.accent ?? '#000091';
+            const href = `/historique/${e.id}`;
+            const isActive = location === href;
             return (
-              <li
-                key={e.id}
-                data-testid={`history-entry-${e.id}`}
-                className="rounded-lg px-3 py-2 cursor-default"
-              >
-                <div className="flex items-start gap-2">
-                  <Icon className="w-4 h-4 mt-0.5 shrink-0" style={{ color: accent }} />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs font-bold leading-tight truncate" title={e.scenarioLabel}>
-                      {e.scenarioLabel}
-                    </p>
-                    <p className="text-[10px] text-[var(--dsfr-grey-425)] mt-0.5 leading-tight">
-                      {formatHistoryDate(e.timestamp)}
-                    </p>
-                    <div className="flex items-center gap-1.5 mt-1">
-                      <span className="text-[10px] font-bold" style={{ color: accent }}>
-                        {e.globalScore.toFixed(1)}/5
-                      </span>
-                      <span className="text-[9px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-[var(--dsfr-grey-925)] text-[var(--dsfr-grey-425)] font-medium">
-                        Terminé
-                      </span>
+              <li key={e.id}>
+                <button
+                  data-testid={`history-entry-${e.id}`}
+                  onClick={() => navigate(href)}
+                  className="w-full text-left rounded-lg px-3 py-2 transition-all hover:bg-[var(--dsfr-grey-975)] cursor-pointer"
+                  style={{
+                    backgroundColor: isActive ? meta?.bg ?? 'rgba(0,0,145,0.06)' : undefined,
+                    border: isActive ? `1.5px solid ${accent}` : '1.5px solid transparent',
+                  }}
+                  title="Voir cette conversation"
+                >
+                  <div className="flex items-start gap-2">
+                    <Icon className="w-4 h-4 mt-0.5 shrink-0" style={{ color: accent }} />
+                    <div className="flex-1 min-w-0">
+                      <p
+                        className="text-xs font-bold leading-tight truncate"
+                        style={{ color: isActive ? accent : undefined }}
+                        title={e.scenarioLabel}
+                      >
+                        {e.scenarioLabel}
+                      </p>
+                      <p className="text-[10px] text-[var(--dsfr-grey-425)] mt-0.5 leading-tight">
+                        {formatHistoryDate(e.timestamp)}
+                      </p>
+                      <div className="flex items-center gap-1.5 mt-1">
+                        <span className="text-[10px] font-bold" style={{ color: accent }}>
+                          {e.globalScore.toFixed(1)}/5
+                        </span>
+                        <span className="text-[9px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-[var(--dsfr-grey-925)] text-[var(--dsfr-grey-425)] font-medium">
+                          Terminé
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </button>
               </li>
             );
           })}
