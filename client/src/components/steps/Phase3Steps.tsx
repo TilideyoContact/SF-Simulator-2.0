@@ -21,6 +21,7 @@ const DISC_PROFILES = [
   {
     id: 'dominant',
     label: 'Dominant',
+    prenom: 'Pierre',
     shortDesc: 'Direct, orienté résultats',
     fullDesc: 'Direct, orienté résultats, impatient. Challenge, veut des solutions rapides.',
     traits: ['Décide vite', 'Va droit au but', 'Aime le contrôle'],
@@ -32,6 +33,7 @@ const DISC_PROFILES = [
   {
     id: 'influent',
     label: 'Influent',
+    prenom: 'Sophie',
     shortDesc: 'Expressif, enthousiaste',
     fullDesc: 'Expressif, enthousiaste, dispersé. Parle beaucoup, réagit émotionnellement.',
     traits: ['Communique avec entrain', 'Aime collaborer', 'Expressif et créatif'],
@@ -43,6 +45,7 @@ const DISC_PROFILES = [
   {
     id: 'stable',
     label: 'Stable',
+    prenom: 'Thomas',
     shortDesc: 'Patient, loyal, fiable',
     fullDesc: 'Patient, loyal, résistant au changement. Écoute mais intériorise, passif.',
     traits: ['Écoute attentivement', 'Fiable et constant', 'Préfère la stabilité'],
@@ -54,6 +57,7 @@ const DISC_PROFILES = [
   {
     id: 'consciencieux',
     label: 'Consciencieux',
+    prenom: 'Claire',
     shortDesc: 'Méthodique, précis, exigeant',
     fullDesc: 'Méthodique, précis, exigeant. Demande des preuves, analyse tout.',
     traits: ['Analyse les détails', 'Suit les procédures', 'Recherche la précision'],
@@ -161,7 +165,7 @@ export function Step11Disc() {
                 </div>
                 <div className="min-w-0">
                   <p className="font-bold text-sm" style={{ color: profile.color }}>
-                    {profile.label}
+                    {profile.label} — {profile.prenom}
                   </p>
                   <p className="text-xs text-[var(--dsfr-grey-425)] leading-tight">{profile.shortDesc}</p>
                 </div>

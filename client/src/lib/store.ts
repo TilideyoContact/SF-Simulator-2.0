@@ -115,10 +115,18 @@ export interface ParcoursState {
   resetToPersona: () => void;
 }
 
-const PRENOMS = ['Thomas', 'Marie', 'Alexandre', 'Sophie', 'Lucas', 'Camille', 'Nicolas', 'Julie', 'Pierre', 'Claire'];
+export const DISC_PRENOMS: Record<string, string> = {
+  dominant: 'Pierre',
+  influent: 'Sophie',
+  stable: 'Thomas',
+  consciencieux: 'Claire',
+};
 
-function getRandomPrenom(): string {
-  return PRENOMS[Math.floor(Math.random() * PRENOMS.length)];
+const DEFAULT_PRENOM = DISC_PRENOMS.stable;
+
+export function getPrenomForDisc(disc: string | null | undefined): string {
+  if (disc && DISC_PRENOMS[disc]) return DISC_PRENOMS[disc];
+  return DEFAULT_PRENOM;
 }
 
 export function getRecommandation(state: ParcoursState): string {
@@ -210,7 +218,7 @@ const initialState = {
     relation: null as Relation,
     etatEsprit: 'neutre' as EtatEsprit,
     niveauDifficulte: 'modere' as DifficultyLevel,
-    prenomFictif: getRandomPrenom(),
+    prenomFictif: DEFAULT_PRENOM,
   },
   choixPreSimulation: null as ChoixPreSimulation,
   dureeEntretien: null as DureeEntretien,
@@ -274,7 +282,7 @@ export const useParcoursStore = create<ParcoursState>()(
       relation: null,
       etatEsprit: 'neutre',
       niveauDifficulte: 'modere',
-      prenomFictif: getRandomPrenom(),
+      prenomFictif: DEFAULT_PRENOM,
     },
     choixPreSimulation: null,
     dureeEntretien: null,
@@ -285,7 +293,8 @@ export const useParcoursStore = create<ParcoursState>()(
   setPersonaDisc: (disc) => {
     const state = get();
     const niveauDifficulte = calculateDifficulty(disc, state.persona.relation, state.persona.etatEsprit, state.typeCollab);
-    set({ persona: { ...state.persona, disc, niveauDifficulte } });
+    const prenomFictif = getPrenomForDisc(disc);
+    set({ persona: { ...state.persona, disc, niveauDifficulte, prenomFictif } });
   },
   setPersonaRelation: (relation) => {
     const state = get();
@@ -341,12 +350,12 @@ export const useParcoursStore = create<ParcoursState>()(
 
   resetParcours: () => set({
     ...initialState,
-    persona: { ...initialState.persona, prenomFictif: getRandomPrenom() },
+    persona: { ...initialState.persona, prenomFictif: DEFAULT_PRENOM },
   }),
   resetToScenario: () => set({
     currentStep: 10,
     scenarioChoisi: null,
-    persona: { disc: null, relation: null, etatEsprit: 'neutre', niveauDifficulte: 'modere', prenomFictif: getRandomPrenom() },
+    persona: { disc: null, relation: null, etatEsprit: 'neutre', niveauDifficulte: 'modere', prenomFictif: DEFAULT_PRENOM },
     choixPreSimulation: null,
     dureeEntretien: null,
     simulation: { tourActuel: 0, tourMax: 7, messages: [], isSimulating: false, isFinished: false },
@@ -361,7 +370,7 @@ export const useParcoursStore = create<ParcoursState>()(
         relation: null,
         etatEsprit: 'neutre',
         niveauDifficulte: 'modere',
-        prenomFictif: getRandomPrenom(),
+        prenomFictif: DEFAULT_PRENOM,
       },
       choixPreSimulation: null,
       dureeEntretien: null,

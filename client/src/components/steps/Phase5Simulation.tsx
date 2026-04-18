@@ -4,9 +4,10 @@ import { ChatBubble, TypingIndicator } from '@/components/ChatBubble';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { getScenarioLabel, getDiscLabel, getTourMax } from '@/lib/helpers';
-import { Send, Mic, MicOff, Volume2, VolumeX, Clock } from 'lucide-react';
+import { Send, Mic, MicOff, Volume2, VolumeX, Clock, Pause, Play, Square } from 'lucide-react';
 import { apiRequest } from '@/lib/queryClient';
 import { cn } from '@/lib/utils';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 
 export function SimulationView() {
   const store = useParcoursStore();
@@ -19,6 +20,8 @@ export function SimulationView() {
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const [showStopConfirm, setShowStopConfirm] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -39,18 +42,33 @@ export function SimulationView() {
   }, []);
 
   useEffect(() => {
-    if (simulation.messages.length > 0 && !simulation.isFinished) {
+    if (simulation.messages.length > 0 && !simulation.isFinished && !isPaused) {
       timerRef.current = setInterval(() => {
         setElapsedSeconds(prev => prev + 1);
       }, 1000);
     }
-    if (simulation.isFinished && timerRef.current) {
+    if ((simulation.isFinished || isPaused) && timerRef.current) {
       clearInterval(timerRef.current);
+      timerRef.current = null;
     }
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [simulation.messages.length, simulation.isFinished]);
+  }, [simulation.messages.length, simulation.isFinished, isPaused]);
+
+  const handleTogglePause = () => {
+    setIsPaused(prev => {
+      if (!prev) stopAudio();
+      return !prev;
+    });
+  };
+
+  const handleConfirmStop = () => {
+    setShowStopConfirm(false);
+    setIsPaused(false);
+    setSimulationFinished();
+    useParcoursStore.setState({ currentStep: 18 });
+  };
 
   useEffect(() => {
     return () => {
@@ -328,7 +346,45 @@ export function SimulationView() {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center justify-end mb-2 px-1">
+      <div className="flex items-center justify-between gap-2 mb-2 px-1 flex-wrap">
+        <div className="flex items-center gap-3 text-xs font-medium text-[var(--dsfr-grey-425)]">
+          <span data-testid="text-tour-counter" className="tabular-nums">
+            Tour {Math.min(simulation.tourActuel, tourMax)}/{tourMax}
+          </span>
+          {!simulation.isFinished && (
+            <>
+              <Button
+                data-testid="button-pause-toggle"
+                variant="ghost"
+                size="icon"
+                onClick={handleTogglePause}
+                className="h-7 w-7 text-[var(--dsfr-grey-425)] hover:text-[var(--dsfr-blue-france)]"
+                title={isPaused ? 'Reprendre' : 'Mettre en pause'}
+              >
+                {isPaused ? <Play className="w-4 h-4" /> : <Pause className="w-4 h-4" />}
+              </Button>
+              <Button
+                data-testid="button-stop-simulation"
+                variant="ghost"
+                size="icon"
+                onClick={() => setShowStopConfirm(true)}
+                className="h-7 w-7 text-[var(--dsfr-grey-425)] hover:text-[var(--dsfr-blue-france)]"
+                title="Terminer la simulation"
+              >
+                <Square className="w-4 h-4" />
+              </Button>
+            </>
+          )}
+          <span className="flex items-center gap-1 tabular-nums">
+            <Clock className="w-3.5 h-3.5" />
+            {Math.floor(elapsedSeconds / 60)}:{(elapsedSeconds % 60).toString().padStart(2, '0')}
+            {isPaused && (
+              <span data-testid="text-paused" className="ml-1 italic text-[var(--dsfr-grey-625)] font-normal">
+                — En pause
+              </span>
+            )}
+          </span>
+        </div>
         <Button
           data-testid="button-toggle-sound"
           variant="ghost"
@@ -344,6 +400,34 @@ export function SimulationView() {
         </Button>
       </div>
 
+      <Dialog open={showStopConfirm} onOpenChange={setShowStopConfirm}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-base font-bold" style={{ color: 'var(--dsfr-blue-france)' }}>
+              Terminer la simulation ?
+            </DialogTitle>
+          </DialogHeader>
+          <p className="text-sm text-[var(--dsfr-grey-425)]">
+            Tu seras redirigé vers le débrief.
+          </p>
+          <DialogFooter className="gap-2 sm:gap-2">
+            <Button
+              data-testid="button-stop-cancel"
+              variant="outline"
+              onClick={() => setShowStopConfirm(false)}
+            >
+              Continuer la simulation
+            </Button>
+            <Button
+              data-testid="button-stop-confirm"
+              onClick={handleConfirmStop}
+            >
+              Oui, terminer
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       <div className="flex-1 space-y-4 pb-4">
         {simulation.messages.map((msg, i) => (
           <ChatBubble key={i} role={msg.role === 'manager' ? 'user' : 'bot'}>
@@ -356,12 +440,6 @@ export function SimulationView() {
 
       {!simulation.isFinished && (
         <div className="sticky bottom-0 bg-background pt-3 pb-1 border-t border-[var(--dsfr-grey-925)]">
-          <div className="flex items-center justify-end text-xs text-[var(--dsfr-grey-425)] mb-1 px-1 font-medium">
-            <span className="flex items-center gap-1">
-              <Clock className="w-3.5 h-3.5" />
-              {Math.floor(elapsedSeconds / 60)}:{(elapsedSeconds % 60).toString().padStart(2, '0')}
-            </span>
-          </div>
           <div className="w-full h-2 bg-[var(--dsfr-grey-925)] rounded-full overflow-hidden mb-2">
             <div
               className="h-full rounded-full transition-all duration-500 ease-out"

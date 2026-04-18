@@ -1,0 +1,46 @@
+                                                                                                                       
+  Prompt 1 — Boutons pause/play/arrêt :                                                                                
+                                                                                                                       
+  ## Feature manquante — Boutons pause/play/arrêt en simulation                                                        
+                                                                                                                       
+  Pendant la simulation (steps 16-17), ajouter 3 boutons d'action dans la barre du haut, sur la même ligne que le      
+  compteur "Tour X/Y" et le timer mm:ss :                                                                              
+                                                                                                                       
+  Bouton Pause (icône ⏸) : met le timer en pause. Le compteur mm:ss s'arrête. Le champ de saisie reste actif. Le bouton
+   se transforme en Play (icône ▶). Afficher "En pause" en gris italique à côté du timer.
+                                                                                                                       
+  Bouton Play (icône ▶) : visible uniquement quand le timer est en pause. Relance le compteur mm:ss.                   
+   
+  Bouton Arrêt (icône ⏹) : affiche un message de confirmation "Terminer la simulation ? Tu seras redirigé vers le      
+  débrief." avec 2 boutons "Oui, terminer" / "Continuer la simulation". Si oui → même effet que /fin (simulation
+  terminée, passage au débrief).                                                                                       
+                                                            
+  Placement : entre le compteur de tours et le timer. Petites icônes sans label, gris par défaut, bleu France au hover.
+  
+  État normal  : [Tour 1/8]  [⏸] [⏹]  [⏱ 3:47]                                                                         
+  État en pause : [Tour 1/8]  [▶] [⏹]  [⏱ 3:47 — En pause]  
+                                                                                                                       
+  Ces boutons n'apparaissent que pendant la simulation (steps 16-17).                                                  
+                                                                                                                       
+  Prompt 2 — Personnages fixes DISC :                                                                                  
+                                                            
+  ## Feature manquante — Personnages fixes par profil DISC
+                                                                                                                       
+  Remplacer le tirage aléatoire de prénom par 4 personnages fixes, un par profil DISC :                                
+                                                                                                                       
+  - Dominant → "Pierre"                                                                                                
+  - Influent → "Sophie"                                     
+  - Stable → "Thomas"                                                                                                  
+  - Consciencieux → "Claire"                                
+
+  Quand l'utilisateur sélectionne un profil DISC au Step11, le prénom se met à jour automatiquement (plus de random).  
+  Ce prénom fixe doit apparaître partout : Step11 (panneau latéral "Pierre — Dominant"), cards de sélection ("Dominant
+  — Pierre"), message "Ton collaborateur s'appellera Pierre", récap Step14, récap Step15c, simulation (premier message 
+  "*[Pierre entre...]*"), débrief ("Ce que Pierre a ressenti...").
+
+  Sur les cards de sélection DISC, ajouter le prénom sous le label existant : "Dominant — Pierre", "Influent — Sophie",
+   etc.
+                                                                                                                       
+  En Mode Rapide avec DISC auto = stable → le prénom par défaut est "Thomas".                                          
+  
+  Prénoms à valider avec le client (Désiré). Ceux ci-dessus sont les suggestions.    
